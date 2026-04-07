@@ -1,0 +1,740 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<main class="nxl-container">
+    <div class="nxl-content">
+        <!-- [ page-header ] start -->
+        <div class="page-header">
+            <div class="page-header-left d-flex align-items-center">
+                <div class="page-header-title">
+                    <h5 class="m-b-10">Member Details</h5>
+                </div>
+                <ul class="breadcrumb">
+                    <!-- <li class="breadcrumb-item"><a href="index.html">Report</a></li>
+                    <li class="breadcrumb-item">Volunteer Report</li> -->
+                </ul>
+            </div>
+        </div>
+        <!-- [ page-header ] end -->
+        <div class="main-content">
+            <div class="tab-content">
+                <div class="tab-pane fade show active" id="profileTab" role="tabpanel">
+
+                    {% if member.member_type == "Adult" %}
+                    <div class="card card-body lead-info">
+
+                        <div class="mb-4 d-flex align-items-center justify-content-between">
+                            <h5 class="fw-bold mb-0">
+                                <span class="d-block mb-2">Member Information :</span>
+                                <span class="fs-12 fw-normal text-muted d-block">
+
+                                </span>
+                            </h5>
+
+                        </div>
+
+                        <div class="row">
+
+                            <!-- Row 1 -->
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Name</div>
+                                    <div>{{ member.name }}</div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Aadhaar Number</div>
+                                    <div>{{ member.aadhaar_number }}</div>
+                                </div>
+                            </div>
+
+                            <!-- Row 2 -->
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Father Name</div>
+                                    <div>{{ member.father_name }}</div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Relationship</div>
+                                    <div>{{ member.relationship.name }}</div>
+                                </div>
+                            </div>
+
+                            <!-- Row 3 -->
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Alias</div>
+                                    <div>{{ member.alias }}</div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Gender</div>
+                                    <div>{{ member.gender }}</div>
+                                </div>
+                            </div>
+
+                            <!-- Row 4 -->
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Date of Birth</div>
+                                    <div>{{ member.date_of_birth|date:"d-m-Y" }}</div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Email</div>
+                                    <div>{{ member.email_id }}</div>
+                                </div>
+                            </div>
+
+                            <!-- Row 5 -->
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Mobile</div>
+                                    <div>{{ member.mobile }}</div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Whatsapp</div>
+                                    <div>{{ member.whatsapp }}</div>
+                                </div>
+                            </div>
+
+                            <!-- Row 6 -->
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Marital Status</div>
+                                    <div>{{ member.marital_status }}</div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Qualification</div>
+                                    <div>{{ member.qualification.name }}</div>
+                                </div>
+                            </div>
+
+                            <!-- Row 7 -->
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Languages Speak</div>
+                                    <div>{{ member.languages_speak }}</div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Languages Read</div>
+                                    <div>{{ member.languages_read }}</div>
+                                </div>
+                            </div>
+
+                            <!-- Row 8 -->
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Languages Write</div>
+                                    <div>{{ member.languages_write }}</div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Computer Proficiency</div>
+                                    <div>{{ member.computer_proficiency }}</div>
+                                </div>
+                            </div>
+
+                            <!-- Row 9 -->
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Occupation</div>
+                                    <div>{{ member.occupation.name }}</div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Company Name</div>
+                                    <div>{{ member.company_name }}</div>
+                                </div>
+                            </div>
+
+                            <!-- Row 10 -->
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Designation</div>
+                                    <div>{{ member.designation }}</div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Department</div>
+                                    <div>{{ member.department }}</div>
+                                </div>
+                            </div>
+
+                            <!-- Row 11 -->
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Annual Income</div>
+                                    <div>{{ member.income.name }}</div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Skills</div>
+                                    <div>{{ member.skills }}</div>
+                                </div>
+                            </div>
+
+                            <!-- Row 12 -->
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Blood Group</div>
+                                    <div>{{ member.blood_group.name }}</div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Overall Health</div>
+                                    <div>{{ member.overall_health.name }}</div>
+                                </div>
+                            </div>
+
+                            <!-- Row 13 -->
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Chronic Disease</div>
+                                    <div>{{ member.chronic_disease.name }}</div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Disability</div>
+                                    <div>{{ member.disability }}</div>
+                                </div>
+                            </div>
+
+                            <!-- Row 14 -->
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Activity Level</div>
+                                    <div>{{ member.activity_level }}</div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Government Health Insurance</div>
+                                    <div>{% if member.govt_health_insurance %}Yes{% else %}No{% endif %}</div>
+                                </div>
+                            </div>
+
+                            <!-- Row 15 -->
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Private Health Insurance</div>
+                                    <div>{% if member.private_health_insurance %}Yes{% else %}No{% endif %}</div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Husainy Trust Member</div>
+                                    <div>{% if member.husainy_trust_member %}Yes{% else %}No{% endif %}</div>
+                                </div>
+                            </div>
+
+                            <!-- Row 16 -->
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Membership Number</div>
+                                    <div>{{ member.membership_number }}</div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Interested in Digital Directory
+                                    </div>
+                                    <div>{% if member.interested_in_digital_directory %}Yes{% else %}No{% endif %}</div>
+                                </div>
+                            </div>
+
+                            <!-- Row 17 -->
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Community Digital Pages</div>
+                                    <div>{% if member.listing_in_community_digital_pages %}Yes{% else %}No{% endif %}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Product / Service Listing</div>
+                                    <div>{{ member.product_service_listing_in_yellow_pages }}</div>
+                                </div>
+                            </div>
+
+                            <!-- Photo -->
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Photo</div>
+                                    <div>
+                                        {% if member.photo %}
+                                        <img src="{{ member.photo.url }}" width="90" class="rounded">
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    {% elif member.member_type == "Student" %}
+                    <div class="card card-body lead-info">
+
+                        <div class="mb-4 d-flex align-items-center justify-content-between">
+                            <h5 class="fw-bold mb-0">
+                                <span class="d-block mb-2">Member Information :</span>
+                                <span class="fs-12 fw-normal text-muted d-block">
+
+                                </span>
+                            </h5>
+
+                        </div>
+
+                        <div class="row">
+
+                            <!-- Row 1 -->
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Name</div>
+                                    <div>{{ member.name }}</div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Aadhaar Number</div>
+                                    <div>{{ member.aadhaar_number }}</div>
+                                </div>
+                            </div>
+
+                            <!-- Row 2 -->
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Relationship</div>
+                                    <div>{{ member.relationship.name }}</div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Alias</div>
+                                    <div>{{ member.alias }}</div>
+                                </div>
+                            </div>
+
+                            <!-- Row 3 -->
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Father Name</div>
+                                    <div>{{ member.father_name }}</div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Gender</div>
+                                    <div>{{ member.gender }}</div>
+                                </div>
+                            </div>
+
+                            <!-- Row 4 -->
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Date of Birth</div>
+                                    <div>{{ member.date_of_birth }}</div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Current Education Status</div>
+                                    <div>{{ member.current_education_status }}</div>
+                                </div>
+                            </div>
+
+                            <!-- Row 5 -->
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">School / College</div>
+                                    <div>{{ member.school_college_institute_name }}</div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Grade / Year</div>
+                                    <div>{{ member.grade_year }}</div>
+                                </div>
+                            </div>
+
+                            <!-- Row 6 -->
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Annual Academic Fees</div>
+                                    <div>{{ member.annual_academic_fees }}</div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Fees Payment</div>
+                                    <div>{{ member.fees_payment }}</div>
+                                </div>
+                            </div>
+
+                            <!-- Row 7 -->
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Languages Speak</div>
+                                    <div>{{ member.languages_speak }}</div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Languages Read</div>
+                                    <div>{{ member.languages_read }}</div>
+                                </div>
+                            </div>
+
+                            <!-- Row 8 -->
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Languages Write</div>
+                                    <div>{{ member.languages_write }}</div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Computer Proficiency</div>
+                                    <div>{{ member.computer_proficiency }}</div>
+                                </div>
+                            </div>
+
+                            <!-- Row 9 -->
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Sports</div>
+                                    <div>{{ member.sports }}</div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Hobbies</div>
+                                    <div>{{ member.hobbies }}</div>
+                                </div>
+                            </div>
+
+                            <!-- Row 10 -->
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Career Goal</div>
+                                    <div>{{ member.career_goal }}</div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Holy Quran Reading</div>
+                                    <div>{{ member.holy_koran_reading }}</div>
+                                </div>
+                            </div>
+
+                            <!-- Row 11 -->
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Deeniyath</div>
+                                    <div>{{ member.deeniyath }}</div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Blood Group</div>
+                                    <div>{{ member.blood_group.name }}</div>
+                                </div>
+                            </div>
+
+                            <!-- Row 12 -->
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Overall Health</div>
+                                    <div>{{ member.overall_health.name }}</div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Chronic Disease</div>
+                                    <div>{{ member.chronic_disease.name }}</div>
+                                </div>
+                            </div>
+
+                            <!-- Row 13 -->
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Disability</div>
+                                    <div>{{ member.disability }}</div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Government Health Insurance</div>
+                                    <div>{% if member.govt_health_insurance %}Yes{% else %}No{% endif %}</div>
+                                </div>
+                            </div>
+
+                            <!-- Row 14 -->
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Private Health Insurance</div>
+                                    <div>{% if member.private_health_insurance %}Yes{% else %}No{% endif %}</div>
+                                </div>
+                            </div>
+
+                            <!-- Photo -->
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Photo</div>
+                                    <div>
+                                        {% if member.photo %}
+                                        <img src="{{ member.photo.url }}" width="90" class="rounded">
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="card card-body lead-info">
+
+                        <div class="mb-4 d-flex align-items-center justify-content-between">
+                            <h5 class="fw-bold mb-0">
+                                <span class="d-block mb-2">Member Information :</span>
+                                <span class="fs-12 fw-normal text-muted d-block">
+
+                                </span>
+                            </h5>
+
+                        </div>
+
+                        <div class="row">
+
+                            <!-- Row 1 -->
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Name</div>
+                                    <div>{{ member.name }}</div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Aadhaar Number</div>
+                                    <div>{{ member.aadhaar_number }}</div>
+                                </div>
+                            </div>
+
+                            <!-- Row 2 -->
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Relationship</div>
+                                    <div>{{ member.relationship.name }}</div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Alias</div>
+                                    <div>{{ member.alias }}</div>
+                                </div>
+                            </div>
+
+                            <!-- Row 3 -->
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Father Name</div>
+                                    <div>{{ member.father_name }}</div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Gender</div>
+                                    <div>{{ member.gender }}</div>
+                                </div>
+                            </div>
+
+                            <!-- Row 4 -->
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Date of Birth</div>
+                                    <div>{{ member.date_of_birth|date:"d-m-Y" }}</div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Blood Group</div>
+                                    <div>{{ member.blood_group.name }}</div>
+                                </div>
+                            </div>
+
+                            <!-- Row 5 -->
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Overall Health</div>
+                                    <div>{{ member.overall_health.name }}</div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Government Health Insurance</div>
+                                    <div>
+                                        {% if member.govt_health_insurance %}
+                                        Yes
+                                        {% else %}
+                                        No
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Row 6 -->
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Private Health Insurance</div>
+                                    <div>
+                                        {% if member.private_health_insurance %}
+                                        Yes
+                                        {% else %}
+                                        No
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Photo -->
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Photo</div>
+                                    <div>
+                                        {% if member.photo %}
+                                        <img src="{{ member.photo.url }}" width="100" class="rounded">
+                                        {% else %}
+                                        No Photo
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    {% endif %}
+
+                </div>
+                <div class="tab-pane fade" id="proposalTab" role="tabpanel">
+                    <div class="card card-body">
+                        <div class="d-flex align-items-center justify-content-center"
+                            style="height: calc(100vh - 315px)">
+                            <div class="text-center">
+                                <h2 class="fs-16 fw-semibold">No proposals yet!</h2>
+                                <p class="fs-12 text-muted">There is no proposals create yet.</p>
+                                <a href="javascript:void(0);" class="avatar-text bg-soft-primary text-primary mx-auto"
+                                    data-bs-toggle="tooltip" title="Create Proposals">
+                                    <i class="feather-plus"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="tasksTab" role="tabpanel">
+                    <div class="card card-body">
+                        <div class="d-flex align-items-center justify-content-center"
+                            style="height: calc(100vh - 315px)">
+                            <div class="text-center">
+                                <h2 class="fs-16 fw-semibold">No tasks yet!</h2>
+                                <p class="fs-12 text-muted">There is no tasks create yet.</p>
+                                <a href="javascript:void(0);" class="avatar-text bg-soft-primary text-primary mx-auto"
+                                    data-bs-toggle="tooltip" title="Create Tasks">
+                                    <i class="feather-plus"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="notesTab" role="tabpanel">
+                    <div class="card card-body">
+                        <div class="d-flex align-items-center justify-content-center"
+                            style="height: calc(100vh - 315px)">
+                            <div class="text-center">
+                                <h2 class="fs-16 fw-semibold">No notes yet!</h2>
+                                <p class="fs-12 text-muted">There is no notes create yet.</p>
+                                <a href="javascript:void(0);" class="avatar-text bg-soft-primary text-primary mx-auto"
+                                    data-bs-toggle="tooltip" title="Create Notes">
+                                    <i class="feather-plus"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="commentTab" role="tabpanel">
+                    <div class="card card-body">
+                        <div class="d-flex align-items-center justify-content-center"
+                            style="height: calc(100vh - 315px)">
+                            <div class="text-center">
+                                <h2 class="fs-16 fw-semibold">No comments yet!</h2>
+                                <p class="fs-12 text-muted">There is no comments posted yet.</p>
+                                <a href="javascript:void(0);" class="avatar-text bg-soft-primary text-primary mx-auto"
+                                    data-bs-toggle="tooltip" title="Add Comments">
+                                    <i class="feather-plus"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- [ Main Content ] start -->
+
+    </div>
+    <!-- [ Footer ] start -->
+    <!-- [ Footer ] end -->
+    <!-- [ Footer ] end -->
+</main>
+{% endblock content %}

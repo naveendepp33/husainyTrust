@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<main class="nxl-container">
+    <div class="nxl-content">
+        <div class="main-content">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="card invoice-container">
+                        <div class="card-header">
+                            <h5>Allocate Volunteer</h5>
+
+                        </div>
+                        <form method="POST">
+                            {% csrf_token %}
+
+                            <div class="card-body p-0">
+
+                                <hr class="border-dashed">
+
+                                <div class="px-4 row justify-content-between">
+
+                                    <!-- Volunteer -->
+                                    <div class="col-lg-4 mb-4">
+                                        <label class="form-label">Volunteer Name<span
+                                                class="text-danger">*</span></label>
+
+                                        <select name="volunteer" id="volunteerSelect" class="form-control" required>
+
+                                            <option value="">Select Volunteer</option>
+
+                                            {% for v in volunteers %}
+                                            <option value="{{ v.id }}" data-code="{{ v.employee_id }}">
+                                                {{ v.username }}
+                                            </option>
+                                            {% endfor %}
+
+                                        </select>
+
+                                    </div>
+
+
+                                    <!-- Volunteer ID -->
+                                    <div class="col-xl-4">
+                                        <!-- <div class="form-group mb-4"> -->
+
+                                            <label class="form-label">Volunteer Id</label>
+
+                                            <input type="text" id="volunteerId" class="form-control"
+                                                readonly>
+
+                                        <!-- </div> -->
+                                    </div>
+
+                                    <div class="col-xl-4">
+                                         <!-- <div class="form-group mb-4"> -->
+                                        <label class="form-label">Start Date<span class="text-danger">*</span></label>
+                                        <input type="date" name="start_date" class="form-control" required>
+                                    </div>
+                                    </div>
+
+
+                                    <!-- Date -->
+                                    <div class="px-4 row">
+                                            
+
+                                        <div class="col-xl-4">
+                                            <div class="form-group mb-4">
+                                                <label class="form-label">End Date<span class="text-danger">*</span></label>
+                                                <input type="date" name="end_date" class="form-control" required>
+                                            </div>
+                                        </div>
+
+                                   
+
+
+                               
+
+
+                                    <!-- Start Time -->
+                                        <div class="col-xl-4">
+                                            <div class="form-group mb-4">
+
+                                                <label class="form-label">Start Time</label>
+
+                                                <input type="time" name="start_time" class="form-control">
+
+                                            </div>
+                                        </div>
+
+
+                                    <!-- End Time -->
+                                        <div class="col-xl-4">
+                                            <div class="form-group mb-4">
+
+                                                <label class="form-label">End Time</label>
+
+                                                <input type="time" name="end_time" class="form-control">
+
+                                            </div>
+                                        </div>
+
+
+                                </div>
+
+                                <hr class="border-dashed">
+
+                                <div class="px-4 pb-4 text-end">
+
+                                    <button type="submit" class="btn btn-success">
+
+                                        <i class="feather-save me-2"></i>
+                                        Allocate Volunteer
+
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+        <!-- [ Main Content ] end -->
+    </div>
+    <!-- [ Footer ] start -->
+    <!-- [ Footer ] end -->
+    <!-- [ Footer ] end -->
+</main>
+{% endblock content %}
+
+{% block extra_js %}
+<script>
+document.getElementById("volunteerSelect").addEventListener("change", function(){
+
+let selected = this.options[this.selectedIndex];
+let code = selected.getAttribute("data-code");
+
+document.getElementById("volunteerId").value = code;
+
+});
+</script>
+{% endblock extra_js %}

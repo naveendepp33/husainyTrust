@@ -1,0 +1,269 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<main class="nxl-container">
+    <div class="nxl-content">
+        <div class="main-content">
+            <div class="row">
+                  {% if messages %}
+                <div class="message-container">
+
+                    {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show auto-close-alert" role="alert">
+
+                        {{ message }}
+
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+
+                    </div>
+                    {% endfor %}
+
+                </div>
+                {% endif %}
+             
+                <div class="col-xl-12">
+                    <div class="card invoice-container">
+                        <div class="card-header">
+                            <h5>Add User</h5>
+                        </div>
+                        <div class="card-body p-0">
+                            <hr class="border-dashed">
+                            <form id="addUserForm" method="POST" novalidate>
+                                {% csrf_token %}
+                                <div class="px-4 row justify-content-between">
+                                    <div class="col-xl-4">
+                                        <div class="form-group mb-4">
+                                            <label class="form-label">Role <span class="text-danger">*</span></label>
+                                            <select name="role" id="roleSelect"
+                                                    class="form-control"
+                                                    onchange="window.location.href='?role=' + this.value">
+                                                <option value="">Select Role</option>
+                                                {% if request.user.is_superuser %}
+                                                    <option value="admin" {% if selected_role == "admin" %}selected{% endif %}>Admin</option>
+                                                    <option value="manager" {% if selected_role == "manager" %}selected{% endif %}>Supervisor</option>
+                                                    <option value="volunteer" {% if selected_role == "volunteer" %}selected{% endif %}>Volunteer</option>
+                                                {% else %}
+                                                    <option value="volunteer" {% if selected_role == "volunteer" %}selected{% endif %}>Volunteer</option>
+                                                {% endif %}                                           
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-4">
+                                        <div class="form-group mb-4">
+                                            <label class="form-label">User ID <span class="text-danger">*</span></label>
+                                             <input type="text"
+                                                    name="employee_id" id="userIdField"
+                                                    class="form-control"
+                                                    value="{{ next_employee_id }}"
+                                                    readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-4">
+                                        <div class="form-group mb-4">
+                                            <label class="form-label">Full Name <span class="text-danger">*</span></label>
+                                            <input type="text" name="username" id="username" class="form-control" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="px-4 row justify-content-between">
+                                    <div class="col-xl-4">
+                                        <div class="form-group mb-4">
+                                            <label class="form-label">Email <span class="text-danger">*</span></label>
+                                            <input type="email" name="email" id="email" class="form-control" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xl-4">
+                                        <div class="form-group mb-4">
+                                            <label class="form-label">Mobile No <span class="text-danger">*</span></label>
+                                            <input type="text" name="mobile" id="mobile" class="form-control" required maxlength="10">
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-4">
+                                        <div class="form-group mb-4">
+                                            <label class="form-label">Password <span class="text-danger">*</span></label>
+                                            <input type="password" name="password" id="password" class="form-control" required>
+                                        </div>
+                                    </div>
+
+                                    
+                                </div>
+                                <div class="px-4 row">
+                                    <div class="col-xl-4">
+                                        <div class="form-group mb-4">
+                                            <label class="form-label">Confirm Password <span class="text-danger">*</span></label>
+                                            <input type="password" name="confirm_password" id="confirmPassword" class="form-control" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-4" id="supervisorContainer" style="display: none;">
+                                        <div class="form-group mb-4">
+                                            <label class="form-label">Supervisor <span class="text-danger">*</span></label>
+                                            <select name="supervisor" id="supervisor" class="form-control">
+                                                <option value="">Select Supervisor</option>
+                                                {% for supervisor in supervisors %}
+                                                <option value="{{ supervisor.id }}">{{ supervisor.username }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr class="border-dashed">
+                                <div class="px-4 pb-4 text-end">
+                                    <button type="submit" class="btn-submit-user">
+                                        <i class="feather-save me-2"></i> SAVE USER
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock content %}
+
+{% block extra_js %}
+
+
+<style>
+    .error-msg {
+        color: #dc3545;
+        font-size: 13px;
+        margin-top: 5px;
+        font-weight: 500;
+        display: block;
+        animation: fadeIn 0.3s ease;
+    }
+    .form-control.is-invalid {
+        border-color: #dc3545 !important;
+        background-image: none !important;
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-5px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const form = document.getElementById("addUserForm");
+    const mobileInput = document.getElementById("mobile");
+    const roleSelect = document.getElementById("roleSelect");
+    const supervisorContainer = document.getElementById("supervisorContainer");
+    const supervisorSelect = document.getElementById("supervisor");
+
+    // Toggle Supervisor visibility
+    function toggleSupervisor() {
+        if (roleSelect.value === "volunteer") {
+            supervisorContainer.style.display = "block";
+            supervisorSelect.setAttribute("required", "required");
+        } else {
+            supervisorContainer.style.display = "none";
+            supervisorSelect.removeAttribute("required");
+            supervisorSelect.value = ""; // Reset value if hidden
+        }
+    }
+
+    // Initial check on load
+    toggleSupervisor();
+
+    // Since roleSelect triggers a page reload onchange, 
+    // we don't strictly need an event listener here if we only care about 'on load',
+    // but it's good practice in case the reload is removed later or for SPA feel.
+    roleSelect.addEventListener("change", function() {
+        // The existing onchange reloads the page: window.location.href='?role=' + this.value
+        // If that's the case, toggleSupervisor() will be called on the next page load.
+        toggleSupervisor();
+    });
+
+    // Restrict mobile to numbers only
+    mobileInput.addEventListener("input", function(e) {
+        this.value = this.value.replace(/[^0-9]/g, '');
+    });
+
+    form.addEventListener("submit", function(event) {
+        let isValid = true;
+        
+        // Remove existing error messages
+        document.querySelectorAll(".error-msg").forEach(el => el.remove());
+        document.querySelectorAll(".is-invalid").forEach(el => el.classList.remove("is-invalid"));
+
+        // Helper to show error
+        const showError = (fieldId, message) => {
+            const field = document.getElementById(fieldId);
+            field.classList.add("is-invalid");
+            const error = document.createElement("span");
+            error.className = "error-msg";
+            error.innerText = message;
+            field.closest(".form-group").appendChild(error);
+            isValid = false;
+        };
+
+        // 1. Check all required fields
+        const requiredFields = [
+            { id: "roleSelect", label: "Role" },
+            { id: "email", label: "Email" },
+            { id: "mobile", label: "Mobile" },
+            { id: "username", label: "User Name" },
+            { id: "password", label: "Password" },
+            { id: "confirmPassword", label: "Confirm Password" }
+        ];
+
+        // Add supervisor to required fields if it's a volunteer
+        if (roleSelect.value === "volunteer") {
+            requiredFields.push({ id: "supervisor", label: "Supervisor" });
+        }
+
+        requiredFields.forEach(field => {
+            const el = document.getElementById(field.id);
+            if (!el.value.trim()) {
+                showError(field.id, `${field.label} is required`);
+            }
+        });
+
+        // 2. Validate email format (if not empty)
+        const email = document.getElementById("email").value;
+        if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            showError("email", "Please enter a valid email address");
+        }
+
+        // 3. Mobile number validation (exactly 10 digits)
+        const mobile = mobileInput.value;
+        if (mobile && mobile.length !== 10) {
+            showError("mobile", "Mobile number must be exactly 10 digits");
+        }
+
+        // 4. Password and Confirm Password mismatch
+        const password = document.getElementById("password").value;
+        const confirmPassword = document.getElementById("confirmPassword").value;
+        
+        if (password && confirmPassword && password !== confirmPassword) {
+            showError("confirmPassword", "Passwords do not match");
+        }
+
+        if (!isValid) {
+            event.preventDefault();
+            // Scroll to first error
+            const firstError = document.querySelector(".is-invalid");
+            if (firstError) {
+                firstError.scrollIntoView({ behavior: "smooth", block: "center" });
+            }
+        }
+    });
+
+    // Real-time validation clearing
+    document.querySelectorAll(".form-control").forEach(input => {
+        input.addEventListener("input", function() {
+            if (this.value.trim() !== "") {
+                this.classList.remove("is-invalid");
+                const error = this.closest(".form-group").querySelector(".error-msg");
+                if (error) error.remove();
+            }
+        });
+    });
+});
+</script>
+
+{% endblock extra_js %}

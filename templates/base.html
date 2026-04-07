@@ -1,0 +1,1081 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="" />
+    <meta name="keyword" content="" />
+    <meta name="author" content="flexilecode" />
+    <!--! The above 6 meta tags *must* come first in the head; any other head content must come *after* these tags !-->
+    <!--! BEGIN: Apps Title-->
+    <title>The Husainy Trust</title>
+    <!--! END:  Apps Title-->
+    <!--! BEGIN: Favicon-->
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'assets/images/logo.png' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/vendors/css/tagify.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/vendors/css/tagify-data.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/vendors/css/quill.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/vendors/css/select2-theme.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/vendors/css/datepicker.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/vendors/css/vendors.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/vendors/css/dataTables.bs5.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/vendors/css/select2.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/vendors/css/select2-theme.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/theme.min.css' %}">
+
+
+
+    <style>
+        .btn-submit-user {
+            background: #148C4A;
+            color: #ffffff;
+            border: none;
+            padding: 12px 28px;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            border-radius: 6px;
+            display: inline-flex;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .btn-submit-user i {
+            font-size: 16px;
+        }
+
+        .btn-submit-user:hover {
+            background: #2ab568;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+
+
+        .modal-backdrop.show {
+            opacity: 0.2;
+            /* reduce darkness */
+        }
+
+        /* Remove blur effect completely */
+        .modal-open .app-container,
+        .modal-open .main-content,
+        .modal-open .container,
+        .modal-open .page-wrapper {
+            filter: none !important;
+            backdrop-filter: none !important;
+        }
+
+        /* Reduce backdrop darkness */
+        .modal-backdrop.show {
+            opacity: 0.3 !important;
+        }
+
+        @media (max-width: 768px) {
+
+            /* .nxl-header .header-wrapper .nxl-navigation-toggle i {
+                display: none !important;
+                visibility: hidden !important;
+            } */
+            .nxl-header .header-wrapper .nxl-lavel-mega-menu-toggle i {
+                display: none !important;
+                visibility: hidden !important;
+            }
+        }
+
+        .card {
+            border: 1px solid #148C4A;
+            border-radius: 12px;
+        }
+
+        /* Main Menu Text */
+        .nxl-navbar .nxl-link .nxl-mtext {
+            color: #148C4A !important;
+        }
+
+        /* Icons */
+        .nxl-navbar .nxl-link .nxl-micon i {
+            color: #148C4A !important;
+        }
+
+        /* Submenu Links */
+        .nxl-navbar .nxl-submenu .nxl-link {
+            color: #148C4A !important;
+        }
+
+        /* Page Title */
+        .page-header-title h5 {
+            color: #148C4A !important;
+        }
+
+        /* Breadcrumb links (Home) */
+        .breadcrumb-item a {
+            color: #148C4A !important;
+        }
+
+        /* Active breadcrumb (Dashboard - light green) */
+        .breadcrumb-item.active,
+        .breadcrumb-item:last-child {
+            color: #2FA66A !important;
+            font-weight: 500;
+        }
+
+        .btn-primary {
+            background-color: #148C4A !important;
+            border-color: #148C4A !important;
+        }
+
+        .btn-primary:hover {
+            background-color: #0E6B38 !important;
+            border-color: #0E6B38 !important;
+        }
+
+
+        @media (max-width: 576px) {
+            .card-header {
+                padding: 15px;
+            }
+
+            .card-header .btn {
+                padding: 6px 12px;
+            }
+        }
+
+        .form-select-sm {
+            height: 30px !important;
+            padding: 2px 8px !important;
+            font-size: 13px;
+        }
+
+        .news-container {
+            width: 400px;
+            overflow: hidden;
+            position: relative;
+            color: #000;
+        }
+
+        .news-track {
+            display: flex;
+            gap: 50px;
+            white-space: nowrap;
+        }
+
+        .news-item {
+            font-weight: 500;
+            color: #198754;
+        }
+
+        .message-container {
+            position: fixed;
+            top: 50px;
+            right: 20px;
+            width: 320px;
+            z-index: 9999;
+        }
+
+        /* Force User Profile Dropdown to show on Mobile */
+        @media (max-width: 991px) {
+
+            .nxl-header .header-right,
+            .nxl-header .header-right .d-flex {
+                display: flex !important;
+                flex-wrap: nowrap !important;
+                justify-content: flex-end !important;
+            }
+
+            .header-right .nxl-h-item:not(.user-profile-dropdown) {
+                display: none !important;
+            }
+
+            div.nxl-h-item.user-profile-dropdown {
+                display: flex !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+                margin-left: 10px !important;
+            }
+
+            div.nxl-h-item.user-profile-dropdown>a,
+            div.nxl-h-item.user-profile-dropdown .user-avtar {
+                display: flex !important;
+                visibility: visible !important;
+            }
+
+            .news-container {
+                width: calc(100vw - 120px) !important;
+                max-width: 250px !important;
+            }
+        }
+
+        /* Mobile Submenu Fix */
+        @media (max-width: 1024px) {
+            .nxl-navigation .nxl-item.nxl-hasmenu.nxl-trigger>.nxl-submenu {
+                display: block !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+                height: auto !important;
+            }
+
+            .nxl-navigation .nxl-item.nxl-hasmenu.nxl-trigger>a .nxl-arrow i {
+                transform: rotate(90deg) !important;
+                transition: transform 0.3s ease;
+            }
+
+            .nxl-navigation .nxl-item.nxl-hasmenu>a .nxl-arrow i {
+                transition: transform 0.3s ease;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .nxl-navigation .nxl-item.nxl-hasmenu.nxl-trigger>.nxl-submenu {
+                display: block !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+                height: auto !important;
+            }
+
+            .nxl-navigation .nxl-item.nxl-hasmenu.nxl-trigger>a .nxl-arrow i {
+                transform: rotate(90deg) !important;
+                transition: transform 0.3s ease;
+            }
+
+            .nxl-navigation .nxl-item.nxl-hasmenu>a .nxl-arrow i {
+                transition: transform 0.3s ease;
+            }
+        }
+    </style>
+
+
+
+</head>
+
+<body>
+    <!--! ================================================================ !-->
+    <!--! [Start] Navigation Manu !-->
+    <!--! ================================================================ !-->
+    <nav class="nxl-navigation">
+        <div class="navbar-wrapper">
+            <div class="m-header">
+                <a href="index.html" class="b-brand">
+                    <!-- ========   change your logo hear   ============ -->
+                    <img src="{% static 'assets/images/censes-logo.png' %}" alt="" class="logo logo-lg" />
+                    <img src="{% static 'assets/images/logo.png' %}" alt="" class="logo logo-sm" />
+                </a>
+            </div>
+            <div class="navbar-content">
+                <ul class="nxl-navbar">
+                    <li class="nxl-item nxl-caption">
+                        <label>Navigation</label>
+                    </li>
+                    {% if request.user.is_authenticated %}
+                    {% if request.user.profile and request.user.profile.role == "volunteer" %}
+
+                    <li class="nxl-item nxl-hasmenu">
+                        <a href="/addfamily/" class="nxl-link">
+                            <span class="nxl-micon"><i class="feather-user-plus"></i></span>
+                            <span class="nxl-mtext">Add Family</span>
+                        </a>
+                    </li>
+
+                    <li class="nxl-item nxl-hasmenu">
+                        <a href="/memberlist/" class="nxl-link">
+                            <span class="nxl-micon"><i class="feather-bar-chart-2"></i></span>
+                            <span class="nxl-mtext">Member List</span>
+                        </a>
+                    </li>
+                    <li class="nxl-item nxl-hasmenu">
+                        <a href="/incompletemember/" class="nxl-link">
+                            <span class="nxl-micon"><i class="feather-user-x"></i></span>
+                            <span class="nxl-mtext">Incomplete Member</span>
+                        </a>
+                    </li>
+
+                    {% elif request.user.profile and request.user.profile.role == "manager" %}
+                    <li class="nxl-item nxl-hasmenu">
+                        <a href="/dashboard/" class="nxl-link">
+                            <span class="nxl-micon"><i class="feather-airplay"></i></span>
+                            <span class="nxl-mtext">Dashboard</span>
+                        </a>
+                    </li>
+
+                    <!-- <li class="nxl-item nxl-hasmenu">
+                        <a href="javascript:void(0);" class="nxl-link">
+                            <span class="nxl-micon"><i class="feather-users"></i></span>
+                            <span class="nxl-mtext">User</span><span class="nxl-arrow"><i
+                                    class="feather-chevron-right"></i></span>
+                        </a>
+                        <ul class="nxl-submenu">
+                            <li class="nxl-item"><a class="nxl-link" href="/adduser/">Add User</a></li>
+                            <li class="nxl-item"><a class="nxl-link" href="/manageuser/">User List</a></li>
+                            <li class="nxl-item"><a class="nxl-link" href="/rolemanagement/">Role Management</a></li>
+                            
+                        </ul>
+                    </li> -->
+                    <li class="nxl-item nxl-hasmenu">
+                        <a href="javascript:void(0);" class="nxl-link">
+                            <span class="nxl-micon"><i class="feather-user"></i></span>
+                            <span class="nxl-mtext">Volunteer</span><span class="nxl-arrow"><i
+                                    class="feather-chevron-right"></i></span>
+                        </a>
+                        <ul class="nxl-submenu">
+                            <li class="nxl-item"><a class="nxl-link" href="/allocatevolunteer/">Allocate Volunteer</a>
+                            </li>
+                            <li class="nxl-item"><a class="nxl-link" href="/allocatelist/">Allocate List</a></li>
+                            <!-- <li class="nxl-item"><a class="nxl-link" href="/activeallocation/">Active Allocation</a>
+                            </li>
+                            <li class="nxl-item"><a class="nxl-link" href="/expiredallocation/">Expired Allocation</a>
+                            </li> -->
+                        </ul>
+                    </li>
+                    <li class="nxl-item nxl-hasmenu">
+                        <a href="javascript:void(0);" class="nxl-link">
+                            <span class="nxl-micon"><i class="feather-bar-chart-2"></i></span>
+                            <span class="nxl-mtext">Censes Data</span><span class="nxl-arrow"><i
+                                    class="feather-chevron-right"></i></span>
+                        </a>
+                        <ul class="nxl-submenu">
+                            <li class="nxl-item"><a class="nxl-link" href="/addfamily/">Add Family</a></li>
+                            <li class="nxl-item"><a class="nxl-link" href="/familylist/">Family List</a></li>
+                            <li class="nxl-item"><a class="nxl-link" href="/completedfamily/">Completed Family</a></li>
+                            <li class="nxl-item"><a class="nxl-link" href="/incompletefamily/">Incomplete Family</a></li>
+                            <!-- <li class="nxl-item"><a class="nxl-link" href="/addfamily/">Add Member</a></li> -->
+                            <li class="nxl-item"><a class="nxl-link" href="/memberlist/">Member List</a></li>
+                            <li class="nxl-item"><a class="nxl-link" href="/completemember/">Completed Member</a></li>
+                            <li class="nxl-item"><a class="nxl-link" href="/incompletemember/">Incomplete Member</a>
+                            </li>
+                            <li class="nxl-item"><a class="nxl-link" href="/removed-members/">Deleted Member</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nxl-item nxl-hasmenu">
+                        <a href="javascript:void(0);" class="nxl-link">
+                            <span class="nxl-micon"><i class="feather-database"></i></span>
+                            <span class="nxl-mtext">Master Data</span><span class="nxl-arrow"><i
+                                    class="feather-chevron-right"></i></span>
+                        </a>
+                        <ul class="nxl-submenu">
+                            <li class="nxl-item"><a class="nxl-link" href="/country/">Country</a></li>
+                            <li class="nxl-item"><a class="nxl-link" href="/state/">State</a></li>
+                            <li class="nxl-item"><a class="nxl-link" href="/city/">City</a></li>
+                            <li class="nxl-item"><a class="nxl-link" href="/area/">Area</a></li>
+                            <li class="nxl-item"><a class="nxl-link" href="/pincode/">Pincode</a></li>
+                            <li class="nxl-item"><a class="nxl-link" href="/relationship/">Relationship</a></li>
+                            <li class="nxl-item"><a class="nxl-link" href="/chronic/">Chronic Disease</a></li>
+                            <li class="nxl-item"><a class="nxl-link" href="/qualification/">Qualification</a></li>
+                            <li class="nxl-item"><a class="nxl-link" href="/occupation/">Occupation</a></li>
+                            <li class="nxl-item"><a class="nxl-link" href="/income/">Income</a></li>
+                            <li class="nxl-item"><a class="nxl-link" href="/bloodgroup/">Blood Group</a></li>
+                            <li class="nxl-item"><a class="nxl-link" href="/language/">Language</a></li>
+                            <li class="nxl-item"><a class="nxl-link" href="/health/">Overall Health</a></li>
+                            <!-- <li class="nxl-item"><a class="nxl-link" href="/department/">Department</a></li> -->
+
+
+                        </ul>
+                    </li>
+                    <li class="nxl-item nxl-hasmenu">
+                        <a href="javascript:void(0);" class="nxl-link">
+                            <span class="nxl-micon"><i class="feather-settings"></i></span>
+                            <span class="nxl-mtext">Settings</span><span class="nxl-arrow"><i
+                                    class="feather-chevron-right"></i></span>
+                        </a>
+                        <ul class="nxl-submenu">
+                            <li class="nxl-item"><a class="nxl-link" href="/sitesettings/">Site Settings</a></li>
+                            <li class="nxl-item"><a class="nxl-link" href="/news/">News & Announcements</a></li>
+
+                        </ul>
+                    </li>
+                    <li class="nxl-item nxl-hasmenu">
+                        <a href="javascript:void(0);" class="nxl-link">
+                            <span class="nxl-micon"><i class="feather-cast"></i></span>
+                            <span class="nxl-mtext">Reports</span><span class="nxl-arrow"><i
+                                    class="feather-chevron-right"></i></span>
+                        </a>
+                        <ul class="nxl-submenu">
+                            <li class="nxl-item"><a class="nxl-link" href="/advancereport/">Advance Report</a></li>
+                            <li class="nxl-item"><a class="nxl-link" href="/usereport/">User-wise Report</a></li>
+                            <li class="nxl-item"><a class="nxl-link" href="/volunteenreport/">Volunteer-wise Report</a>
+                            </li>
+                            <!-- <li class="nxl-item"><a class="nxl-link" href="#">Submission
+                                    Report</a></li> -->
+                        </ul>
+                    </li>
+                    <li class="nxl-item nxl-hasmenu">
+                        <a href="javascript:void(0);" class="nxl-link">
+                            <span class="nxl-micon"><i class="feather-activity"></i></span>
+                            <span class="nxl-mtext">Activity</span><span class="nxl-arrow"><i
+                                    class="feather-chevron-right"></i></span>
+                        </a>
+                        <ul class="nxl-submenu">
+                            <li class="nxl-item"><a class="nxl-link" href="/useractivity/">User Activity</a></li>
+
+                        </ul>
+                        <ul class="nxl-submenu">
+                            <li class="nxl-item"><a class="nxl-link" href="/volunteeractivity/">Volunteer Activity</a>
+                            </li>
+
+                        </ul>
+                    </li>
+
+
+                    {% else %}
+                    <li class="nxl-item nxl-hasmenu">
+                        <a href="/dashboard/" class="nxl-link">
+                            <span class="nxl-micon"><i class="feather-airplay"></i></span>
+                            <span class="nxl-mtext">Dashboard</span>
+                        </a>
+                    </li>
+
+                    <li class="nxl-item nxl-hasmenu">
+                        <a href="javascript:void(0);" class="nxl-link">
+                            <span class="nxl-micon"><i class="feather-users"></i></span>
+                            <span class="nxl-mtext">User</span><span class="nxl-arrow"><i
+                                    class="feather-chevron-right"></i></span>
+                        </a>
+                        <ul class="nxl-submenu">
+                            <li class="nxl-item"><a class="nxl-link" href="/adduser/">Add User</a></li>
+                            <li class="nxl-item"><a class="nxl-link" href="/manageuser/">User List</a></li>
+                            <li class="nxl-item"><a class="nxl-link" href="/rolemanagement/">Role Management</a></li>
+                            <!-- <li class="nxl-item"><a class="nxl-link" href="#">User Status</a></li> -->
+                        </ul>
+                    </li>
+                    <li class="nxl-item nxl-hasmenu">
+                        <a href="javascript:void(0);" class="nxl-link">
+                            <span class="nxl-micon"><i class="feather-user"></i></span>
+                            <span class="nxl-mtext">Volunteer</span><span class="nxl-arrow"><i
+                                    class="feather-chevron-right"></i></span>
+                        </a>
+                        <ul class="nxl-submenu">
+                            <li class="nxl-item"><a class="nxl-link" href="/allocatevolunteer/">Allocate Volunteer</a>
+                            </li>
+                            <li class="nxl-item"><a class="nxl-link" href="/allocatelist/">Allocate List</a></li>
+                            <!-- <li class="nxl-item"><a class="nxl-link" href="/activeallocation/">Active Allocation</a>
+                            </li>
+                            <li class="nxl-item"><a class="nxl-link" href="/expiredallocation/">Expired Allocation</a>
+                            </li> -->
+                        </ul>
+                    </li>
+                    <li class="nxl-item nxl-hasmenu">
+                        <a href="javascript:void(0);" class="nxl-link">
+                            <span class="nxl-micon"><i class="feather-bar-chart-2"></i></span>
+                            <span class="nxl-mtext">Census Data</span><span class="nxl-arrow"><i
+                                    class="feather-chevron-right"></i></span>
+                        </a>
+                        <ul class="nxl-submenu">
+                            <li class="nxl-item"><a class="nxl-link" href="/addfamily/">Add Family</a></li>
+                            <li class="nxl-item"><a class="nxl-link" href="/familylist/">Family List</a></li>
+                            <li class="nxl-item"><a class="nxl-link" href="/completedfamily/">completed Family</a></li>
+                            <li class="nxl-item"><a class="nxl-link" href="/incompletefamily/">Incomplete Family</a>
+                            </li>
+                            <!-- <li class="nxl-item"><a class="nxl-link" href="/addfamily/">Add Member</a></li> -->
+                            <li class="nxl-item"><a class="nxl-link" href="/memberlist/">Member List</a></li>
+                            <li class="nxl-item"><a class="nxl-link" href="/completemember/">Completed Member</a></li>
+                            <li class="nxl-item"><a class="nxl-link" href="/incompletemember/">Incomplete Member</a>
+                            </li>
+                            <li class="nxl-item"><a class="nxl-link" href="/removed-members/">Deleted Member</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nxl-item nxl-hasmenu">
+                        <a href="javascript:void(0);" class="nxl-link">
+                            <span class="nxl-micon"><i class="feather-database"></i></span>
+                            <span class="nxl-mtext">Master Data</span><span class="nxl-arrow"><i
+                                    class="feather-chevron-right"></i></span>
+                        </a>
+                        <ul class="nxl-submenu">
+                            <li class="nxl-item"><a class="nxl-link" href="/country/">Country</a></li>
+                            <li class="nxl-item"><a class="nxl-link" href="/state/">State</a></li>
+                            <li class="nxl-item"><a class="nxl-link" href="/city/">City</a></li>
+                            <li class="nxl-item"><a class="nxl-link" href="/area/">Area</a></li>
+                            <li class="nxl-item"><a class="nxl-link" href="/pincode/">Pincode</a></li>
+                            <li class="nxl-item"><a class="nxl-link" href="/relationship/">Relationship</a></li>
+                            <li class="nxl-item"><a class="nxl-link" href="/chronic/">Chronic Disease</a></li>
+                            <li class="nxl-item"><a class="nxl-link" href="/qualification/">Qualification</a></li>
+                            <li class="nxl-item"><a class="nxl-link" href="/occupation/">Occupation</a></li>
+                            <li class="nxl-item"><a class="nxl-link" href="/income/">Income</a></li>
+                            <li class="nxl-item"><a class="nxl-link" href="/bloodgroup/">Blood Group</a></li>
+                            <li class="nxl-item"><a class="nxl-link" href="/language/">Language</a></li>
+                            <li class="nxl-item"><a class="nxl-link" href="/health/">Overall Health</a></li>
+                            <li class="nxl-item"><a class="nxl-link" href="/grade/">Grade</a></li>
+                            <li class="nxl-item"><a class="nxl-link" href="/sector/">Sector</a></li>
+                            <li class="nxl-item"><a class="nxl-link" href="/sports/">Sports</a></li>
+                            <!-- <li class="nxl-item"><a class="nxl-link" href="/department/">Department</a></li> -->
+
+
+                        </ul>
+                    </li>
+                    <li class="nxl-item nxl-hasmenu">
+                        <a href="javascript:void(0);" class="nxl-link">
+                            <span class="nxl-micon"><i class="feather-settings"></i></span>
+                            <span class="nxl-mtext">Settings</span><span class="nxl-arrow"><i
+                                    class="feather-chevron-right"></i></span>
+                        </a>
+                        <ul class="nxl-submenu">
+                            <li class="nxl-item"><a class="nxl-link" href="/sitesettings/">Site Settings</a></li>
+                            <li class="nxl-item"><a class="nxl-link" href="/news/">News & Announcements</a></li>
+
+                        </ul>
+                    </li>
+                    <li class="nxl-item nxl-hasmenu">
+                        <a href="javascript:void(0);" class="nxl-link">
+                            <span class="nxl-micon"><i class="feather-cast"></i></span>
+                            <span class="nxl-mtext">Reports</span><span class="nxl-arrow"><i
+                                    class="feather-chevron-right"></i></span>
+                        </a>
+                        <ul class="nxl-submenu">
+                            <li class="nxl-item"><a class="nxl-link" href="/advancereport/">Advance Report</a></li>
+                            <li class="nxl-item"><a class="nxl-link" href="/usereport/">User-wise Report</a></li>
+                            <li class="nxl-item"><a class="nxl-link" href="/volunteenreport/">Volunteer-wise Report</a>
+                            </li>
+                            <!-- <li class="nxl-item"><a class="nxl-link" href="#">Submission
+                                    Report</a></li> -->
+                        </ul>
+                    </li>
+                    <li class="nxl-item nxl-hasmenu">
+                        <a href="javascript:void(0);" class="nxl-link">
+                            <span class="nxl-micon"><i class="feather-activity"></i></span>
+                            <span class="nxl-mtext">Activity</span><span class="nxl-arrow"><i
+                                    class="feather-chevron-right"></i></span>
+                        </a>
+                        <ul class="nxl-submenu">
+                            <li class="nxl-item"><a class="nxl-link" href="/useractivity/">User Activity</a></li>
+
+                        </ul>
+                        <ul class="nxl-submenu">
+                            <li class="nxl-item"><a class="nxl-link" href="/volunteeractivity/">Volunteer Activity</a>
+                            </li>
+
+                        </ul>
+                    </li>
+
+                    {% endif %}
+
+                    {% endif %}
+
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+    <!--! ================================================================ !-->
+    <!--! [End]  Navigation Manu !-->
+    <!--! ================================================================ !-->
+    <!--! ================================================================ !-->
+    <!--! [Start] Header !-->
+    <!--! ================================================================ !-->
+    <header class="nxl-header">
+        <div class="header-wrapper">
+            <!--! [Start] Header Left !-->
+            <div class="header-left d-flex align-items-center gap-4">
+                <!--! [Start] nxl-head-mobile-toggler !-->
+                <a href="javascript:void(0);" class="nxl-head-mobile-toggler" id="mobile-collapse">
+                    <div class="hamburger hamburger--arrowturn">
+                        <div class="hamburger-box">
+                            <div class="hamburger-inner"></div>
+                        </div>
+                    </div>
+                </a>
+                <!--! [Start] nxl-head-mobile-toggler !-->
+                <!--! [Start] nxl-navigation-toggle !-->
+                <div class="nxl-navigation-toggle">
+                    <a href="javascript:void(0);" id="menu-mini-button">
+                        <i class="feather-align-left"></i>
+                    </a>
+                    <a href="javascript:void(0);" id="menu-expend-button" style="display: none">
+                        <i class="feather-arrow-right"></i>
+                    </a>
+                </div>
+                <!--! [End] nxl-navigation-toggle !-->
+                <!--! [Start] nxl-lavel-mega-menu-toggle !-->
+                <div class="nxl-lavel-mega-menu-toggle d-flex d-lg-none">
+                    <a href="javascript:void(0);" id="nxl-lavel-mega-menu-open">
+                        <i class="feather-align-left"></i>
+                    </a>
+                </div>
+                <!--! [End] nxl-lavel-mega-menu-toggle !-->
+
+            </div>
+            <!--! [End] Header Left !-->
+            <!--! [Start] Header Right !-->
+            <div class="header-right ms-auto">
+                <div class="d-flex align-items-center">
+
+                    <div class="news-container">
+                        <div class="news-track" id="newsTrack">
+                            <span class="news-item">📢 {{ site_news.content }}</span>
+                            <span class="news-item">📢 {{ site_news.content }}</span>
+                        </div>
+                    </div>
+
+
+
+                    <!-- <div class="nxl-h-item dark-light-theme">
+                        <a href="javascript:void(0);" class="nxl-head-link me-0 dark-button">
+                            <i class="feather-moon"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="nxl-head-link me-0 light-button" style="display: none">
+                            <i class="feather-sun"></i>
+                        </a>
+                    </div> -->
+                    <!-- <div class="dropdown nxl-h-item">
+                        <a href="javascript:void(0);" class="nxl-head-link me-0" data-bs-toggle="dropdown" role="button"
+                            data-bs-auto-close="outside">
+                            <i class="feather-clock"></i>
+                            <span class="badge bg-success nxl-h-badge">2</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end nxl-h-dropdown nxl-timesheets-menu">
+                            <div class="d-flex justify-content-between align-items-center timesheets-head">
+                                <h6 class="fw-bold text-dark mb-0">Timesheets</h6>
+                                <a href="javascript:void(0);" class="fs-11 text-success text-end ms-auto"
+                                    data-bs-toggle="tooltip" title="Upcomming Timers">
+                                    <i class="feather-clock"></i>
+                                    <span>3 Upcomming</span>
+                                </a>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center flex-column timesheets-body">
+                                <i class="feather-clock fs-1 mb-4"></i>
+                                <p class="text-muted">No started timers found yes!</p>
+                                <a href="javascript:void(0);" class="btn btn-sm btn-primary">Started Timer</a>
+                            </div>
+                            <div class="text-center timesheets-footer">
+                                <a href="javascript:void(0);" class="fs-13 fw-semibold text-dark">Alls Timesheets</a>
+                            </div>
+                        </div>
+                    </div> -->
+                    <div class="dropdown nxl-h-item">
+                        <a class="nxl-head-link me-3" data-bs-toggle="dropdown" href="#" role="button"
+                            data-bs-auto-close="outside">
+                            <i class="feather-bell"></i>
+                            <span class="badge bg-danger nxl-h-badge">3</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end nxl-h-dropdown nxl-notifications-menu">
+                            <!-- <div class="d-flex justify-content-between align-items-center notifications-head">
+                                <h6 class="fw-bold text-dark mb-0">Notifications</h6>
+                                <a href="javascript:void(0);" class="fs-11 text-success text-end ms-auto"
+                                    data-bs-toggle="tooltip" title="Make as Read">
+                                    <i class="feather-check"></i>
+                                    <span>Make as Read</span>
+                                </a>
+                            </div>
+                            <div class="notifications-item">
+                                <img src="{% static 'assets/images/avatar/2.png' %}" alt=""
+                                    class="rounded me-3 border" />
+                                <div class="notifications-desc">
+                                    <a href="javascript:void(0);" class="font-body text-truncate-2-line"> <span
+                                            class="fw-semibold text-dark">Malanie Hanvey</span> We should talk about
+                                        that at lunch!</a>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="notifications-date text-muted border-bottom border-bottom-dashed">2
+                                            minutes ago</div>
+                                        <div class="d-flex align-items-center float-end gap-2">
+                                            <a href="javascript:void(0);"
+                                                class="d-block wd-8 ht-8 rounded-circle bg-gray-300"
+                                                data-bs-toggle="tooltip" title="Make as Read"></a>
+                                            <a href="javascript:void(0);" class="text-danger" data-bs-toggle="tooltip"
+                                                title="Remove">
+                                                <i class="feather-x fs-12"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="notifications-item">
+                                <img src="{% static 'assets/images/avatar/3.png' %}" alt=""
+                                    class="rounded me-3 border" />
+                                <div class="notifications-desc">
+                                    <a href="javascript:void(0);" class="font-body text-truncate-2-line"> <span
+                                            class="fw-semibold text-dark">Valentine Maton</span> You can download the
+                                        latest invoices now.</a>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="notifications-date text-muted border-bottom border-bottom-dashed">36
+                                            minutes ago</div>
+                                        <div class="d-flex align-items-center float-end gap-2">
+                                            <a href="javascript:void(0);"
+                                                class="d-block wd-8 ht-8 rounded-circle bg-gray-300"
+                                                data-bs-toggle="tooltip" title="Make as Read"></a>
+                                            <a href="javascript:void(0);" class="text-danger" data-bs-toggle="tooltip"
+                                                title="Remove">
+                                                <i class="feather-x fs-12"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="notifications-item">
+                                <img src="{% static 'assets/images/avatar/4.png' %}" alt=""
+                                    class="rounded me-3 border" />
+                                <div class="notifications-desc">
+                                    <a href="javascript:void(0);" class="font-body text-truncate-2-line"> <span
+                                            class="fw-semibold text-dark">Archie Cantones</span> Don't forget to pickup
+                                        Jeremy after school!</a>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="notifications-date text-muted border-bottom border-bottom-dashed">53
+                                            minutes ago</div>
+                                        <div class="d-flex align-items-center float-end gap-2">
+                                            <a href="javascript:void(0);"
+                                                class="d-block wd-8 ht-8 rounded-circle bg-gray-300"
+                                                data-bs-toggle="tooltip" title="Make as Read"></a>
+                                            <a href="javascript:void(0);" class="text-danger" data-bs-toggle="tooltip"
+                                                title="Remove">
+                                                <i class="feather-x fs-12"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-center notifications-footer">
+                                <a href="javascript:void(0);" class="fs-13 fw-semibold text-dark">Alls Notifications</a>
+                            </div> -->
+                        </div>
+                    </div>
+                    <div class="dropdown nxl-h-item user-profile-dropdown">
+                        <a href="javascript:void(0);" data-bs-toggle="dropdown" role="button"
+                            data-bs-auto-close="outside">
+                            <img src="{% static 'assets/images/avatar/user.jpg' %}" alt="user-image"
+                                class="img-fluid user-avtar me-0" />
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end nxl-h-dropdown nxl-user-dropdown">
+                            <div class="dropdown-header">
+                                <div class="d-flex align-items-center">
+                                    <img src="{% static 'assets/images/avatar/user.jpg' %}" alt="user-image"
+                                        class="img-fluid user-avtar" />
+                                    <div>
+                                        <h6 class="text-dark mb-0">
+                                            {{ request.user.profile.username }}
+
+                                            <span class="badge bg-soft-success text-success ms-1">
+                                                {{ request.user.profile.get_role_display }}
+                                            </span>
+                                        </h6>
+
+                                        <span class="fs-12 fw-medium text-muted">
+                                            {{ request.user.profile.email }}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="dropdown">
+                                <a href="javascript:void(0);" class="dropdown-item" data-bs-toggle="dropdown">
+                                    <span class="hstack">
+                                        <i
+                                            class="wd-10 ht-10 border border-2 border-gray-1 bg-success rounded-circle me-2"></i>
+                                        <span>Active</span>
+                                    </span>
+                                    <i class="feather-chevron-right ms-auto me-0"></i>
+                                </a>
+                                <div class="dropdown-menu">
+                                    <a href="javascript:void(0);" class="dropdown-item">
+                                        <span class="hstack">
+                                            <i
+                                                class="wd-10 ht-10 border border-2 border-gray-1 bg-warning rounded-circle me-2"></i>
+                                            <span>Always</span>
+                                        </span>
+                                    </a>
+                                    <a href="javascript:void(0);" class="dropdown-item">
+                                        <span class="hstack">
+                                            <i
+                                                class="wd-10 ht-10 border border-2 border-gray-1 bg-success rounded-circle me-2"></i>
+                                            <span>Active</span>
+                                        </span>
+                                    </a>
+                                    <a href="javascript:void(0);" class="dropdown-item">
+                                        <span class="hstack">
+                                            <i
+                                                class="wd-10 ht-10 border border-2 border-gray-1 bg-danger rounded-circle me-2"></i>
+                                            <span>Bussy</span>
+                                        </span>
+                                    </a>
+                                    <a href="javascript:void(0);" class="dropdown-item">
+                                        <span class="hstack">
+                                            <i
+                                                class="wd-10 ht-10 border border-2 border-gray-1 bg-info rounded-circle me-2"></i>
+                                            <span>Inactive</span>
+                                        </span>
+                                    </a>
+                                    <a href="javascript:void(0);" class="dropdown-item">
+                                        <span class="hstack">
+                                            <i
+                                                class="wd-10 ht-10 border border-2 border-gray-1 bg-dark rounded-circle me-2"></i>
+                                            <span>Disabled</span>
+                                        </span>
+                                    </a>
+                                    <div class="dropdown-divider"></div>
+                                    <a href="javascript:void(0);" class="dropdown-item">
+                                        <span class="hstack">
+                                            <i
+                                                class="wd-10 ht-10 border border-2 border-gray-1 bg-primary rounded-circle me-2"></i>
+                                            <span>Cutomization</span>
+                                        </span>
+                                    </a>
+                                </div>
+                            </div>
+                            <!-- <div class="dropdown-divider"></div> -->
+                            <!-- <div class="dropdown">
+                                <a href="javascript:void(0);" class="dropdown-item" data-bs-toggle="dropdown">
+                                    <span class="hstack">
+                                        <i class="feather-dollar-sign me-2"></i>
+                                        <span>Subscriptions</span>
+                                    </span>
+                                    <i class="feather-chevron-right ms-auto me-0"></i>
+                                </a>
+                                <div class="dropdown-menu">
+                                    <a href="javascript:void(0);" class="dropdown-item">
+                                        <span class="hstack">
+                                            <i class="wd-5 ht-5 bg-gray-500 rounded-circle me-3"></i>
+                                            <span>Plan</span>
+                                        </span>
+                                    </a>
+                                    <a href="javascript:void(0);" class="dropdown-item">
+                                        <span class="hstack">
+                                            <i class="wd-5 ht-5 bg-gray-500 rounded-circle me-3"></i>
+                                            <span>Billings</span>
+                                        </span>
+                                    </a>
+                                    <a href="javascript:void(0);" class="dropdown-item">
+                                        <span class="hstack">
+                                            <i class="wd-5 ht-5 bg-gray-500 rounded-circle me-3"></i>
+                                            <span>Referrals</span>
+                                        </span>
+                                    </a>
+                                    <a href="javascript:void(0);" class="dropdown-item">
+                                        <span class="hstack">
+                                            <i class="wd-5 ht-5 bg-gray-500 rounded-circle me-3"></i>
+                                            <span>Payments</span>
+                                        </span>
+                                    </a>
+                                    <a href="javascript:void(0);" class="dropdown-item">
+                                        <span class="hstack">
+                                            <i class="wd-5 ht-5 bg-gray-500 rounded-circle me-3"></i>
+                                            <span>Statements</span>
+                                        </span>
+                                    </a>
+                                    <div class="dropdown-divider"></div>
+                                    <a href="javascript:void(0);" class="dropdown-item">
+                                        <span class="hstack">
+                                            <i class="wd-5 ht-5 bg-gray-500 rounded-circle me-3"></i>
+                                            <span>Subscriptions</span>
+                                        </span>
+                                    </a>
+                                </div>
+                            </div> -->
+                            <!-- <div class="dropdown-divider"></div> -->
+                            <!-- <a href="javascript:void(0);" class="dropdown-item">
+                                <i class="feather-user"></i>
+                                <span>Profile Details</span>
+                            </a>
+                            <a href="javascript:void(0);" class="dropdown-item">
+                                <i class="feather-activity"></i>
+                                <span>Activity Feed</span>
+                            </a>
+                            <a href="javascript:void(0);" class="dropdown-item">
+                                <i class="feather-dollar-sign"></i>
+                                <span>Billing Details</span>
+                            </a>
+                            <a href="javascript:void(0);" class="dropdown-item">
+                                <i class="feather-bell"></i>
+                                <span>Notifications</span>
+                            </a>
+                            <a href="javascript:void(0);" class="dropdown-item">
+                                <i class="feather-settings"></i>
+                                <span>Account Settings</span> -->
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="{% url 'logout' %}" class="dropdown-item">
+                                <i class="feather-log-out"></i> Logout
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--! [End] Header Right !-->
+        </div>
+    </header>
+    <!--! ================================================================ !-->
+    <!--! [End] Header !-->
+    <!--! ================================================================ !-->
+    <!--! ================================================================ !-->
+    <!--! [Start] Main Content !-->
+    <!--! ================================================================ !-->
+
+    {% if messages %}
+    <div class="message-container">
+
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show auto-close-alert" role="alert">
+
+            {{ message }}
+
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+
+        </div>
+        {% endfor %}
+
+    </div>
+    {% endif %}
+    {% block content %}
+
+    {% endblock content %}
+
+
+    <!--! BEGIN: Vendors JS !-->
+    <script src="{% static 'assets/vendors/js/vendors.min.js' %}"></script>
+    <!-- vendors.min.js {always must need to be top} -->
+    <script src="{% static 'assets/vendors/js/daterangepicker.min.js' %}"></script>
+    <script src="{% static 'assets/vendors/js/apexcharts.min.js' %}"></script>
+    <script src="{% static 'assets/vendors/js/circle-progress.min.js' %}"></script>
+    <!--! END: Vendors JS !-->
+    <!--! BEGIN: Apps Init  !-->
+    <script src="{% static 'assets/js/common-init.min.js' %}"></script>
+    <script src="{% static 'assets/js/dashboard-init.min.js' %}"></script>
+    <script src="{% static 'assets/js/projects-create-init.min.js' %}"></script>
+    <!--! END: Apps Init !-->
+    <!--! BEGIN: Theme Customizer  !-->
+    <script src="{% static 'assets/js/theme-customizer-init.min.js' %}"></script>
+    <!--! END: Theme Customizer !-->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="{% static 'assets/vendors/js/dataTables.min.js' %}"></script>
+
+    <!-- vendors.min.js {always must need to be top} -->
+    <script src="{% static 'assets/vendors/js/tagify.min.js' %}"></script>
+    <script src="{% static 'assets/vendors/js/tagify-data.min.js' %}"></script>
+    <script src="{% static 'assets/vendors/js/quill.min.js' %}"></script>
+    <script src="{% static 'assets/vendors/js/select2.min.js' %}"></script>
+    <script src="{% static 'assets/vendors/js/select2-active.min.js' %}"></script>
+    <script src="{% static 'assets/vendors/js/datepicker.min.js' %}"></script>
+
+    <script src="{% static 'assets/js/proposal-create-init.min.js' %}"></script>
+
+    <script src="{% static 'assets/vendors/js/dataTables.bs5.min.js' %}"></script>
+
+    <script src="{% static 'assets/js/projects-init.min.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        $(document).ready(function () {
+
+            $(document).on('click', '.nxl-navigation .nxl-navbar .nxl-hasmenu > a', function (e) {
+
+                if (window.innerWidth <= 1024) {
+                    var $parent = $(this).parent('.nxl-hasmenu');
+                    var $submenu = $parent.find('.nxl-submenu');
+
+
+                    if ($submenu.length > 0) {
+                        e.preventDefault();
+                        e.stopPropagation();
+
+                        if ($parent.hasClass('nxl-trigger')) {
+                            $parent.removeClass('nxl-trigger');
+                        } else {
+
+                            $parent.siblings('.nxl-hasmenu.nxl-trigger').removeClass('nxl-trigger');
+                            $parent.addClass('nxl-trigger');
+                        }
+                    } else {
+
+                    }
+                }
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $('#userTable').DataTable({
+                pageLength: 10,
+                ordering: true,
+                searching: true,
+                lengthChange: true,
+                info: true,
+                language: {
+                    search: "Search Users:",
+                    lengthMenu: "Show _MENU_ entries",
+                    paginate: {
+                        previous: "<",
+                        next: ">"
+                    }
+                }
+            });
+        });
+    </script>
+
+
+    <script>
+
+        const track = document.getElementById("newsTrack");
+        let position = 0;
+
+        function scrollNews() {
+            position--;
+
+            if (Math.abs(position) >= track.scrollWidth / 2) {
+                position = 0;
+            }
+
+            track.style.transform = "translateX(" + position + "px)";
+            requestAnimationFrame(scrollNews);
+        }
+
+        scrollNews();
+
+    </script>
+
+    <script>
+
+        setTimeout(function () {
+
+            const alerts = document.querySelectorAll(".auto-close-alert");
+
+            alerts.forEach(function (alert) {
+                alert.style.transition = "opacity 0.5s";
+                alert.style.opacity = "0";
+
+                setTimeout(function () {
+                    alert.remove();
+                }, 500);
+            });
+
+        }, 3000);
+
+    </script>
+
+    <script>
+        $(document).ready(function () {
+
+            $(document).on('click', '.nxl-navigation .nxl-navbar .nxl-hasmenu > a', function (e) {
+
+                if (window.innerWidth <= 1024) {
+                    var $parent = $(this).parent('.nxl-hasmenu');
+                    var $submenu = $parent.find('.nxl-submenu');
+
+
+                    if ($submenu.length > 0) {
+                        e.preventDefault();
+                        e.stopPropagation();
+
+                        if ($parent.hasClass('nxl-trigger')) {
+                            $parent.removeClass('nxl-trigger');
+                        } else {
+
+                            $parent.siblings('.nxl-hasmenu.nxl-trigger').removeClass('nxl-trigger');
+                            $parent.addClass('nxl-trigger');
+                        }
+                    } else {
+
+                    }
+                }
+            });
+        });
+    </script>
+
+    {% block extra_js %}
+
+    {% endblock extra_js %}
+
+
+</body>
+
+</html>

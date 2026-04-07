@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<main class="nxl-container">
+    <div class="nxl-content">
+        <!-- [ page-header ] start -->
+        <div class="page-header">
+            <div class="page-header-left d-flex align-items-center">
+                <div class="page-header-title">
+                    <h5 class="m-b-10">Volunteer Activity</h5>
+                </div>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html">Activity</a></li>
+                    <li class="breadcrumb-item">Volunteer Activity</li>
+                </ul>
+            </div>
+        </div>
+        <!-- [ page-header ] end -->
+        <!-- [ Main Content ] start -->
+        <div class="main-content">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card stretch stretch-full">
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table table-hover" id="projectList">
+                                    <thead>
+                                        <tr>
+                                            
+                                        
+
+                                            <th>S.No</th>
+                                             <th>Volunteer Id</th>
+                                            <th>Volunteer Name</th>
+                                           
+                                            <th>Date</th>
+                                            <th>Start Time</th>
+                                            <th>End Time</th>
+                                            <th>Status</th>
+                                            <th class="text-end">Actions</th>
+                                        </tr>
+                                       
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="text-dark fw-bold">1</td>
+                                            
+                                            <td>
+                                                <a href="javascript:void(0);" class="d-block mb-1">HTVL001</a>
+                                               
+                                            </td>
+                                            <td>
+                                                <a href="javascript:void(0);" class="d-block mb-1">Rahim</a>
+                                                
+                                            </td>
+                                            
+                                            <td>
+                                                <a href="javascript:void(0);" class="d-block mb-1">18-05-2026</a>
+                                               
+                                            </td>
+                                            <td>
+                                                <a href="javascript:void(0);" class="d-block mb-1">11am</a>
+                                                
+                                            </td>
+                                            <td>
+                                                <a href="javascript:void(0);" class="d-block mb-1">1pm</a>
+                                            </td>
+
+                                            <td>
+                                                <span class="badge bg-soft-success text-success">Active</span>
+                                            </td>
+                                            
+                                           
+                                            <td class="text-end">
+                                                <div class="hstack gap-2 justify-content-end">
+                                                    <!-- <a href="javascript:void(0);" class="avatar-text avatar-md">
+                                                        <i class="feather-eye"></i>
+                                                    </a>
+                                                    <a href="javascript:void(0);" class="avatar-text avatar-md">
+                                                        <i class="feather-edit"></i>
+                                                    </a> -->
+                                                    <a href="javascript:void(0);" class="avatar-text avatar-md">
+                                                        <i class="feather-trash-2"></i>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- [ Main Content ] end -->
+    </div>
+    <!-- [ Footer ] start -->
+    <!-- [ Footer ] end -->
+    <!-- [ Footer ] end -->
+</main>
+{% endblock content %}

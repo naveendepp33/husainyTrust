@@ -1,0 +1,988 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<main class="nxl-container">
+    <div class="nxl-content">
+        <!-- [ page-header ] start -->
+        <div class="page-header">
+            <div class="page-header-left d-flex align-items-center">
+                <div class="page-header-title">
+                    <h5 class="m-b-10">Member Details</h5>
+                </div>
+                <ul class="breadcrumb">
+                    <!-- <li class="breadcrumb-item"><a href="index.html">Report</a></li>
+                    <li class="breadcrumb-item">Volunteer Report</li> -->
+                </ul>
+            </div>
+        </div>
+        <!-- [ page-header ] end -->
+        <div class="main-content">
+            <div class="tab-content">
+                <div class="tab-pane fade show active" id="profileTab" role="tabpanel">
+
+            {% if member.member_type == "Adult" %}
+            <form method="POST" action="{% url 'edit-member' member.id %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="card card-body lead-info">
+
+                    <div class="mb-4 d-flex align-items-center justify-content-between">
+                        <h5 class="fw-bold mb-0">
+                            <span class="d-block mb-2">Member Information :</span>
+                            <span class="fs-12 fw-normal text-muted d-block">
+
+                            </span>
+                        </h5>
+
+                    </div>
+
+                    <div class="row">
+
+                        <!-- Row 1 -->
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Name</div>
+                                <input type="text" name="name" class="form-control" value="{{ member.name }}">
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Aadhaar Number</div>
+                                <input type="text" name="aadhaar_number" class="form-control"
+                                    value="{{ member.aadhaar_number }}">
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Father Name</div>
+                                <input type="text" name="father_name" class="form-control"
+                                    value="{{ member.father_name }}">
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Relationship</div>
+                                <!-- <select name="relationship" class="form-control">
+                                    <option value="{{ member.relationship.id }}">{{ member.relationship.name }}</option>
+                                    </select> -->
+                                <select name="relationship" class="form-control">
+                                    <option value="">Select Relationship</option>
+                                    {% for r in relationships %}
+                                    <option value="{{ r.id }}" {% if member.relationship.id == r.id %}selected{% endif %}>{{ r.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Alias</div>
+                                <input type="text" name="alias" class="form-control" value="{{ member.alias }}">
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Gender</div>
+                                <select name="gender" class="form-control">
+                                    <option value="Male" {% if member.gender == 'Male' %}selected{% endif %}>Male
+                                    </option>
+                                    <option value="Female" {% if member.gender == 'Female' %}selected{% endif %}>
+                                        Female</option>
+                                    <option value="Other" {% if member.gender == 'Other' %}selected{% endif %}>
+                                        Other</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Date of Birth</div>
+                                <input type="date" name="date_of_birth" class="form-control"
+                                    value="{{ member.date_of_birth|date:'Y-m-d' }}">
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Email</div>
+                                <input type="email" name="email_id" class="form-control"
+                                    value="{{ member.email_id }}">
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Mobile</div>
+                                <input type="text" name="mobile" class="form-control"
+                                    value="{{ member.mobile }}">
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Whatsapp</div>
+                                <input type="text" name="whatsapp" class="form-control"
+                                    value="{{ member.whatsapp }}">
+                            </div>
+                        </div>
+
+                        <!-- Row 6 -->
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Marital Status</div>
+                                <select name="marital_status" class="form-control">
+                                    <option value="Single" {% if member.marital_status == 'Single' %}selected{% endif %}>Single</option>
+                                    <option value="Married" {% if member.marital_status == 'Married' %}selected{% endif %}>Married</option>
+                                    <option value="Divorced" {% if member.marital_status == 'Divorced' %}selected{% endif %}>Divorced</option>
+                                    <option value="Widowed" {% if member.marital_status == 'Widowed' %}selected{% endif %}>Widowed</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Qualification</div>
+
+                                <select name="academic_qualification" class="form-control">
+                                    <option value="">Select Qualification</option>
+                                    {% for q in qualifications %}
+                                    <option value="{{ q.id }}" {% if member.qualification.id == q.id %}selected{% endif %}>{{ q.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Diploma Degree</div>
+                                <input type="text" name="diploma_degree" class="form-control"
+                                    value="{{ member.diploma_degree }}">
+                            </div>
+                        </div>
+
+
+
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Languages Speak</div>
+                                <select name="languages_speak" class="form-control">
+                                    <option value="">Select Language</option>
+                                    {% for l in languages %}
+                                    <option value="{{ l.id }}" {% if member.languages_speak == l.id|stringformat:"s" %}selected{% endif %}>{{ l.name }}</option>
+                                    {% endfor %}
+                                </select>
+                                <!-- <input type="text" name="languages_speak" class="form-control" value="{{ member.languages_speak }}"> -->
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Languages Read</div>
+                                <select name="languages_read" class="form-control">
+                                    <option value="">Select Language</option>
+                                    {% for l in languages %}
+                                    <option value="{{ l.id }}" {% if member.languages_read == l.id|stringformat:"s" %}selected{% endif %}>{{ l.name }}</option>
+                                    {% endfor %}
+                                </select>
+                                <!-- <input type="text" name="languages_read" class="form-control" value="{{ member.languages_read }}"> -->
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Languages Write</div>
+                                <select name="languages_write" class="form-control">
+                                    <option value="">Select Language</option>
+                                    {% for l in languages %}
+                                    <option value="{{ l.id }}" {% if member.languages_write == l.id|stringformat:"s" %}selected{% endif %}>{{ l.name }}</option>
+                                    {% endfor %}
+                                </select>
+                                <!-- <input type="text" name="languages_write" class="form-control" value="{{ member.languages_write }}"> -->
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Computer Proficiency</div>
+                                <select name="computer_proficiency" class="form-control">
+                                    <option value="">{{ member.computer_proficiency }}</option>
+                                    <option value="None">None</option>
+                                    <option value="Basic">Basic</option>
+                                    <option value="Intermediate">Intermediate</option>
+                                    <option value="Advanced">Advanced</option>
+
+                                </select>
+                                <!-- <input type="text" name="computer_proficiency" class="form-control" value="{{ member.computer_proficiency }}"> -->
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Occupation</div>
+
+                                <select name="occupation" class="form-control">
+                                    <option value="">Select Occupation</option>
+                                    {% for o in occupations %}
+                                    <option value="{{ o.id }}" {% if member.occupation.id == o.id %}selected{% endif %}>{{ o.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Company Name</div>
+                                <input type="text" name="company_name" class="form-control"
+                                    value="{{ member.company_name }}">
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Sector</div>
+                                <select name="sector" class="form-control">
+                                    <option value="">Select Sector</option>
+                                    {% for s in sectors %}
+                                    <option value="{{ s.id }}" {% if member.sector == s.id|stringformat:"s" %}selected{% endif %}>{{ s.name }}</option>
+                                    {% endfor %}
+                                </select>
+                                <!-- <input type="text" name="sector" class="form-control" value="{{ member.sector }}"> -->
+                            </div>
+                        </div>
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Industry</div>
+                                <input type="text" name="industry" class="form-control"
+                                    value="{{ member.industry }}">
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Designation</div>
+                                <input type="text" name="designation" class="form-control"
+                                    value="{{ member.designation }}">
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Department</div>
+                                <input type="text" name="department" class="form-control"
+                                    value="{{ member.department }}">
+                            </div>
+                        </div>
+
+                        <!-- Row 11 -->
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Annual Income</div>
+
+                                <select name="annual_income" class="form-control">
+                                    <option value="">Select Income</option>
+                                    {% for inc in incomes %}
+                                    <option value="{{ inc.id }}" {% if member.income.id == inc.id %}selected{% endif %}>{{ inc.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Skills</div>
+                                <input type="text" name="skills" class="form-control"
+                                    value="{{ member.skills }}">
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Blood Group</div>
+                                <select name="blood_group" class="form-control">
+                                    <option value="">Select Blood Group</option>
+                                    {% for b in bloodgroups %}
+                                    <option value="{{ b.id }}" {% if member.blood_group.id == b.id %}selected{% endif %}>{{ b.name }}</option>
+                                    {% endfor %}
+                                </select>
+
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Overall Health</div>
+                                <!-- <input type="text" name="overall_health" class="form-control" value="{{ member.overall_health.name }}"> -->
+                                <select name="overall_health" class="form-control">
+                                    <option value="">Select Overall Health</option>
+                                    {% for h in healths %}
+                                    <option value="{{ h.id }}" {% if member.overall_health.id == h.id %}selected{% endif %}>{{ h.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Chronic Disease</div>
+                                <!-- <input type="text" name="chronic_disease" class="form-control" value="{{ member.chronic_disease.name }}"> -->
+                                <select name="chronic_disease" class="form-control">
+                                    <option value="">Select Chronic Disease</option>
+                                    {% for c in diseases %}
+                                    <option value="{{ c.id }}" {% if member.chronic_disease.id == c.id %}selected{% endif %}>{{ c.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Disability</div>
+                                <input type="text" name="disability" class="form-control"
+                                    value="{{ member.disability }}">
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Activity Level</div>
+                                <input type="text" name="activity_level" class="form-control"
+                                    value="{{ member.activity_level }}">
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Govt Health Insurance</div>
+                                <select name="govt_health_insurance" class="form-control">
+                                    <option value="True" {% if member.govt_health_insurance %}selected{% endif %}>Yes</option>
+                                    <option value="False" {% if not member.govt_health_insurance %}selected{% endif %}>No</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Private Health Insurance</div>
+                                <select name="private_health_insurance" class="form-control">
+                                    <option value="True" {% if member.private_health_insurance %}selected{% endif %}>Yes</option>
+                                    <option value="False" {% if not member.private_health_insurance %}selected{% endif %}>No</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Husainy Trust Member</div>
+                                <select name="husainy_trust_member" class="form-control">
+                                    <option value="True" {% if member.husainy_trust_member %}selected{% endif %}>Yes</option>
+                                    <option value="False" {% if not member.husainy_trust_member %}selected{% endif %}>No</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- Row 16 -->
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Membership Number</div>
+                                <input type="text" name="membership_number" class="form-control"
+                                    value="{{ member.membership_number }}">
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Interested in Digital Directory
+                                </div>
+                                <select name="interested_in_digital_directory" class="form-control">
+                                    <option value="True" {% if member.interested_in_digital_directory %}selected{% endif %}>Yes</option>
+                                    <option value="False" {% if not member.interested_in_digital_directory %}selected{% endif %}>No</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Community Digital Pages</div>
+                                <select name="listing_in_community_digital_pages" class="form-control">
+                                    <option value="True" {% if member.listing_in_community_digital_pages %}selected{% endif %}>Yes</option>
+                                    <option value="False" {% if not member.listing_in_community_digital_pages %}selected{% endif %}>No</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Product / Service Listing</div>
+                                <input type="text" name="product_service_listing_in_yellow_pages"
+                                    class="form-control"
+                                    value="{{ member.product_service_listing_in_yellow_pages }}">
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Photo</div>
+
+                                {% if member.photo %}
+                                <div class="mb-2">
+                                    <img src="{{ member.photo.url }}" width="60" class="rounded border">
+                                    <small class="text-muted d-block">Current Photo</small>
+                                </div>
+                                {% endif %}
+                                <input type="file" name="photo" class="form-control form-control-sm">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="px-4 pb-4 text-end">
+                        <button type="button" class="btn-submit-user btn-secondary"
+                            onclick="javascript:history.back()">
+                            Cancel
+                        </button>
+                        <button type="submit" class="btn-submit-user">
+                            <i class="feather-save me-2"></i> Save Member Changes
+                        </button>
+                    </div>
+                </div>
+                
+            </form>
+
+
+            {% elif member.member_type == "Student" %}
+            <form method="POST" action="{% url 'edit-member' member.id %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="card card-body lead-info">
+                    <div class="mb-4 d-flex align-items-center justify-content-between">
+                        <h5 class="fw-bold mb-0">
+                            <span class="d-block mb-2">Edit Student Information :</span>
+                        </h5>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Name</div>
+                                <input type="text" name="name" class="form-control" value="{{ member.name }}">
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Aadhaar Number</div>
+                                <input type="text" name="aadhaar_number" class="form-control"
+                                    value="{{ member.aadhaar_number }}">
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Relationship</div>
+                                <select name="relationship" class="form-control">
+                                    <option value="">Select Relationship</option>
+                                    {% for r in relationships %}
+                                    <option value="{{ r.id }}" {% if member.relationship.id == r.id %}selected{% endif %}>{{ r.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Alias</div>
+                                <input type="text" name="alias" class="form-control" value="{{ member.alias }}">
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Father Name</div>
+                                <input type="text" name="father_name" class="form-control"
+                                    value="{{ member.father_name }}">
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Gender</div>
+                                <select name="gender" class="form-control">
+                                    <option value="Male" {% if member.gender == 'Male' %}selected{% endif %}>Male
+                                    </option>
+                                    <option value="Female" {% if member.gender == 'Female' %}selected{% endif %}>
+                                        Female</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Date of Birth</div>
+                                <input type="date" name="date_of_birth" class="form-control"
+                                    value="{{ member.date_of_birth|date:'Y-m-d' }}">
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Education Status</div>
+                                <input type="text" name="current_education_status" class="form-control"
+                                    value="{{ member.current_education_status }}">
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">School / College</div>
+                                <input type="text" name="school_college_institute_name" class="form-control"
+                                    value="{{ member.school_college_institute_name }}">
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Grade / Year</div>
+                                <select name="grade_year" class="form-control">
+                                    <option value="">Select Grade</option>
+                                    {% for g in grades %}
+                                    <option value="{{ g.id }}" {% if member.grade_year == g.id|stringformat:"s" %}selected{% endif %}>{{ g.name }}</option>
+                                    {% endfor %}
+                                </select>
+                                <!-- <input type="text" name="grade_year" class="form-control" value="{{ member.grade_year }}"> -->
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Annual Fees</div>
+                                <input type="number" name="annual_academic_fees" class="form-control"
+                                    value="{{ member.annual_academic_fees }}">
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Fees Payment</div>
+                                <input type="text" name="fees_payment" class="form-control"
+                                    value="{{ member.fees_payment }}">
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Languages Speak</div>
+                                <select name="languages_speak" class="form-control">
+                                    <option value="">Select Language</option>
+                                    {% for l in languages %}
+                                    <option value="{{ l.id }}" {% if member.languages_speak == l.id|stringformat:"s" %}selected{% endif %}>{{ l.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Languages Read</div>
+                                <select name="languages_read" class="form-control">
+                                    <option value="">Select Language</option>
+                                    {% for l in languages %}
+                                    <option value="{{ l.id }}" {% if member.languages_read == l.id|stringformat:"s" %}selected{% endif %}>{{ l.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Languages Write</div>
+                                <select name="languages_write" class="form-control">
+                                    <option value="">Select Language</option>
+                                    {% for l in languages %}
+                                    <option value="{{ l.id }}" {% if member.languages_write == l.id|stringformat:"s" %}selected{% endif %}>{{ l.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Computer Proficiency</div>
+                                <select name="computer_proficiency" class="form-control">
+                                    <option value="{{ member.computer_proficiency }}">{{ member.computer_proficiency }}</option>
+                                    <option value="None">None</option>
+                                    <option value="Basic">Basic</option>
+                                    <option value="Intermediate">Intermediate</option>
+                                    <option value="Advanced">Advanced</option>
+
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Sports</div>
+                                <select name="sports" class="form-control">
+                                    <option value="">Select Sports</option>
+                                    {% for s in sports %}
+                                    <option value="{{ s.id }}" {% if member.sports == s.id|stringformat:"s" %}selected{% endif %}>{{ s.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Hobbies</div>
+                                <input type="text" name="hobbies" class="form-control" value="{{ member.hobbies }}">
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Career Goal</div>
+                                <input type="text" name="career_goal" class="form-control"
+                                    value="{{ member.career_goal }}">
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Quran Reading</div>
+                                <input type="text" name="holy_koran_reading" class="form-control"
+                                    value="{{ member.holy_koran_reading }}">
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Deeniyath</div>
+                                <input type="text" name="deeniyath" class="form-control"
+                                    value="{{ member.deeniyath }}">
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Blood Group</div>
+                                <select name="blood_group" class="form-control">
+                                    <option value="">Select Blood Group</option>
+                                    {% for b in bloodgroups %}
+                                    <option value="{{ b.id }}" {% if member.blood_group.id == b.id %}selected{% endif %}>{{ b.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Overall Health</div>
+                                <select name="overall_health" class="form-control">
+                                    <option value="">Select Health</option>
+                                    {% for h in healths %}
+                                    <option value="{{ h.id }}" {% if member.overall_health.id == h.id %}selected{% endif %}>{{ h.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Chronic Disease</div>
+                                <select name="chronic_disease" class="form-control">
+                                    <option value="">Select Disease</option>
+                                    {% for c in diseases %}
+                                    <option value="{{ c.id }}" {% if member.chronic_disease.id == c.id %}selected{% endif %}>{{ c.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Disability</div>
+                                <input type="text" name="disability" class="form-control"
+                                    value="{{ member.disability }}">
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Govt Health Ins.</div>
+                                <select name="govt_health_insurance" class="form-control">
+                                    <option value="True" {% if member.govt_health_insurance %}selected{% endif %}>Yes</option>
+                                    <option value="False" {% if not member.govt_health_insurance %}selected{% endif %}>No</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Private Health Ins.</div>
+                                <select name="private_health_insurance" class="form-control">
+                                    <option value="True" {% if member.private_health_insurance %}selected{% endif %}>Yes</option>
+                                    <option value="False" {% if not member.private_health_insurance %}selected{% endif %}>No</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Photo</div>
+
+                                {% if member.photo %}
+                                <img src="{{ member.photo.url }}" width="60" class="rounded border mb-1">
+                                {% endif %}
+                                <input type="file" name="photo" class="form-control form-control-sm">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="px-4 pb-4 text-end">
+                    <button type="button" class="btn-submit-user btn-secondary" onclick="javascript:history.back()">
+                        Cancel
+                    </button>
+                    <button type="submit" class="btn-submit-user">
+                        <i class="feather-save me-2"></i> Save Member
+                    </button>
+                </div>
+            </form>
+
+            {% else %}
+            <form method="POST" action="{% url 'edit-member' member.id %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="card card-body lead-info">
+
+                    <div class="mb-4 d-flex align-items-center justify-content-between">
+                        <h5 class="fw-bold mb-0">
+                            <span class="d-block mb-2">Edit Member Information :</span>
+                        </h5>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Name</div>
+                                <input type="text" name="name" class="form-control" value="{{ member.name }}">
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Aadhaar Number</div>
+                                <input type="text" name="aadhaar_number" class="form-control"
+                                    value="{{ member.aadhaar_number }}">
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Relationship</div>
+                                <select name="relationship" class="form-control">
+                                    <option value="">Select Relationship</option>
+                                    {% for r in relationships %}
+                                    <option value="{{ r.id }}" {% if member.relationship.id == r.id %}selected{% endif %}>{{ r.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Alias</div>
+                                <input type="text" name="alias" class="form-control" value="{{ member.alias }}">
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Father Name</div>
+                                <input type="text" name="father_name" class="form-control"
+                                    value="{{ member.father_name }}">
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Gender</div>
+                                <select name="gender" class="form-control">
+                                    <option value="Male" {% if member.gender == 'Male' %}selected{% endif %}>Male</option>
+                                    <option value="Female" {% if member.gender == 'Female' %}selected{% endif %}>Female</option>
+                                    <option value="Other" {% if member.gender == 'Other' %}selected{% endif %}>Other</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Date of Birth</div>
+                                <input type="date" name="date_of_birth" class="form-control"
+                                    value="{{ member.date_of_birth|date:'Y-m-d' }}">
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Blood Group</div>
+                                <select name="blood_group" class="form-control">
+                                    <option value="">Select Blood Group</option>
+                                    {% for b in bloodgroups %}
+                                    <option value="{{ b.id }}" {% if member.blood_group.id == b.id %}selected{% endif %}>{{ b.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Overall Health</div>
+                                <select name="overall_health" class="form-control">
+                                    <option value="">Select Health</option>
+                                    {% for h in healths %}
+                                    <option value="{{ h.id }}" {% if member.overall_health.id == h.id %}selected{% endif %}>{{ h.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Govt Health Insurance</div>
+                                <select name="govt_health_insurance" class="form-control">
+                                    <option value="True" {% if member.govt_health_insurance %}selected{% endif %}>Yes</option>
+                                    <option value="False" {% if not member.govt_health_insurance %}selected{% endif %}>No</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Private Health Insurance</div>
+                                <select name="private_health_insurance" class="form-control">
+                                    <option value="True" {% if member.private_health_insurance %}selected{% endif %}>Yes</option>
+                                    <option value="False" {% if not member.private_health_insurance %}selected{% endif %}>No</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="fw-medium me-2" style="width:190px;">Photo</div>
+
+                                {% if member.photo %}
+                                <div class="mb-1">
+                                    <img src="{{ member.photo.url }}" width="60" class="rounded border">
+                                </div>
+                                {% endif %}
+                                <input type="file" name="photo" class="form-control form-control-sm">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="px-4 pb-4 text-end">
+                        <button type="button" class="btn-submit-user btn-secondary" onclick="javascript:history.back()">
+                            Cancel
+                        </button>
+                        <button type="submit" class="btn-submit-user">
+                            <i class="feather-save me-2"></i> Save Member
+                        </button>
+                    </div>
+
+
+
+                </div>
+            </form>
+            {% endif %}
+
+        </div>
+        <div class="tab-pane fade" id="proposalTab" role="tabpanel">
+            <div class="card card-body">
+                <div class="d-flex align-items-center justify-content-center" style="height: calc(100vh - 315px)">
+                    <div class="text-center">
+                        <h2 class="fs-16 fw-semibold">No proposals yet!</h2>
+                        <p class="fs-12 text-muted">There is no proposals create yet.</p>
+                        <a href="javascript:void(0);" class="avatar-text bg-soft-primary text-primary mx-auto"
+                            data-bs-toggle="tooltip" title="Create Proposals">
+                            <i class="feather-plus"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="tasksTab" role="tabpanel">
+            <div class="card card-body">
+                <div class="d-flex align-items-center justify-content-center" style="height: calc(100vh - 315px)">
+                    <div class="text-center">
+                        <h2 class="fs-16 fw-semibold">No tasks yet!</h2>
+                        <p class="fs-12 text-muted">There is no tasks create yet.</p>
+                        <a href="javascript:void(0);" class="avatar-text bg-soft-primary text-primary mx-auto"
+                            data-bs-toggle="tooltip" title="Create Tasks">
+                            <i class="feather-plus"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="notesTab" role="tabpanel">
+            <div class="card card-body">
+                <div class="d-flex align-items-center justify-content-center" style="height: calc(100vh - 315px)">
+                    <div class="text-center">
+                        <h2 class="fs-16 fw-semibold">No notes yet!</h2>
+                        <p class="fs-12 text-muted">There is no notes create yet.</p>
+                        <a href="javascript:void(0);" class="avatar-text bg-soft-primary text-primary mx-auto"
+                            data-bs-toggle="tooltip" title="Create Notes">
+                            <i class="feather-plus"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="commentTab" role="tabpanel">
+            <div class="card card-body">
+                <div class="d-flex align-items-center justify-content-center" style="height: calc(100vh - 315px)">
+                    <div class="text-center">
+                        <h2 class="fs-16 fw-semibold">No comments yet!</h2>
+                        <p class="fs-12 text-muted">There is no comments posted yet.</p>
+                        <a href="javascript:void(0);" class="avatar-text bg-soft-primary text-primary mx-auto"
+                            data-bs-toggle="tooltip" title="Add Comments">
+                            <i class="feather-plus"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <!-- [ Main Content ] start -->
+
+    </div>
+    <!-- [ Footer ] start -->
+    <!-- [ Footer ] end -->
+    <!-- [ Footer ] end -->
+</main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Only run title case logic
+        const titleCaseFields = [
+            'name', 'father_name', 'alias', 'company_name', 'industry', 
+            'designation', 'department', 'skills', 'disability', 
+            'activity_level', 'product_service_listing_in_yellow_pages',
+            'current_education_status', 'school_college_institute_name',
+            'hobbies', 'career_goal', 'holy_koran_reading', 'deeniyath'
+        ];
+
+        document.querySelectorAll('input[type="text"]').forEach(input => {
+            if (titleCaseFields.includes(input.name)) {
+                input.addEventListener('blur', function() {
+                    if (this.value) {
+                        this.value = this.value.toLowerCase().split(' ').map(word => {
+                            return word.charAt(0).toUpperCase() + word.slice(1);
+                        }).join(' ');
+                    }
+                });
+            }
+        });
+    });
+</script>
+{% endblock content %}

@@ -1,0 +1,2312 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<main class="nxl-container">
+    <div class="nxl-content">
+        <!-- [ page-header ] start -->
+        <div class="page-header">
+            <div class="page-header-left d-flex align-items-center">
+                <div class="page-header-title">
+                    <h5 class="m-b-10">Member List</h5>
+                </div>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/dashboard/">Census Data</a></li>
+                    <li class="breadcrumb-item">Member List</li>
+                </ul>
+            </div>
+
+
+        </div>
+        <!-- [ page-header ] end -->
+        <!-- [ Main Content ] start -->
+        <div class="main-content">
+            <div class="row">
+                <!-- [Invoices Awaiting Payment] start -->
+                {% for m in members %}
+                <div class="col-xxl-3 col-md-6">
+                    <div class="card stretch stretch-full border-orange family-card">
+                        <div class="card-body">
+
+                            <!-- Top Row: Image + Name/ID -->
+                            <div class="d-flex align-items-start gap-3">
+
+                                <!-- Profile Image -->
+                                <img src="{% if m.photo %}{{ m.photo.url }}{% else %}/static/assets/images/avatar/user.jpg{% endif %}"
+                                    class="rounded-circle" width="60" height="60" alt="Profile"
+                                    style="object-fit: cover;">
+
+                                <!-- Name + ID -->
+                                <div>
+                                    <h5 class="fw-bold text-dark mb-1">{{ m.name }}</h5>
+                                    <div class="text-muted">{{ m.member_id }}</div>
+                                    <div class="badge bg-soft-success text-success">{{ m.member_type }}</div>
+                                </div>
+
+                            </div>
+
+                            <!-- Bottom Row: Mobile Left | People Right -->
+
+
+                        </div>
+                        <!-- Bottom Add Icon -->
+                        <div class="card-footer bg-transparent text-center py-2 border-top">
+
+                            {% if not m.is_updated %}
+                            {# Only show the edit icon if the form hasn't been submitted yet #}
+
+                            {% if m.member_type == "Adult" %}
+                            <a href="javascript:void(0);" class="edit-member" data-id="{{ m.id }}"
+                                data-bs-toggle="modal" data-bs-target="#adultModal" data-name="{{ m.name }}"
+                                data-aadhaar_number="{{ m.aadhaar_number }}" data-relationship="{{ m.relationship.id }}"
+                                data-alias="{{ m.alias }}" data-gender="{{ m.gender }}"
+                                data-father_name="{{ m.father_name }}"
+                                data-date_of_birth="{{ m.date_of_birth|date:'Y-m-d' }}" data-mobile="{{ m.mobile }}"
+                                data-whatsapp="{{ m.whatsapp }}" data-email_id="{{ m.email_id }}"
+                                data-place_of_birth="{{ m.place_of_birth }}"
+                                data-marital_status="{{ m.marital_status }}"
+                                data-academic_qualification="{{ m.qualification.id }}"
+                                data-diploma_degree="{{ m.diploma_degree }}"
+                                data-languages_speak="{{ m.languages_speak }}"
+                                data-languages_read="{{ m.languages_read }}"
+                                data-languages_write="{{ m.languages_write }}"
+                                data-computer_proficiency="{{ m.computer_proficiency }}"
+                                data-occupation="{{ m.occupation.id }}" data-company_name="{{ m.company_name }}"
+                                data-sector="{{ m.sector }}" data-industry="{{ m.industry }}"
+                                data-designation="{{ m.designation }}" data-department="{{ m.department }}"
+                                data-annual_income="{{ m.income.id }}" data-skills="{{ m.skills }}"
+                                data-blood_group="{{ m.blood_group.id }}"
+                                data-overall_health="{{ m.overall_health.id }}"
+                                data-chronic_disease="{{ m.chronic_disease.id }}" data-disability="{{ m.disability }}"
+                                data-activity_level="{{ m.activity_level }}"
+                                data-govt_ins="{% if m.govt_health_insurance %}Yes{% else %}No{% endif %}"
+                                data-private_ins="{% if m.private_health_insurance %}Yes{% else %}No{% endif %}"
+                                data-husainy_trust_member="{% if m.husainy_trust_member %}on{% endif %}"
+                                data-membership_number="{{ m.membership_number }}"
+                                data-interested_in_digital_directory="{{ m.interested_in_digital_directory }}"
+                                data-listing_in_community_digital_pages="{{ m.listing_in_community_digital_pages }}"
+                                data-yellowpages="{{ m.product_service_listing_in_yellow_pages }}">
+                                <i class="feather-edit" style="margin-right: 20px;"></i>
+                            </a>
+
+                            {% elif m.member_type == "Student" %}
+                            <a href="javascript:void(0);" class="edit-member" data-id="{{ m.id }}"
+                                data-bs-toggle="modal" data-bs-target="#studentModal" data-name="{{ m.name }}"
+                                data-aadhaar_number="{{ m.aadhaar_number }}" data-relationship="{{ m.relationship.id }}"
+                                data-alias="{{ m.alias }}" data-father_name="{{ m.father_name }}"
+                                data-gender="{{ m.gender }}" data-date_of_birth="{{ m.date_of_birth|date:'Y-m-d' }}"
+                                data-current_education_status="{{ m.current_education_status }}"
+                                data-school_college_institute_name="{{ m.school_college_institute_name }}"
+                                data-grade_year="{{ m.grade_year }}"
+                                data-annual_academic_fees="{{ m.annual_academic_fees }}"
+                                data-fees_payment="{{ m.fees_payment }}" data-languages_speak="{{ m.languages_speak }}"
+                                data-languages_read="{{ m.languages_read }}"
+                                data-languages_write="{{ m.languages_write }}"
+                                data-computer_proficiency="{{ m.computer_proficiency }}" data-sports="{{ m.sports }}"
+                                data-hobbies="{{ m.hobbies }}" data-career_goal="{{ m.career_goal }}"
+                                data-holy_koran_reading="{{ m.holy_koran_reading }}" data-deeniyath="{{ m.deeniyath }}"
+                                data-blood_group="{{ m.blood_group.id }}"
+                                data-overall_health="{{ m.overall_health.id }}"
+                                data-chronic_disease="{{ m.chronic_disease.id }}" data-disability="{{ m.disability }}"
+                                data-govt_ins="{% if m.govt_health_insurance %}Yes{% else %}No{% endif %}"
+                                data-private_ins="{% if m.private_health_insurance %}Yes{% else %}No{% endif %}">
+                                <i class="feather-edit" style="margin-right: 20px;"></i>
+                            </a>
+
+                            {% elif m.member_type == "Baby" %}
+                            <a href="javascript:void(0);" class="edit-member" data-id="{{ m.id }}"
+                                data-bs-toggle="modal" data-bs-target="#infantModal" data-name="{{ m.name }}"
+                                data-relationship="{{ m.relationship.id }}" data-alias="{{ m.alias }}"
+                                data-father_name="{{ m.father_name }}" data-gender="{{ m.gender }}"
+                                data-date_of_birth="{{ m.date_of_birth|date:'Y-m-d' }}"
+                                data-blood_group="{{ m.blood_group.id }}"
+                                data-overall_health="{{ m.overall_health.id }}"
+                                data-govt_ins="{% if m.govt_health_insurance %}Yes{% else %}No{% endif %}"
+                                data-private_ins="{% if m.private_health_insurance %}Yes{% else %}No{% endif %}">
+                                <i class="feather-edit" style="margin-right: 20px;"></i>
+                            </a>
+                            {% endif %}
+
+                            {% else %}
+                            {# Optional: Show a "Completed" badge or just the view icon #}
+                            <span class="text-success small"><i class="feather-check-circle"></i> Updated</span>
+                            {% endif %}
+
+
+                            {% if request.user.adduser.role != 'volunteer' %}
+                            <a href="{% url 'viewmember' m.id %}">
+                                <i class="feather-file-text" style="padding-left: 20px;"></i>
+                            </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+
+
+
+            </div>
+        </div>
+
+    </div>
+
+</main>
+
+<div class="modal fade" id="adultModal" tabindex="-1">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" onclick="location.reload()"></button>
+            </div>
+
+            <div class="modal-body">
+
+
+                <form id="adultUpdateForm" method="POST" action="" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <!-- STEP 1 -->
+                    <div class="form-step" id="adult-step1">
+                        <div class="mb-3">
+                            <label class="form-label">Full Name</label>
+                            <input type="text" name="name" class="form-control" value="{{ members.name}}">
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input skip-logic" id="skip-name"
+                                onclick="handleSkip(this, 1, 'adult')">
+                            <label class="form-check-label text-muted" for="skip-name italic">
+                                Not Willing To Disclose
+                            </label>
+                        </div>
+
+                        <div class="d-flex justify-content-end">
+                            <button type="button" class="btn btn-primary" onclick="nextStep(1, 'adult')">
+                                Next
+                            </button>
+                        </div>
+                    </div>
+
+
+                    <!-- STEP 2 -->
+                    <div class="form-step d-none" id="adult-step2">
+                        <div class="mb-3">
+                            <label class="form-label">Aadhar Number</label>
+                            <input type="text" name="aadhaar_number" class="form-control">
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input skip-logic" id="skip-aadhar"
+                                onclick="handleSkip(this, 2, 'adult')">
+                            <label class="form-check-label text-muted" for="skip-aadhar italic">
+                                Not Willing To Disclose
+                            </label>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-light me-2"
+                                onclick="prevStep(2, 'adult')">Back</button>
+                            <button type="button" class="btn btn-primary" onclick="nextStep(2, 'adult')">Next</button>
+                        </div>
+                    </div>
+
+                    <div class="form-step d-none" id="adult-step3">
+                        <div class="mb-3">
+                            <label class="form-label">Relationship to Head</label>
+                            <select name="relationship" class="form-control">
+                                <option value="">Select</option>
+                                {% for r in relationships %}
+                                <option value="{{ r.id }}">{{ r.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input skip-logic" id="skip-relationship"
+                                onclick="handleSkip(this, 3, 'adult')">
+                            <label class="form-check-label text-muted" for="skip-relationship italic">
+                                Not Willing To Disclose
+                            </label>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-light me-2"
+                                onclick="prevStep(3, 'adult')">Back</button>
+                            <button type="button" class="btn btn-primary" onclick="nextStep(3, 'adult')">Next</button>
+                        </div>
+                    </div>
+
+                    <div class="form-step d-none" id="adult-step4">
+                        <div class="mb-3">
+                            <label class="form-label">Alias</label>
+                            <input type="text" name="alias" class="form-control">
+
+                            <div class="form-check mt-2">
+                                <input type="checkbox" class="form-check-input skip-logic" id="skip-alias"
+                                    onclick="handleSkip(this, 4, 'adult')">
+                                <label class="form-check-label text-muted" for="skip-alias italic">
+                                    Not Willing To Disclose
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-light" onclick="prevStep(4, 'adult')">
+                                Back
+                            </button>
+                            <button type="button" class="btn btn-primary" onclick="nextStep(4, 'adult')">
+                                Next
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-step d-none" id="adult-step5">
+                        <div class="mb-3">
+                            <label class="form-label">Gender</label>
+                            <select name="gender" class="form-control">
+                                <option value="">Select</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input skip-logic" id="skip-gender"
+                                onclick="handleSkip(this, 5, 'adult')">
+                            <label class="form-check-label text-muted" for="skip-gender italic">
+                                Not Willing To Disclose
+                            </label>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-light me-2"
+                                onclick="prevStep(5, 'adult')">Back</button>
+                            <button type="button" class="btn btn-primary" onclick="nextStep(5, 'adult')">Next</button>
+                        </div>
+                    </div>
+
+                    <div class="form-step d-none" id="adult-step6">
+                        <div class="mb-3">
+                            <label class="form-label">Father's Name</label>
+                            <input type="text" name="father_name" class="form-control">
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input skip-logic" id="skip-father"
+                                onclick="handleSkip(this, 6, 'adult')">
+                            <label class="form-check-label text-muted" for="skip-father italic">
+                                Not Willing To Disclose
+                            </label>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-light me-2"
+                                onclick="prevStep(6, 'adult')">Back</button>
+                            <button type="button" class="btn btn-primary" onclick="nextStep(6, 'adult')">Next</button>
+                        </div>
+                    </div>
+
+                    <div class="form-step d-none" id="adult-step7">
+                        <div class="mb-3">
+                            <label class="form-label">Date of Birth</label>
+                            <input type="date" name="date_of_birth" class="form-control">
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input skip-logic" id="skip-dob"
+                                onclick="handleSkip(this, 7, 'adult')">
+                            <label class="form-check-label text-muted" for="skip-dob italic">
+                                Not Willing To Disclose
+                            </label>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-light me-2"
+                                onclick="prevStep(7, 'adult')">Back</button>
+                            <button type="button" class="btn btn-primary" onclick="nextStep(7, 'adult')">Next</button>
+                        </div>
+                    </div>
+
+
+                    <div class="form-step d-none" id="adult-step8">
+                        <div class="mb-3">
+                            <label class="form-label">Mobile</label>
+                            <input type="number" name="mobile" class="form-control">
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input skip-logic" id="skip-mobile"
+                                onclick="handleSkip(this, 8, 'adult')">
+                            <label class="form-check-label text-muted" for="skip-mobile italic">
+                                Not Willing To Disclose
+                            </label>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-light me-2"
+                                onclick="prevStep(8, 'adult')">Back</button>
+                            <button type="button" class="btn btn-primary" onclick="nextStep(8, 'adult')">Next</button>
+                        </div>
+                    </div>
+
+                    <div class="form-step d-none" id="adult-step9">
+                        <div class="mb-3">
+                            <label class="form-label">WhatsApp</label>
+                            <input type="number" name="whatsapp" class="form-control">
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input skip-logic" id="skip-whatsapp"
+                                onclick="handleSkip(this, 9, 'adult')">
+                            <label class="form-check-label text-muted" for="skip-whatsapp italic">
+                                Not Willing To Disclose
+                            </label>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-light me-2"
+                                onclick="prevStep(9, 'adult')">Back</button>
+                            <button type="button" class="btn btn-primary" onclick="nextStep(9, 'adult')">Next</button>
+                        </div>
+                    </div>
+
+                    <div class="form-step d-none" id="adult-step10">
+                        <div class="mb-3">
+                            <label class="form-label">Email ID</label>
+                            <input type="email" name="email_id" class="form-control">
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input skip-logic" id="skip-email"
+                                onclick="handleSkip(this, 10, 'adult')">
+                            <label class="form-check-label text-muted" for="skip-email italic">
+                                Not Willing To Disclose
+                            </label>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-light me-2"
+                                onclick="prevStep(10, 'adult')">Back</button>
+                            <button type="button" class="btn btn-primary" onclick="nextStep(10, 'adult')">Next</button>
+                        </div>
+                    </div>
+
+                    <div class="form-step d-none" id="adult-step11">
+                        <div class="mb-3">
+                            <label class="form-label">Place of Birth</label>
+                            <input type="text" name="place_of_birth" class="form-control">
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input skip-logic" id="skip-place"
+                                onclick="handleSkip(this, 11, 'adult')">
+                            <label class="form-check-label text-muted" for="skip-place italic">
+                                Not Willing To Disclose
+                            </label>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-light" onclick="prevStep(11, 'adult')">Back</button>
+                            <button type="button" class="btn btn-primary" onclick="nextStep(11, 'adult')">Next</button>
+                        </div>
+                    </div>
+
+                    <div class="form-step d-none" id="adult-step12">
+                        <div class="mb-3">
+                            <label class="form-label">Marital Status</label><br>
+                            <input type="radio" name="marital_status" value="Single"> Single
+                            <input type="radio" name="marital_status" value="Married"> Married
+                            <input type="radio" name="marital_status" value="Widowed"> Widowed
+                            <input type="radio" name="marital_status" value="Separated"> Separated
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input skip-logic" id="skip-marital"
+                                onclick="handleSkip(this, 12, 'adult')">
+                            <label class="form-check-label text-muted" for="skip-marital italic">
+                                Not Willing To Disclose
+                            </label>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-light" onclick="prevStep(12, 'adult')">Back</button>
+                            <button type="button" class="btn btn-primary" onclick="nextStep(12, 'adult')">Next</button>
+                        </div>
+                    </div>
+
+                    <div class="form-step d-none" id="adult-step13">
+                        <div class="mb-3">
+                            <label class="form-label">Academic Qualification</label>
+                            <select name="academic_qualification" class="form-control">
+                                <option value="">Select</option>
+                                {% for q in qualifications %}
+                                <option value="{{ q.id }}">{{ q.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input skip-logic" id="skip-academic"
+                                onclick="handleSkip(this, 13, 'adult')">
+                            <label class="form-check-label text-muted" for="skip-academic italic">
+                                Not Willing To Disclose
+                            </label>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-light" onclick="prevStep(13, 'adult')">Back</button>
+                            <button type="button" class="btn btn-primary" onclick="nextStep(13, 'adult')">Next</button>
+                        </div>
+                    </div>
+
+                    <div class="form-step d-none" id="adult-step14">
+                        <div class="mb-3">
+                            <label class="form-label">Diploma / Degree</label>
+                            <input type="text" name="diploma_degree" class="form-control">
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input skip-logic" id="skip-diploma"
+                                onclick="handleSkip(this, 14, 'adult')">
+                            <label class="form-check-label text-muted" for="skip-diploma italic">
+                                Not Willing To Disclose
+                            </label>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-light" onclick="prevStep(14, 'adult')">Back</button>
+                            <button type="button" class="btn btn-primary" onclick="nextStep(14, 'adult')">Next</button>
+                        </div>
+                    </div>
+
+                    <div class="form-step d-none" id="adult-step15">
+                        <div class="mb-3">
+                            <label class="form-label">Languages (Speak)</label><br>
+                            {% for l in languages %}
+                            <input type="checkbox" name="languages_speak" value="{{ l.id }}"> {{ l.name }}
+                            {% endfor %}
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input skip-logic" id="skip-languages-speak"
+                                onclick="handleSkip(this, 15, 'adult')">
+                            <label class="form-check-label text-muted" for="skip-languages-speak italic">
+                                Not Willing To Disclose
+                            </label>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-light" onclick="prevStep(15, 'adult')">Back</button>
+                            <button type="button" class="btn btn-primary" onclick="nextStep(15, 'adult')">Next</button>
+                        </div>
+                    </div>
+
+                    <div class="form-step d-none" id="adult-step16">
+                        <div class="mb-3">
+                            <label class="form-label">Languages (Read)</label><br>
+                            {% for l in languages %}
+                            <input type="checkbox" name="languages_read" value="{{ l.id }}"> {{ l.name }}
+                            {% endfor %}
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input skip-logic" id="skip-languages-read"
+                                onclick="handleSkip(this, 16, 'adult')">
+                            <label class="form-check-label text-muted" for="skip-languages-read italic">
+                                Not Willing To Disclose
+                            </label>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-light" onclick="prevStep(16, 'adult')">Back</button>
+                            <button type="button" class="btn btn-primary" onclick="nextStep(16, 'adult')">Next</button>
+                        </div>
+                    </div>
+
+                    <div class="form-step d-none" id="adult-step17">
+                        <div class="mb-3">
+
+                            <label class="form-label">Languages (Write)</label><br>
+                            {% for l in languages %}
+                            <input type="checkbox" name="languages_write" value="{{ l.id }}"> {{ l.name }}
+                            {% endfor %}
+
+
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input skip-logic" id="skip-languages-write"
+                                onclick="handleSkip(this, 17, 'adult')">
+                            <label class="form-check-label text-muted" for="skip-languages-write italic">
+                                Not Willing To Disclose
+                            </label>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-light" onclick="prevStep(17, 'adult')">Back</button>
+                            <button type="button" class="btn btn-primary" onclick="nextStep(17, 'adult')">Next</button>
+                        </div>
+                    </div>
+
+
+                    <div class="form-step d-none" id="adult-step18">
+                        <div class="mb-3">
+                            <label class="form-label">Computer Proficiency</label><br>
+                            <input type="radio" name="computer_proficiency" value="None"> None
+                            <input type="radio" name="computer_proficiency" value="Basic"> Basic
+                            <input type="radio" name="computer_proficiency" value="Advanced"> Advanced
+                            <input type="radio" name="computer_proficiency" value="Expert"> Expert
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input skip-logic" id="skip-computer"
+                                onclick="handleSkip(this, 18, 'adult')">
+                            <label class="form-check-label text-muted" for="skip-computer italic">
+                                Not Willing To Disclose
+                            </label>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-light" onclick="prevStep(18, 'adult')">Back</button>
+                            <button type="button" class="btn btn-primary" onclick="nextStep(18, 'adult')">Next</button>
+                        </div>
+                    </div>
+
+                    <div class="form-step d-none" id="adult-step19">
+                        <div class="mb-3">
+                            <label class="form-label">Occupation</label>
+                            <select name="occupation" class="form-control">
+                                <option value="">Select</option>
+                                {% for o in occupations %}
+                                <option value="{{ o.id }}">{{ o.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input skip-logic" id="skip-occupation"
+                                onclick="handleSkip(this, 19, 'adult')">
+                            <label class="form-check-label text-muted" for="skip-occupation italic">
+                                Not Willing To Disclose
+                            </label>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-light" onclick="prevStep(19, 'adult')">Back</button>
+                            <button type="button" class="btn btn-primary" onclick="nextStep(19, 'adult')">Next</button>
+                        </div>
+                    </div>
+
+                    <div class="form-step d-none" id="adult-step20">
+                        <div class="mb-3">
+                            <label class="form-label">Company Name</label>
+                            <input type="text" name="company_name" class="form-control">
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input skip-logic" id="skip-company"
+                                onclick="handleSkip(this, 20, 'adult')">
+                            <label class="form-check-label text-muted" for="skip-company italic">
+                                Not Willing To Disclose
+                            </label>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-light" onclick="prevStep(20, 'adult')">Back</button>
+                            <button type="button" class="btn btn-primary" onclick="nextStep(20, 'adult')">Next</button>
+                        </div>
+                    </div>
+
+
+                    <div class="form-step d-none" id="adult-step21">
+                        <div class="mb-3">
+                            <label class="form-label">Sector</label><br>
+                            <select name="sector" class="form-control">
+                                <option value="">Select</option>
+                                {% for s in sectors %}
+                                <option value="{{ s.id }}">{{ s.name }}</option>
+                                {% endfor %}
+                            </select>
+
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input skip-logic" id="skip-sector"
+                                onclick="handleSkip(this, 21, 'adult')">
+                            <label class="form-check-label text-muted" for="skip-sector italic">
+                                Not Willing To Disclose
+                            </label>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-light" onclick="prevStep(21, 'adult')">Back</button>
+                            <!-- <button type="button" class="btn btn-light" onclick="prevStep(21, 'adult')">Back</button> -->
+                            <button type="button" class="btn btn-primary" onclick="nextStep(21, 'adult')">Next</button>
+                        </div>
+                    </div>
+
+                    <div class="form-step d-none" id="adult-step22">
+                        <div class="mb-3">
+                            <label class="form-label">Industry</label>
+                            <input type="text" name="industry" class="form-control">
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input skip-logic" id="skip-industry"
+                                onclick="handleSkip(this, 22, 'adult')">
+                            <label class="form-check-label text-muted" for="skip-industry italic">
+                                Not Willing To Disclose
+                            </label>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-light" onclick="prevStep(22, 'adult')">Back</button>
+                            <button type="button" class="btn btn-primary" onclick="nextStep(22, 'adult')">Next</button>
+                        </div>
+                    </div>
+
+                    <div class="form-step d-none" id="adult-step23">
+                        <div class="mb-3">
+                            <label class="form-label">Designation</label>
+                            <input type="text" name="designation" class="form-control">
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input skip-logic" id="skip-designation"
+                                onclick="handleSkip(this, 23, 'adult')">
+                            <label class="form-check-label text-muted" for="skip-designation italic">
+                                Not Willing To Disclose
+                            </label>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-light" onclick="prevStep(23, 'adult')">Back</button>
+                            <button type="button" class="btn btn-primary" onclick="nextStep(23, 'adult')">Next</button>
+                        </div>
+                    </div>
+
+                    <div class="form-step d-none" id="adult-step24">
+                        <div class="mb-3">
+                            <label class="form-label">Department</label>
+                            <input type="text" name="department" class="form-control">
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input skip-logic" id="skip-department"
+                                onclick="handleSkip(this, 24, 'adult')">
+                            <label class="form-check-label text-muted" for="skip-department italic">
+                                Not Willing To Disclose
+                            </label>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-light" onclick="prevStep(24, 'adult')">Back</button>
+                            <button type="button" class="btn btn-primary" onclick="nextStep(24, 'adult')">Next</button>
+                        </div>
+                    </div>
+
+                    <div class="form-step d-none" id="adult-step25">
+                        <div class="mb-3">
+                            <label class="form-label">Annual Income</label>
+                            <select name="annual_income" class="form-control">
+                                <option value="">Select</option>
+                                {% for inc in incomes %}
+                                <option value="{{ inc.id }}">{{ inc.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input skip-logic" id="skip-income"
+                                onclick="handleSkip(this, 25, 'adult')">
+                            <label class="form-check-label text-muted" for="skip-income italic">
+                                Not Willing To Disclose
+                            </label>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-light" onclick="prevStep(25, 'adult')">Back</button>
+                            <button type="button" class="btn btn-primary" onclick="nextStep(25, 'adult')">Next</button>
+                        </div>
+                    </div>
+
+                    <div class="form-step d-none" id="adult-step26">
+                        <div class="mb-3">
+                            <label class="form-label">Skills</label>
+                            <input type="text" name="skills" class="form-control">
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input skip-logic" id="skip-skills"
+                                onclick="handleSkip(this, 26, 'adult')">
+                            <label class="form-check-label text-muted" for="skip-skills italic">
+                                Not Willing To Disclose
+                            </label>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-light" onclick="prevStep(26, 'adult')">Back</button>
+                            <button type="button" class="btn btn-primary" onclick="nextStep(26, 'adult')">Next</button>
+                        </div>
+                    </div>
+
+                    <div class="form-step d-none" id="adult-step27">
+                        <div class="mb-3">
+                            <label class="form-label">Blood Group</label><br>
+                            {% for b in bloodgroups %}
+                            <label class="me-3">
+                                <input type="radio" name="blood_group" value="{{ b.id }}"> {{ b.name }}
+                            </label>
+                            {% endfor %}
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input skip-logic" id="skip-blood"
+                                onclick="handleSkip(this, 27, 'adult')">
+                            <label class="form-check-label text-muted" for="skip-blood italic">
+                                Not Willing To Disclose
+                            </label>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-light" onclick="prevStep(27, 'adult')">Back</button>
+                            <button type="button" class="btn btn-primary" onclick="nextStep(27, 'adult')">Next</button>
+                        </div>
+                    </div>
+
+
+                    <div class="form-step d-none" id="adult-step28">
+                        <div class="mb-3">
+                            <label class="form-label">Overall Health</label>
+                            <select name="overall_health" class="form-control">
+                                <option value="">Select</option>
+                                {% for h in healths %}
+                                <option value="{{ h.id }}">{{ h.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input skip-logic" id="skip-health"
+                                onclick="handleSkip(this, 28, 'adult')">
+                            <label class="form-check-label text-muted" for="skip-health italic">
+                                Not Willing To Disclose
+                            </label>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-light" onclick="prevStep(28, 'adult')">Back</button>
+                            <button type="button" class="btn btn-primary" onclick="nextStep(28, 'adult')">Next</button>
+                        </div>
+                    </div>
+
+                    <div class="form-step d-none" id="adult-step29">
+                        <div class="mb-3">
+                            <label class="form-label">Do you currently suffer from any chronic diseases?</label>
+                            <select name="chronic_disease" class="form-control">
+                                <option value="">Select</option>
+                                {% for c in diseases %}
+                                <option value="{{ c.id }}">{{ c.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input skip-logic" id="skip-chronic"
+                                onclick="handleSkip(this, 29, 'adult')">
+                            <label class="form-check-label text-muted" for="skip-chronic italic">
+                                Not Willing To Disclose
+                            </label>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-light" onclick="prevStep(29, 'adult')">Back</button>
+                            <button type="button" class="btn btn-primary" onclick="nextStep(29, 'adult')">Next</button>
+                        </div>
+                    </div>
+
+                    <div class="form-step d-none" id="adult-step30">
+                        <div class="mb-3">
+                            <label class="form-label">Disability</label>
+                            <select name="disability" class="form-control">
+                                <option value="No">No</option>
+                                <option value="Yes">Yes</option>
+                            </select>
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input skip-logic" id="skip-disability"
+                                onclick="handleSkip(this, 30, 'adult')">
+                            <label class="form-check-label text-muted" for="skip-disability italic">
+                                Not Willing To Disclose
+                            </label>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-light" onclick="prevStep(30, 'adult')">Back</button>
+                            <button type="button" class="btn btn-primary" onclick="nextStep(30, 'adult')">Next</button>
+                        </div>
+                    </div>
+
+                    <div class="form-step d-none" id="adult-step31">
+                        <div class="mb-3">
+                            <label class="form-label">Activity Level</label>
+                            <select name="activity_level" class="form-control">
+                                <option value="Sedentary">Sedentary</option>
+                                <option value="Minimal">Minimal</option>
+                                <option value="Moderate">Moderate</option>
+                                <option value="High">High</option>
+                            </select>
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input skip-logic" id="skip-activity"
+                                onclick="handleSkip(this, 31, 'adult')">
+                            <label class="form-check-label text-muted" for="skip-activity italic">
+                                Not Willing To Disclose
+                            </label>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-light" onclick="prevStep(31, 'adult')">Back</button>
+                            <button type="button" class="btn btn-primary" onclick="nextStep(31, 'adult')">Next</button>
+                        </div>
+                    </div>
+
+                    <div class="form-step d-none" id="adult-step32">
+                        <div class="mb-3">
+                            <label class="form-label">Government Health Insurance Cover</label><br>
+                            <input type="radio" name="govt_ins" value="Yes"> Yes
+                            <input type="radio" name="govt_ins" value="No"> No
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input skip-logic" id="skip-govt-ins"
+                                onclick="handleSkip(this, 32, 'adult')">
+                            <label class="form-check-label text-muted" for="skip-govt-ins italic">
+                                Not Willing To Disclose
+                            </label>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-light" onclick="prevStep(32, 'adult')">Back</button>
+                            <button type="button" class="btn btn-primary" onclick="nextStep(32, 'adult')">Next</button>
+                        </div>
+                    </div>
+
+                    <div class="form-step d-none" id="adult-step33">
+                        <div class="mb-3">
+                            <label class="form-label">Private Health Insurance Cover</label><br>
+                            <input type="radio" name="private_ins" value="Yes"> Yes
+                            <input type="radio" name="private_ins" value="No"> No
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input skip-logic" id="skip-private-ins"
+                                onclick="handleSkip(this, 33, 'adult')">
+                            <label class="form-check-label text-muted" for="skip-private-ins italic">
+                                Not Willing To Disclose
+                            </label>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-light" onclick="prevStep(33, 'adult')">Back</button>
+                            <button type="button" class="btn btn-primary" onclick="nextStep(33, 'adult')">Next</button>
+                        </div>
+                    </div>
+
+                    <div class="form-step d-none" id="adult-step34">
+                        <div class="mb-3">
+                            <label class="form-label">Husainy Trust Member</label><br>
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" name="husainy_trust_member"
+                                    id="husainy_trust_member">
+                                <label class="form-check-label" for="husainy_trust_member">Yes, I am a member</label>
+                            </div>
+                            <div class="mt-2">
+                                <label class="form-label">Membership Number</label>
+                                <input type="text" name="membership_number" class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input skip-logic" id="skip-husainy"
+                                onclick="handleSkip(this, 34, 'adult')">
+                            <label class="form-check-label text-muted" for="skip-husainy italic">
+                                Not Willing To Disclose
+                            </label>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-light" onclick="prevStep(34, 'adult')">Back</button>
+                            <button type="button" class="btn btn-primary" onclick="nextStep(34, 'adult')">Next</button>
+                        </div>
+                    </div>
+
+                    <div class="form-step d-none" id="adult-step35">
+                        <div class="mb-3">
+                            <label class="form-label">Interested in Listing in Community Digital Directory</label><br>
+
+                            <div class="form-check">
+                                <input type="radio" class="form-check-input" name="interested_in_digital_directory"
+                                    value="Yes" id="directory_yes">
+                                <label class="form-check-label" for="directory_yes">Yes</label>
+                            </div>
+
+                            <div class="form-check">
+                                <input type="radio" class="form-check-input" name="interested_in_digital_directory"
+                                    value="No" id="directory_no">
+                                <label class="form-check-label" for="directory_no">No</label>
+                            </div>
+
+
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input skip-logic" id="skip-directory"
+                                onclick="handleSkip(this, 35, 'adult')">
+                            <label class="form-check-label text-muted" for="skip-directory italic">
+                                Not Willing To Disclose
+                            </label>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-light" onclick="prevStep(35, 'adult')">Back</button>
+                            <button type="button" class="btn btn-primary" onclick="nextStep(35, 'adult')">Next</button>
+                        </div>
+                    </div>
+
+                    <div class="form-step d-none" id="adult-step36">
+                        <div class="mb-3">
+                            <label class="form-label">Int. in Listing in Community Digital Yellow Pages</label><br>
+
+                            <div class="form-check mb-2">
+                                <input type="checkbox" class="form-check-input"
+                                    name="listing_in_community_digital_pages" value="Yes" id="listing_yes">
+                                <label class="form-check-label" for="listing_yes">Yes</label>
+                            </div>
+
+                            <div class="form-check mb-2">
+                                <input type="checkbox" class="form-check-input"
+                                    name="listing_in_community_digital_pages" value="No" id="listing_no">
+                                <label class="form-check-label" for="listing_no">No</label>
+                            </div>
+
+
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input skip-logic" id="skip-yellowpages"
+                                onclick="handleSkip(this, 36, 'adult')">
+                            <label class="form-check-label text-muted" for="skip-yellowpages italic">
+                                Not Willing To Disclose
+                            </label>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-light" onclick="prevStep(36, 'adult')">Back</button>
+                            <button type="button" class="btn btn-primary" onclick="nextStep(36, 'adult')">Next</button>
+                        </div>
+                    </div>
+
+                    <div class="form-step d-none" id="adult-step37">
+                        <div class="mb-3">
+                            <label class="form-label">Product/Service Listing in Yellow Pages</label><br>
+                            <input type="text" name="yellowpages" class="form-control">
+
+
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input skip-logic" id="skip-yellowpages-final"
+                                onclick="handleSkip(this, 37, 'adult')">
+                            <label class="form-check-label text-muted" for="skip-yellowpages-final italic">
+                                Not Willing To Disclose
+                            </label>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-light" onclick="prevStep(37, 'adult')">Back</button>
+                            <button type="button" class="btn btn-primary" onclick="nextStep(37, 'adult')">Next</button>
+                        </div>
+                    </div>
+
+                    <div class="form-step d-none" id="adult-step38">
+                        <div class="mb-3">
+                            <label class="form-label">Take Photo</label>
+                            <input type="file" name="photo" id="cameraInput" class="form-control" accept="image/*"
+                                capture="camera">
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input skip-logic" id="skip-photo"
+                                onclick="handleSkip(this, 38, 'adult')">
+                            <label class="form-check-label text-muted" for="skip-photo italic">
+                                Not Willing To Disclose
+                            </label>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-light" onclick="prevStep(38, 'adult')">Back</button>
+                            <button type="button" class="btn btn-success" onclick="directSubmit('adultUpdateForm')">Submit</button>
+                        </div>
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="studentModal" tabindex="-1">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">Add Member Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" onclick="location.reload()"></button>
+            </div>
+
+            <div class="modal-body">
+
+                <form id="studentUpdateForm" method="POST" action="" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <!-- STEP 1 -->
+                    <div class="form-step" id="student-step1">
+                        <div class="mb-3">
+                            <label class="form-label">Full Name</label>
+                            <input type="text" name="name" class="form-control">
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input skip-logic" id="skip-name"
+                                onclick="handleSkip(this, 1, 'student')">
+                            <label class="form-check-label text-muted" for="skip-name italic">
+                                Not Willing To Disclose
+                            </label>
+                        </div>
+
+                        <div class="d-flex justify-content-end">
+                            <button type="button" class="btn btn-primary" onclick="nextStep(1, 'student')">
+                                Next
+                            </button>
+                        </div>
+                    </div>
+
+
+                    <!-- STEP 2 -->
+                    <div class="form-step d-none" id="student-step2">
+
+                        <div class="mb-3">
+                            <label class="form-label">Aadhar Number</label>
+                            <input type="text" name="aadhaar_number" class="form-control"
+                                placeholder="Enter AADHAAR number">
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input skip-logic" id="skip-aadhaar"
+                                onclick="handleSkip(this, 2, 'student')">
+                            <label class="form-check-label text-muted" for="skip-aadhaar italic">
+                                Not Willing To Disclose
+                            </label>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-light me-2"
+                                onclick="prevStep(2, 'student')">Back</button>
+                            <button type="button" class="btn btn-primary" onclick="nextStep(2, 'student')">Next</button>
+                        </div>
+                    </div>
+
+                    <div class="form-step d-none" id="student-step3">
+                        <div class="mb-3">
+                            <label class="form-label">Relationship to Head</label>
+                            <select name="relationship" class="form-control">
+                                <option value="">Select</option>
+                                {% for r in relationships %}
+                                <option value="{{ r.id }}">{{ r.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input skip-logic" id="skip-relationship"
+                                onclick="handleSkip(this, 3, 'student')">
+                            <label class="form-check-label text-muted" for="skip-relationship italic">
+                                Not Willing To Disclose
+                            </label>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-light me-2"
+                                onclick="prevStep(3, 'student')">Back</button>
+                            <button type="button" class="btn btn-primary" onclick="nextStep(3, 'student')">Next</button>
+                        </div>
+                    </div>
+
+
+
+
+                    <div class="form-step d-none" id="student-step4">
+                        <div class="mb-3">
+                            <label class="form-label">Alias</label>
+                            <input type="text" name="alias" class="form-control">
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input skip-logic" id="skip-alias"
+                                onclick="handleSkip(this, 4, 'student')">
+                            <label class="form-check-label text-muted" for="skip-alias italic">
+                                Not Willing To Disclose
+                            </label>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-light me-2"
+                                onclick="prevStep(4, 'student')">Back</button>
+                            <button type="button" class="btn btn-primary" onclick="nextStep(4, 'student')">Next</button>
+                        </div>
+                    </div>
+
+                    <div class="form-step d-none" id="student-step5">
+                        <div class="mb-3">
+                            <label class="form-label">Father's Name</label>
+                            <input type="text" name="father_name" class="form-control">
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input skip-logic" id="skip-father"
+                                onclick="handleSkip(this, 5, 'student')">
+                            <label class="form-check-label text-muted" for="skip-father italic">
+                                Not Willing To Disclose
+                            </label>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-light" onclick="prevStep(5, 'student')">Back</button>
+                            <button type="button" class="btn btn-primary" onclick="nextStep(5, 'student')">Next</button>
+                        </div>
+                    </div>
+
+                    <div class="form-step d-none" id="student-step6">
+                        <div class="mb-3">
+                            <label class="form-label">Gender</label><br>
+                            <input type="radio" name="gender" value="Male"> Male
+                            <input type="radio" name="gender" value="Female"> Female
+                            <input type="radio" name="gender" value="Others"> Others
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input skip-logic" id="skip-gender"
+                                onclick="handleSkip(this, 6, 'student')">
+                            <label class="form-check-label text-muted" for="skip-gender italic">
+                                Not Willing To Disclose
+                            </label>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-light me-2"
+                                onclick="prevStep(6, 'student')">Back</button>
+                            <button type="button" class="btn btn-primary" onclick="nextStep(6, 'student')">Next</button>
+                        </div>
+                    </div>
+
+                    <div class="form-step d-none" id="student-step7">
+                        <div class="mb-3">
+                            <label class="form-label">Date of Birth</label>
+                            <input type="date" name="date_of_birth" class="form-control">
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input skip-logic" id="skip-dob"
+                                onclick="handleSkip(this, 7, 'student')">
+                            <label class="form-check-label text-muted" for="skip-dob italic">
+                                Not Willing To Disclose
+                            </label>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-light" onclick="prevStep(7, 'student')">Back</button>
+                            <button type="button" class="btn btn-primary" onclick="nextStep(7, 'student')">Next</button>
+                        </div>
+                    </div>
+
+                    <div class="form-step d-none" id="student-step8">
+                        <div class="mb-3">
+                            <label class="form-label">Current Education Status</label><br>
+                            <input type="radio" name="current_education_status" value="School"> School
+                            <input type="radio" name="current_education_status" value="College"> College
+                            <input type="radio" name="current_education_status" value="None"> None
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input skip-logic" id="skip-education"
+                                onclick="handleSkip(this, 8, 'student')">
+                            <label class="form-check-label text-muted" for="skip-education italic">
+                                Not Willing To Disclose
+                            </label>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-light" onclick="prevStep(8, 'student')">Back</button>
+                            <button type="button" class="btn btn-primary" onclick="nextStep(8, 'student')">Next</button>
+                        </div>
+                    </div>
+
+
+                    <div class="form-step d-none" id="student-step9">
+                        <div class="mb-3">
+                            <label class="form-label">School / College / Institute Name</label>
+                            <input type="text" name="school_college_institute_name" class="form-control">
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input skip-logic" id="skip-school"
+                                onclick="handleSkip(this, 9, 'student')">
+                            <label class="form-check-label text-muted" for="skip-school italic">
+                                Not Willing To Disclose
+                            </label>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-light" onclick="prevStep(9, 'student')">Back</button>
+                            <button type="button" class="btn btn-primary" onclick="nextStep(9, 'student')">Next</button>
+                        </div>
+                    </div>
+
+
+                    <div class="form-step d-none" id="student-step10">
+                        <div class="mb-3">
+                            <label class="form-label">Grade / Year</label>
+                            <select name="grade_year" class="form-control">
+                                <option value="">Select Grade / Year</option>
+                                {% for g in grades %}
+                                <option value="{{ g.name }}">{{ g.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input skip-logic" id="skip-grade"
+                                onclick="handleSkip(this, 10, 'student')">
+                            <label class="form-check-label text-muted" for="skip-grade italic">
+                                Not Willing To Disclose
+                            </label>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-light" onclick="prevStep(10, 'student')">Back</button>
+                            <button type="button" class="btn btn-primary"
+                                onclick="nextStep(10, 'student')">Next</button>
+                        </div>
+                    </div>
+
+                    <div class="form-step d-none" id="student-step11">
+                        <div class="mb-3">
+                            <label class="form-label">Annual Academic Fees</label>
+                            <input type="text" name="annual_academic_fees" class="form-control">
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input skip-logic" id="skip-fees"
+                                onclick="handleSkip(this, 11, 'student')">
+                            <label class="form-check-label text-muted" for="skip-fees italic">
+                                Not Willing To Disclose
+                            </label>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-light" onclick="prevStep(11, 'student')">Back</button>
+                            <button type="button" class="btn btn-primary"
+                                onclick="nextStep(11, 'student')">Next</button>
+                        </div>
+                    </div>
+
+                    <div class="form-step d-none" id="student-step12">
+                        <div class="mb-3">
+                            <label class="form-label">Fees Payment</label>
+                            <select name="fees_payment" class="form-control">
+                                <option value="Self Financed">Self Financed</option>
+                                <option value="Scholarship">Scholarship</option>
+                                <option value="Sponsorship">Sponsorship</option>
+                                <option value="Govt. Schemes">Govt. Schemes</option>
+                            </select>
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input skip-logic" id="skip-payment"
+                                onclick="handleSkip(this, 12, 'student')">
+                            <label class="form-check-label text-muted" for="skip-payment italic">
+                                Not Willing To Disclose
+                            </label>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-light" onclick="prevStep(12, 'student')">Back</button>
+                            <button type="button" class="btn btn-primary"
+                                onclick="nextStep(12, 'student')">Next</button>
+                        </div>
+                    </div>
+
+                    <div class="form-step d-none" id="student-step13">
+                        <div class="mb-3">
+                            <label class="form-label">Languages (Speak)</label><br>
+                            {% for l in languages %}
+                            <input type="checkbox" name="languages_speak" value="{{ l.name }}"> {{ l.name }}
+                            {% endfor %}
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input skip-logic" id="skip-languages"
+                                onclick="handleSkip(this, 13, 'student')">
+                            <label class="form-check-label text-muted" for="skip-languages italic">
+                                Not Willing To Disclose
+                            </label>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-light" onclick="prevStep(13, 'student')">Back</button>
+                            <button type="button" class="btn btn-primary"
+                                onclick="nextStep(13, 'student')">Next</button>
+                        </div>
+                    </div>
+
+
+                    <div class="form-step d-none" id="student-step14">
+                        <div class="mb-3">
+                            <label class="form-label">Languages (Read)</label><br>
+                            {% for l in languages %}
+                            <input type="checkbox" name="languages_read" value="{{ l.name }}"> {{ l.name }}
+                            {% endfor %}
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input skip-logic" id="skip-languages-read"
+                                onclick="handleSkip(this, 14, 'student')">
+                            <label class="form-check-label text-muted" for="skip-languages-read italic">
+                                Not Willing To Disclose
+                            </label>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-light" onclick="prevStep(14, 'student')">Back</button>
+                            <button type="button" class="btn btn-primary"
+                                onclick="nextStep(14, 'student')">Next</button>
+                        </div>
+                    </div>
+
+                    <div class="form-step d-none" id="student-step15">
+                        <div class="mb-3">
+                            <label class="form-label">Languages (Write)</label><br>
+                            {% for l in languages %}
+                            <input type="checkbox" name="languages_write" value="{{ l.name }}"> {{ l.name }}
+                            {% endfor %}
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input skip-logic" id="skip-languages-write"
+                                onclick="handleSkip(this, 15, 'student')">
+                            <label class="form-check-label text-muted" for="skip-languages-write italic">
+                                Not Willing To Disclose
+                            </label>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-light" onclick="prevStep(15, 'student')">Back</button>
+                            <button type="button" class="btn btn-primary"
+                                onclick="nextStep(15, 'student')">Next</button>
+                        </div>
+                    </div>
+
+                    <div class="form-step d-none" id="student-step16">
+                        <div class="mb-3">
+                            <label class="form-label">Computer Proficiency</label><br>
+                            <input type="radio" name="computer_proficiency" value="None"> None
+                            <input type="radio" name="computer_proficiency" value="Basic"> Basic
+                            <input type="radio" name="computer_proficiency" value="Average"> Average
+                            <input type="radio" name="computer_proficiency" value="Good"> Good
+                            <input type="radio" name="computer_proficiency" value="Expert"> Expert
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input skip-logic" id="skip-computer"
+                                onclick="handleSkip(this, 16, 'student')">
+                            <label class="form-check-label text-muted" for="skip-computer italic">
+                                Not Willing To Disclose
+                            </label>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-light" onclick="prevStep(16, 'student')">Back</button>
+                            <button type="button" class="btn btn-primary"
+                                onclick="nextStep(16, 'student')">Next</button>
+                        </div>
+                    </div>
+
+                    <div class="form-step d-none" id="student-step17">
+                        <div class="mb-3">
+                            <label class="form-label">Sports</label>
+                            <select name="sports" class="form-control">
+                                <option value="">Select Sports</option>
+                                {% for s in sports %}
+                                <option value="{{ s.name }}">{{ s.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input skip-logic" id="skip-sports"
+                                onclick="handleSkip(this, 17, 'student')">
+                            <label class="form-check-label text-muted" for="skip-sports italic">
+                                Not Willing To Disclose
+                            </label>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-light" onclick="prevStep(17, 'student')">Back</button>
+                            <button type="button" class="btn btn-primary"
+                                onclick="nextStep(17, 'student')">Next</button>
+                        </div>
+                    </div>
+
+                    <div class="form-step d-none" id="student-step18">
+                        <div class="mb-3">
+                            <label class="form-label">Hobbies</label>
+                            <input type="text" name="hobbies" class="form-control">
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input skip-logic" id="skip-hobbies"
+                                onclick="handleSkip(this, 18, 'student')">
+                            <label class="form-check-label text-muted" for="skip-hobbies italic">
+                                Not Willing To Disclose
+                            </label>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-light" onclick="prevStep(18, 'student')">Back</button>
+                            <button type="button" class="btn btn-primary"
+                                onclick="nextStep(18, 'student')">Next</button>
+                        </div>
+                    </div>
+
+                    <div class="form-step d-none" id="student-step19">
+                        <div class="mb-3">
+                            <label class="form-label">Career Goal</label>
+                            <input type="text" name="career_goal" class="form-control">
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input skip-logic" id="skip-career"
+                                onclick="handleSkip(this, 19, 'student')">
+                            <label class="form-check-label text-muted" for="skip-career italic">
+                                Not Willing To Disclose
+                            </label>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-light" onclick="prevStep(19, 'student')">Back</button>
+                            <button type="button" class="btn btn-primary"
+                                onclick="nextStep(19, 'student')">Next</button>
+                        </div>
+                    </div>
+
+                    <div class="form-step d-none" id="student-step20">
+                        <div class="mb-3">
+                            <label class="form-label">Holy Quran Reading</label><br>
+                            <input type="radio" name="holy_koran_reading" value="Yes"> Yes
+                            <input type="radio" name="holy_koran_reading" value="No"> No
+                            <input type="radio" name="holy_koran_reading" value="Learning"> Learning
+
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input skip-logic" id="skip-koran"
+                                onclick="handleSkip(this, 20, 'student')">
+                            <label class="form-check-label text-muted" for="skip-koran italic">
+                                Not Willing To Disclose
+                            </label>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-light" onclick="prevStep(20, 'student')">Back</button>
+                            <button type="button" class="btn btn-primary"
+                                onclick="nextStep(20, 'student')">Next</button>
+                        </div>
+                    </div>
+
+
+
+                    <div class="form-step d-none" id="student-step21">
+                        <div class="mb-3">
+                            <label class="form-label">Deeniyath</label><br>
+                            <input type="radio" name="deeniyath" value="Yes"> Yes
+                            <input type="radio" name="deeniyath" value="No"> No
+                            <input type="radio" name="deeniyath" value="Learning"> Learning
+
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input skip-logic" id="skip-deeniyath"
+                                onclick="handleSkip(this, 21, 'student')">
+                            <label class="form-check-label text-muted" for="skip-deeniyath italic">
+                                Not Willing To Disclose
+                            </label>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-light" onclick="prevStep(21, 'student')">Back</button>
+                            <button type="button" class="btn btn-primary"
+                                onclick="nextStep(21, 'student')">Next</button>
+                        </div>
+                    </div>
+
+
+                    <div class="form-step d-none" id="student-step22">
+                        <div class="mb-3">
+                            <label class="form-label">Blood Group</label><br>
+                            {% for b in bloodgroups %}
+                            <label class="me-3">
+                                <input type="radio" name="blood_group" value="{{ b.id }}"> {{ b.name }}
+                            </label>
+                            {% endfor %}
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input skip-logic" id="skip-blood"
+                                onclick="handleSkip(this, 22, 'student')">
+                            <label class="form-check-label text-muted" for="skip-blood italic">
+                                Not Willing To Disclose
+                            </label>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-light" onclick="prevStep(22, 'student')">Back</button>
+                            <button type="button" class="btn btn-primary"
+                                onclick="nextStep(22, 'student')">Next</button>
+                        </div>
+                    </div>
+
+                    <div class="form-step d-none" id="student-step23">
+                        <div class="mb-3">
+                            <label class="form-label">Overall Health</label>
+                            <select name="overall_health" class="form-control">
+                                <option value="">Select</option>
+                                {% for h in healths %}
+                                <option value="{{ h.id }}">{{ h.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input skip-logic" id="skip-health"
+                                onclick="handleSkip(this, 23, 'student')">
+                            <label class="form-check-label text-muted" for="skip-health italic">
+                                Not Willing To Disclose
+                            </label>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-light" onclick="prevStep(23, 'student')">Back</button>
+                            <button type="button" class="btn btn-primary"
+                                onclick="nextStep(23, 'student')">Next</button>
+                        </div>
+                    </div>
+
+                    <div class="form-step d-none" id="student-step24">
+                        <div class="mb-3">
+                            <label class="form-label">Do you currently suffer from any chronic diseases?</label>
+                            <select name="chronic_disease" class="form-control">
+                                <option value="">Select</option>
+                                {% for c in diseases %}
+                                <option value="{{ c.id }}">{{ c.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input skip-logic" id="skip-chronic"
+                                onclick="handleSkip(this, 24, 'student')">
+                            <label class="form-check-label text-muted" for="skip-chronic italic">
+                                Not Willing To Disclose
+                            </label>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-light" onclick="prevStep(24, 'student')">Back</button>
+                            <button type="button" class="btn btn-primary"
+                                onclick="nextStep(24, 'student')">Next</button>
+                        </div>
+                    </div>
+
+                    <div class="form-step d-none" id="student-step25">
+                        <div class="mb-3">
+                            <label class="form-label">Disabilities</label>
+                            <select name="disability" class="form-control">
+                                <option value="None">None</option>
+                                <option value="Yes">Yes</option>
+                                <option value="Not willing to disclose">Not willing to disclose</option>
+                            </select>
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input skip-logic" id="skip-disability"
+                                onclick="handleSkip(this, 25, 'student')">
+                            <label class="form-check-label text-muted" for="skip-disability italic">
+                                Not Willing To Disclose
+                            </label>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-light" onclick="prevStep(25, 'student')">Back</button>
+                            <button type="button" class="btn btn-primary"
+                                onclick="nextStep(25, 'student')">Next</button>
+                        </div>
+                    </div>
+
+                    <div class="form-step d-none" id="student-step26">
+                        <div class="mb-3">
+                            <label class="form-label">Govt. Health Insurance Cover</label><br>
+                            <input type="radio" name="govt_ins" value="Yes"> Yes
+                            <input type="radio" name="govt_ins" value="No"> No
+
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input skip-logic" id="skip-govt-ins"
+                                onclick="handleSkip(this, 26, 'student')">
+                            <label class="form-check-label text-muted" for="skip-govt-ins italic">
+                                Not Willing To Disclose
+                            </label>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-light" onclick="prevStep(26, 'student')">Back</button>
+                            <button type="button" class="btn btn-primary"
+                                onclick="nextStep(26, 'student')">Next</button>
+                        </div>
+                    </div>
+
+
+                    <div class="form-step d-none" id="student-step27">
+                        <div class="mb-3">
+                            <label class="form-label">Private Health Insurance Cover</label><br>
+                            <input type="radio" name="private_ins" value="Yes"> Yes
+                            <input type="radio" name="private_ins" value="No"> No
+
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input skip-logic" id="skip-private-ins"
+                                onclick="handleSkip(this, 27, 'student')">
+                            <label class="form-check-label text-muted" for="skip-private-ins italic">
+                                Not Willing To Disclose
+                            </label>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-light" onclick="prevStep(27, 'student')">Back</button>
+                            <button type="button" class="btn btn-primary"
+                                onclick="nextStep(27, 'student')">Next</button>
+                        </div>
+                    </div>
+
+
+                    <div class="form-step d-none" id="student-step28">
+                        <div class="mb-3">
+                            <label class="form-label">Photo</label>
+                            <input type="file" name="photo" class="form-control">
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input skip-logic" id="skip-photo"
+                                onclick="handleSkip(this, 28, 'student')">
+                            <label class="form-check-label text-muted" for="skip-photo italic">
+                                Not Willing To Disclose
+                            </label>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-light" onclick="prevStep(28, 'student')">Back</button>
+                            <button type="button" class="btn btn-success" onclick="directSubmit('studentUpdateForm')">Submit</button>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="infantModal" tabindex="-1">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Member Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" onclick="location.reload()"></button>
+            </div>
+
+            <div class="modal-body">
+                <form id="infantUpdateForm" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <div class="form-step" id="infant-step1">
+                        <div class="mb-3">
+                            <label class="form-label">Full Name</label>
+                            <input type="text" class="form-control" name="name">
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input skip-logic" id="skip-name"
+                                onclick="handleSkip(this, 1, 'infant')">
+                            <label class="form-check-label text-muted" for="skip-name italic">
+                                Not Willing To Disclose
+                            </label>
+                        </div>
+
+                        <div class="d-flex justify-content-end">
+                            <button type="button" class="btn btn-primary" onclick="nextStep(1, 'infant')">Next</button>
+                        </div>
+                    </div>
+
+                    <div class="form-step d-none" id="infant-step2">
+                        <div class="mb-3">
+                            <label class="form-label">Relationship to Head</label>
+                            <select name="relationship" class="form-control">
+                                <option value="">Select</option>
+                                {% for r in relationships %}
+                                <option value="{{ r.id }}">{{ r.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input skip-logic" id="skip-relationship"
+                                onclick="handleSkip(this, 2, 'infant')">
+                            <label class="form-check-label text-muted" for="skip-relationship italic">
+                                Not Willing To Disclose
+                            </label>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-light me-2"
+                                onclick="prevStep(2, 'infant')">Back</button>
+                            <button type="button" class="btn btn-primary" onclick="nextStep(2, 'infant')">Next</button>
+                        </div>
+                    </div>
+
+                    <div class="form-step d-none" id="infant-step3">
+                        <div class="mb-3">
+                            <label class="form-label">Alias</label>
+                            <input type="text" class="form-control" name="alias">
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input skip-logic" id="skip-alias"
+                                onclick="handleSkip(this, 3, 'infant')">
+                            <label class="form-check-label text-muted" for="skip-alias italic">
+                                Not Willing To Disclose
+                            </label>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-light me-2"
+                                onclick="prevStep(3, 'infant')">Back</button>
+                            <button type="button" class="btn btn-primary" onclick="nextStep(3, 'infant')">Next</button>
+                        </div>
+                    </div>
+
+                    <div class="form-step d-none" id="infant-step4">
+                        <div class="mb-3">
+                            <label class="form-label">Father's Name</label>
+                            <input type="text" class="form-control" name="father_name">
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input skip-logic" id="skip-father"
+                                onclick="handleSkip(this, 4, 'infant')">
+                            <label class="form-check-label text-muted" for="skip-father italic">
+                                Not Willing To Disclose
+                            </label>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-light me-2"
+                                onclick="prevStep(4, 'infant')">Back</button>
+                            <button type="button" class="btn btn-primary" onclick="nextStep(4, 'infant')">Next</button>
+                        </div>
+                    </div>
+
+                    <div class="form-step d-none" id="infant-step5">
+                        <div class="mb-3">
+                            <label class="form-label">Gender</label><br>
+                            <input type="radio" name="gender" value="Male"> Male
+                            <input type="radio" name="gender" value="Female"> Female
+                            <input type="radio" name="gender" value="Others"> Others
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input skip-logic" id="skip-gender"
+                                onclick="handleSkip(this, 5, 'infant')">
+                            <label class="form-check-label text-muted" for="skip-gender italic">
+                                Not Willing To Disclose
+                            </label>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-light" onclick="prevStep(5, 'infant')">Back</button>
+                            <button type="button" class="btn btn-primary" onclick="nextStep(5, 'infant')">Next</button>
+                        </div>
+                    </div>
+
+                    <div class="form-step d-none" id="infant-step6">
+                        <div class="mb-3">
+                            <label class="form-label">Date of Birth</label>
+                            <input type="date" class="form-control" name="date_of_birth">
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input skip-logic" id="skip-dob"
+                                onclick="handleSkip(this, 6, 'infant')">
+                            <label class="form-check-label text-muted" for="skip-dob italic">
+                                Not Willing To Disclose
+                            </label>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-light me-2"
+                                onclick="prevStep(6, 'infant')">Back</button>
+                            <button type="button" class="btn btn-primary" onclick="nextStep(6, 'infant')">Next</button>
+                        </div>
+                    </div>
+
+                    <div class="form-step d-none" id="infant-step7">
+                        <div class="mb-3">
+                            <label class="form-label">Blood Group</label>
+                            <div>
+                                {% for b in bloodgroups %}
+                                <label class="me-3">
+                                    <input type="radio" name="blood_group" value="{{ b.id }}"> {{ b.name }}
+                                </label>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input skip-logic" id="skip-blood"
+                                onclick="handleSkip(this, 7, 'infant')">
+                            <label class="form-check-label text-muted" for="skip-blood italic">
+                                Not Willing To Disclose
+                            </label>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-light" onclick="prevStep(7, 'infant')">Back</button>
+                            <button type="button" class="btn btn-primary" onclick="nextStep(7, 'infant')">Next</button>
+                        </div>
+                    </div>
+
+                    <div class="form-step d-none" id="infant-step8">
+                        <div class="mb-3">
+                            <label class="form-label">Overall Health</label>
+                            <select name="overall_health" class="form-control">
+                                <option value="">Select</option>
+                                {% for h in healths %}
+                                <option value="{{ h.id }}">{{ h.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input skip-logic" id="skip-health"
+                                onclick="handleSkip(this, 8, 'infant')">
+                            <label class="form-check-label text-muted" for="skip-health italic">
+                                Not Willing To Disclose
+                            </label>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-light" onclick="prevStep(8, 'infant')">Back</button>
+                            <button type="button" class="btn btn-primary" onclick="nextStep(8, 'infant')">Next</button>
+                        </div>
+                    </div>
+
+                    <div class="form-step d-none" id="infant-step9">
+                        <div class="mb-3">
+                            <label class="form-label">Govt. Health Insurance Cover</label><br>
+                            <input type="radio" name="govt_ins" value="Yes"> Yes
+                            <input type="radio" name="govt_ins" value="No"> No
+                            <input type="radio" name="govt_ins" value="Not willing"> Not willing to disclose
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input skip-logic" id="skip-govt-ins"
+                                onclick="handleSkip(this, 9, 'infant')">
+                            <label class="form-check-label text-muted" for="skip-govt-ins italic">
+                                Not Willing To Disclose
+                            </label>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-light" onclick="prevStep(9, 'infant')">Back</button>
+                            <button type="button" class="btn btn-primary" onclick="nextStep(9, 'infant')">Next</button>
+                        </div>
+                    </div>
+
+                    <div class="form-step d-none" id="infant-step10">
+                        <div class="mb-3">
+                            <label class="form-label">Private Health Insurance Cover</label><br>
+                            <input type="radio" name="private_ins" value="Yes"> Yes
+                            <input type="radio" name="private_ins" value="No"> No
+                            <input type="radio" name="private_ins" value="Not willing"> Not willing to disclose
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input skip-logic" id="skip-private-ins"
+                                onclick="handleSkip(this, 10, 'infant')">
+                            <label class="form-check-label text-muted" for="skip-private-ins italic">
+                                Not Willing To Disclose
+                            </label>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-light" onclick="prevStep(10, 'infant')">Back</button>
+                            <button type="button" class="btn btn-primary" onclick="nextStep(10, 'infant')">Next</button>
+                        </div>
+                    </div>
+
+                    <div class="form-step d-none" id="infant-step11">
+                        <div class="mb-3">
+                            <label class="form-label">Photo</label>
+                            <input type="file" class="form-control" name="photo">
+                        </div>
+
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input skip-logic" id="skip-photo"
+                                onclick="handleSkip(this, 11, 'infant')">
+                            <label class="form-check-label text-muted" for="skip-photo italic">
+                                Not Willing To Disclose
+                            </label>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-light" onclick="prevStep(11, 'infant')">Back</button>
+                            <button type="button" class="btn btn-success" onclick="directSubmit('infantUpdateForm')">Update Baby Details</button>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function isStepValid(current, type) {
+        const stepDiv = document.getElementById(type + "-step" + current);
+        if (!stepDiv) return true;
+
+        // Clear existing errors
+        stepDiv.querySelectorAll('.v-error-msg').forEach(el => el.remove());
+
+        const skipCheckbox = stepDiv.querySelector('.skip-logic');
+        if (skipCheckbox && skipCheckbox.checked) return true;
+
+        const inputs = stepDiv.querySelectorAll('input:not(.skip-logic), select, textarea');
+        if (inputs.length === 0) return true;
+
+        // Group inputs by name
+        const groups = {};
+        inputs.forEach(input => {
+            if (!input.name) return;
+            if (!groups[input.name]) groups[input.name] = [];
+            groups[input.name].push(input);
+        });
+
+        let allFilled = true;
+        for (const name in groups) {
+            const group = groups[name];
+            let isFilled = false;
+
+            group.forEach(input => {
+                if (input.type === 'radio' || input.type === 'checkbox') {
+                    if (input.checked) isFilled = true;
+                } else if (input.type === 'file') {
+                    if (input.files.length > 0) isFilled = true;
+                } else {
+                    if (input.value && input.value.trim() !== "" && input.value !== "Not Willing") {
+                        isFilled = true;
+                    }
+                }
+            });
+
+            if (!isFilled) {
+                const firstInput = group[0];
+                const parent = firstInput.closest('.mb-3') || firstInput.closest('.col-xl-4') || firstInput.parentElement;
+
+                let errorMsg = document.createElement('div');
+                errorMsg.className = 'v-error-msg text-danger small mt-1 fw-bold';
+                errorMsg.innerText = "Fill this field or select 'Not Willing To Disclose'";
+                parent.appendChild(errorMsg);
+
+                allFilled = false;
+            }
+        }
+
+        return allFilled;
+    }
+
+    async function saveMemberData(form, isFinal = false) {
+        if (!form || !form.action) return;
+        const formData = new FormData(form);
+        if (isFinal) {
+            formData.append('is_final', 'True');
+        }
+
+        try {
+            const response = await fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRFToken': form.querySelector('[name=csrfmiddlewaretoken]').value
+                }
+            });
+            return await response.json();
+        } catch (error) {
+            console.error('Auto-save error:', error);
+        }
+    }
+
+    function nextStep(current, type) {
+        if (!isStepValid(current, type)) {
+            return;
+        }
+
+        // Auto-save the current form state before moving
+        const form = document.querySelector(`#${type}UpdateForm`);
+        if (form) {
+            saveMemberData(form, false);
+        }
+
+        document.getElementById(type + "-step" + current)
+            .classList.add("d-none");
+
+        const next = document.getElementById(type + "-step" + (current + 1));
+
+        if (next) {
+            next.classList.remove("d-none");
+        }
+    }
+
+    function prevStep(current, type) {
+        const stepDiv = document.getElementById(type + "-step" + current);
+        if (stepDiv) {
+            stepDiv.querySelectorAll('.v-error-msg').forEach(el => el.remove());
+            stepDiv.classList.add("d-none");
+        }
+
+        const prev = document.getElementById(type + "-step" + (current - 1));
+
+        if (prev) {
+            prev.classList.remove("d-none");
+        }
+    }
+
+    // Direct submit — skips all validation, saves whatever is filled
+    function directSubmit(formId) {
+        const form = document.getElementById(formId);
+        if (!form) return;
+
+        // Mark as final submission
+        let finalInput = form.querySelector('input[name="is_final"]');
+        if (!finalInput) {
+            finalInput = document.createElement('input');
+            finalInput.type = 'hidden';
+            finalInput.name = 'is_final';
+            form.appendChild(finalInput);
+        }
+        finalInput.value = 'True';
+
+        // Submit the form directly, bypassing any event listener validation
+        HTMLFormElement.prototype.submit.call(form);
+    }
+
+    // Add submit validation for all steps (Next button only, not final Submit)
+    document.addEventListener('DOMContentLoaded', function () {
+        ['adultUpdateForm', 'studentUpdateForm', 'infantUpdateForm'].forEach(formId => {
+            const form = document.getElementById(formId);
+            if (form) {
+                form.addEventListener('submit', function (e) {
+                    const activeStep = form.querySelector('.form-step:not(.d-none)');
+                    if (activeStep) {
+                        const stepIdAttr = activeStep.id.match(/\d+$/);
+                        const typeAttr = activeStep.id.match(/^[a-z]+/);
+                        if (stepIdAttr && typeAttr) {
+                            if (!isStepValid(parseInt(stepIdAttr[0]), typeAttr[0])) {
+                                e.preventDefault();
+                                return;
+                            }
+                        }
+                    }
+
+                    // Add a hidden input to mark this as the final submission
+                    let finalInput = form.querySelector('input[name="is_final"]');
+                    if (!finalInput) {
+                        finalInput = document.createElement('input');
+                        finalInput.type = 'hidden';
+                        finalInput.name = 'is_final';
+                        form.appendChild(finalInput);
+                    }
+                    finalInput.value = 'True';
+                });
+            }
+        });
+
+        // Reload page when any modal is closed (X button or backdrop click)
+        ['adultModal', 'studentModal', 'infantModal'].forEach(modalId => {
+            const modalEl = document.getElementById(modalId);
+            if (modalEl) {
+                modalEl.addEventListener('hidden.bs.modal', function () {
+                    location.reload();
+                });
+            }
+        });
+    });
+</script>
+<script>
+    document.querySelectorAll(".edit-member").forEach(btn => {
+        btn.addEventListener("click", function () {
+            const memberId = this.dataset.id;
+            const targetSelector = this.getAttribute('data-bs-target');
+            const activeModal = document.querySelector(targetSelector);
+            const form = activeModal ? activeModal.querySelector('form') : null;
+
+            if (form) {
+                // Set Modal Title to Member Name + " Details"
+                const memberName = this.dataset.name || "Member";
+                const modalTitle = activeModal.querySelector('.modal-title');
+                if (modalTitle) {
+                    modalTitle.textContent = `${memberName} Details`;
+                }
+
+                // Set the dynamic URL for the update view
+                form.action = `/update-member/${memberId}/`;
+
+                // Clear previous selections and errors
+                form.querySelectorAll('input[type="radio"], input[type="checkbox"]').forEach(el => el.checked = false);
+                form.querySelectorAll('.v-error-msg').forEach(el => el.remove());
+                form.querySelectorAll('.skip-logic').forEach(el => el.checked = false);
+
+                // Map all data attributes to form fields
+                Object.keys(this.dataset).forEach(key => {
+                    const value = this.dataset[key];
+                    if (value === "" || value === "None") return;
+
+                    const inputs = form.querySelectorAll(`[name="${key}"]`);
+
+                    inputs.forEach(input => {
+                        if (input.type === "radio") {
+                            if (input.value === value) input.checked = true;
+                        }
+                        else if (input.type === "checkbox") {
+                            if (value.split(',').includes(input.value) || value === "on" || value === "True") {
+                                input.checked = true;
+                            }
+                        }
+                        else if (input.tagName === "SELECT") {
+                            // For select dropdowns, set the matching option by value (FK id)
+                            input.value = value;
+                            // If no matching option, the select stays blank — that's correct
+                        }
+                        else {
+                            input.value = value;
+                        }
+                    });
+                });
+
+                // Reset Multi-step UI to Step 1
+                form.querySelectorAll('.form-step').forEach((step, index) => {
+                    if (index === 0) step.classList.remove('d-none');
+                    else step.classList.add('d-none');
+                });
+            }
+        });
+    });
+</script>
+
+<script>
+    document.getElementById('cameraInput').addEventListener('change', function (e) {
+        const file = e.target.files[0];
+
+        if (file) {
+
+            console.log("Image captured: " + file.name);
+
+
+            if (file.size > 10 * 1024 * 1024) {
+                alert("Image is too large. Please take a simpler photo.");
+                this.value = "";
+            }
+        }
+    });
+
+
+    document.getElementById('multiStepForm').addEventListener('submit', function () {
+        setTimeout(() => {
+            document.getElementById('cameraInput').value = "";
+        }, 1000);
+    });
+</script>
+
+<script>
+    function handleSkip(checkbox, currentStep, type) {
+        if (checkbox.checked) {
+            // 1. Find the main input in this step (text, select, or radio)
+            const stepDiv = document.getElementById(type + "-step" + currentStep);
+            const inputs = stepDiv.querySelectorAll('input:not(.skip-logic), select, textarea');
+
+            inputs.forEach(input => {
+                if (input.type === 'radio' || input.type === 'checkbox') {
+                    // For radios, we can't easily set a value, so we just uncheck them 
+                    // and we will handle the "empty" case in Python
+                    input.checked = false;
+                } else {
+                    // Set text/select values to "Not Willing"
+                    input.value = "Not Willing";
+                }
+            });
+
+            // 2. Automatically move to the next step after a tiny delay
+            setTimeout(() => {
+                nextStep(currentStep, type);
+            }, 300);
+        }
+    }
+</script>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const titleCaseFields = [
+            'name', 'father_name', 'alias', 'company_name', 'industry',
+            'designation', 'department', 'skills', 'disability',
+            'activity_level', 'product_service_listing_in_yellow_pages',
+            'current_education_status', 'school_college_institute_name',
+            'hobbies', 'career_goal', 'holy_koran_reading', 'deeniyath',
+            'place_of_birth'
+        ];
+
+        document.querySelectorAll('input[type="text"]').forEach(input => {
+            if (titleCaseFields.includes(input.name)) {
+                input.addEventListener('blur', function () {
+                    if (this.value && this.value !== "Not Willing") {
+                        this.value = this.value.toLowerCase().split(' ').map(word => {
+                            return word.charAt(0).toUpperCase() + word.slice(1);
+                        }).join(' ');
+                    }
+                });
+            }
+        });
+    });
+</script>
+
+{% endblock content %}

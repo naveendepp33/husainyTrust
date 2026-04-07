@@ -1,0 +1,282 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+
+{% block content %}
+
+<main class="nxl-container">
+    <div class="nxl-content">
+        <!-- [ page-header ] start -->
+        <div class="page-header">
+            <div class="page-header-left d-flex align-items-center">
+                <div class="page-header-title">
+                    <h5 class="m-b-10">Dashboard</h5>
+                </div>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                    <li class="breadcrumb-item">Dashboard</li>
+                </ul>
+            </div>
+
+        </div>
+        <!-- [ page-header ] end -->
+        <!-- [ Main Content ] start -->
+        <div class="main-content">
+            <div class="row">
+
+                <!-- Total Family -->
+                <div class="col-xxl-3 col-md-6">
+                    <div class="card stretch stretch-full">
+                        <a href="/familylist/">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center justify-content-between">
+
+                                    <div>
+                                        <h6 class="text-muted mb-2">Total Families</h6>
+                                        <h3 class="fw-bold text-dark">125</h3>
+                                    </div>
+
+                                    <div class="avatar-text avatar-lg bg-primary-subtle text-primary">
+                                        <i class="feather-home"></i>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Total Member -->
+                <div class="col-xxl-3 col-md-6">
+                    <div class="card stretch stretch-full">
+                        <a href="/memberlist/">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center justify-content-between">
+
+                                    <div>
+                                        <h6 class="text-muted mb-2">Total Members</h6>
+                                        <h3 class="fw-bold text-dark">540</h3>
+                                    </div>
+
+                                    <div class="avatar-text avatar-lg bg-success-subtle text-success">
+                                        <i class="feather-users"></i>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Total Volunteer -->
+                <div class="col-xxl-3 col-md-6">
+                    <div class="card stretch stretch-full">
+                        <a href="/allocatelist/">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center justify-content-between">
+
+                                    <div>
+                                        <h6 class="text-muted mb-2">Total Volunteers</h6>
+                                        <h3 class="fw-bold text-dark">32</h3>
+                                    </div>
+
+                                    <div class="avatar-text avatar-lg bg-warning-subtle text-warning">
+                                        <i class="feather-user-check"></i>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Total Approved Family -->
+                <div class="col-xxl-3 col-md-6">
+                    <div class="card stretch stretch-full">
+                        <a href="/approvedfamily/">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center justify-content-between">
+
+                                    <div>
+                                        <h6 class="text-muted mb-2">Total Approved Families</h6>
+                                        <h3 class="fw-bold text-dark">98</h3>
+                                    </div>
+
+                                    <div class="avatar-text avatar-lg bg-info-subtle text-info">
+                                        <i class="feather-check-circle"></i>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- [ Main Content ] end -->
+        <div class="main-content">
+            <div class="row">
+                <div class="col-xxl-8">
+                    <div class="card stretch stretch-full">
+                        <div class="card-header">
+                            <h5 class="card-title">Census Records</h5>
+                            <div class="card-header-action">
+                                
+                                
+                            </div>
+                        </div>
+                        <div class="card-body custom-card-action p-0">
+                            <div id="payment-records-chart"></div>
+                        </div>
+                        <div class="card-footer">
+                            <div class="row g-4">
+                                <div class="col-lg-3">
+                                    <div class="p-3 border border-dashed rounded">
+                                        <div class="fs-12 text-muted mb-1">Total Census</div>
+                                        <h6 class="fw-bold text-dark">5,000</h6>
+                                        <div class="progress mt-2 ht-3">
+                                            <div class="progress-bar bg-primary" role="progressbar" style="width: 81%">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="p-3 border border-dashed rounded">
+                                        <div class="fs-12 text-muted mb-1">Approved Familys</div>
+                                        <h6 class="fw-bold text-dark">4,000</h6>
+                                        <div class="progress mt-2 ht-3">
+                                            <div class="progress-bar bg-success" role="progressbar" style="width: 82%">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="p-3 border border-dashed rounded">
+                                        <div class="fs-12 text-muted mb-1">Approved Members</div>
+                                        <h6 class="fw-bold text-dark">8000</h6>
+                                        <div class="progress mt-2 ht-3">
+                                            <div class="progress-bar bg-danger" role="progressbar" style="width: 68%">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="p-3 border border-dashed rounded">
+                                        <div class="fs-12 text-muted mb-1">Partially Filled</div>
+                                        <h6 class="fw-bold text-dark">668</h6>
+                                        <div class="progress mt-2 ht-3">
+                                            <div class="progress-bar bg-dark" role="progressbar" style="width: 75%">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xxl-4">
+                        <div class="card stretch stretch-full">
+                            <div class="card-header">
+                                <h5 class="card-title">Leads Overview</h5>
+                                <div class="card-header-action">
+                                    <div class="card-header-btn">
+                                        <div data-bs-toggle="tooltip" title="Delete">
+                                            <a href="javascript:void(0);" class="avatar-text avatar-xs bg-danger" data-bs-toggle="remove"> </a>
+                                        </div>
+                                        <div data-bs-toggle="tooltip" title="Refresh">
+                                            <a href="javascript:void(0);" class="avatar-text avatar-xs bg-warning" data-bs-toggle="refresh"> </a>
+                                        </div>
+                                        <div data-bs-toggle="tooltip" title="Maximize/Minimize">
+                                            <a href="javascript:void(0);" class="avatar-text avatar-xs bg-success" data-bs-toggle="expand"> </a>
+                                        </div>
+                                    </div>
+                                    <div class="dropdown">
+                                        <a href="javascript:void(0);" class="avatar-text avatar-sm" data-bs-toggle="dropdown" data-bs-offset="25, 25">
+                                            <div data-bs-toggle="tooltip" title="Options">
+                                                <i class="feather-more-vertical"></i>
+                                            </div>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-end">
+                                            <a href="javascript:void(0);" class="dropdown-item"><i class="feather-at-sign"></i>New</a>
+                                            <a href="javascript:void(0);" class="dropdown-item"><i class="feather-calendar"></i>Event</a>
+                                            <a href="javascript:void(0);" class="dropdown-item"><i class="feather-bell"></i>Snoozed</a>
+                                            <a href="javascript:void(0);" class="dropdown-item"><i class="feather-trash-2"></i>Deleted</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a href="javascript:void(0);" class="dropdown-item"><i class="feather-settings"></i>Settings</a>
+                                            <a href="javascript:void(0);" class="dropdown-item"><i class="feather-life-buoy"></i>Tips & Tricks</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body custom-card-action">
+                                <div id="leads-overview-donut"></div>
+                                <div class="row g-2">
+                                    <div class="col-4">
+                                        <a href="javascript:void(0);" class="p-2 hstack gap-2 rounded border border-dashed border-gray-5">
+                                            <span class="wd-7 ht-7 rounded-circle d-inline-block" style="background-color: #3454d1"></span>
+                                            <span>New<span class="fs-10 text-muted ms-1">(20K)</span></span>
+                                        </a>
+                                    </div>
+                                    <div class="col-4">
+                                        <a href="javascript:void(0);" class="p-2 hstack gap-2 rounded border border-dashed border-gray-5">
+                                            <span class="wd-7 ht-7 rounded-circle d-inline-block" style="background-color: #0d519e"></span>
+                                            <span>Contacted<span class="fs-10 text-muted ms-1">(15K)</span></span>
+                                        </a>
+                                    </div>
+                                    <div class="col-4">
+                                        <a href="javascript:void(0);" class="p-2 hstack gap-2 rounded border border-dashed border-gray-5">
+                                            <span class="wd-7 ht-7 rounded-circle d-inline-block" style="background-color: #1976d2"></span>
+                                            <span>Qualified<span class="fs-10 text-muted ms-1">(10K)</span></span>
+                                        </a>
+                                    </div>
+                                    <div class="col-4">
+                                        <a href="javascript:void(0);" class="p-2 hstack gap-2 rounded border border-dashed border-gray-5">
+                                            <span class="wd-7 ht-7 rounded-circle d-inline-block" style="background-color: #1e88e5"></span>
+                                            <span>Working<span class="fs-10 text-muted ms-1">(18K)</span></span>
+                                        </a>
+                                    </div>
+                                    <div class="col-4">
+                                        <a href="javascript:void(0);" class="p-2 hstack gap-2 rounded border border-dashed border-gray-5">
+                                            <span class="wd-7 ht-7 rounded-circle d-inline-block" style="background-color: #2196f3"></span>
+                                            <span>Customer<span class="fs-10 text-muted ms-1">(10K)</span></span>
+                                        </a>
+                                    </div>
+                                    <div class="col-4">
+                                        <a href="javascript:void(0);" class="p-2 hstack gap-2 rounded border border-dashed border-gray-5">
+                                            <span class="wd-7 ht-7 rounded-circle d-inline-block" style="background-color: #42a5f5"></span>
+                                            <span>Proposal<span class="fs-10 text-muted ms-1">(15K)</span></span>
+                                        </a>
+                                    </div>
+                                    <div class="col-4">
+                                        <a href="javascript:void(0);" class="p-2 hstack gap-2 rounded border border-dashed border-gray-5">
+                                            <span class="wd-7 ht-7 rounded-circle d-inline-block" style="background-color: #64b5f6"></span>
+                                            <span>Leads<span class="fs-10 text-muted ms-1">(16K)</span></span>
+                                        </a>
+                                    </div>
+                                    <div class="col-4">
+                                        <a href="javascript:void(0);" class="p-2 hstack gap-2 rounded border border-dashed border-gray-5">
+                                            <span class="wd-7 ht-7 rounded-circle d-inline-block" style="background-color: #90caf9"></span>
+                                            <span>Progress<span class="fs-10 text-muted ms-1">(14K)</span></span>
+                                        </a>
+                                    </div>
+                                    <div class="col-4">
+                                        <a href="javascript:void(0);" class="p-2 hstack gap-2 rounded border border-dashed border-gray-5">
+                                            <span class="wd-7 ht-7 rounded-circle d-inline-block" style="background-color: #aad6fa"></span>
+                                            <span>Others<span class="fs-10 text-muted ms-1">(10K)</span></span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+    <!-- [ Footer ] start -->
+    <!-- [ Footer ] end -->
+    <!-- [ Footer ] end -->
+</main>
+
+{% endblock %}

@@ -1,0 +1,445 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<main class="nxl-container">
+    <div class="nxl-content">
+        <!-- [ page-header ] start -->
+        <!-- <div class="page-header">
+                <div class="page-header-left d-flex align-items-center">
+                    <div class="page-header-title">
+                        <h5 class="m-b-10">User</h5>
+                    </div>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/dashboard/">Home</a></li>
+                        <li class="breadcrumb-item">Create user</li>
+                    </ul>
+                </div>
+                <div class="page-header-right ms-auto">
+                    <div class="page-header-right-items">
+                        <div class="d-flex d-md-none">
+                            <a href="javascript:void(0)" class="page-header-right-close-toggle">
+                                <i class="feather-arrow-left me-2"></i>
+                                <span>Back</span>
+                            </a>
+                        </div>
+                        <div class="d-flex align-items-center gap-2 page-header-right-items-wrapper">
+                            <a href="javascript:void(0);" class="btn btn-light-brand successAlertMessage">
+                                <i class="feather-layers me-2"></i>
+                                <span>Save as Draft</span>
+                            </a>
+                            <a href="javascript:void(0);" class="btn btn-primary successAlertMessage">
+                                <i class="feather-save me-2"></i>
+                                <span>Save Invoice</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="d-md-none d-flex align-items-center">
+                        <a href="javascript:void(0)" class="page-header-right-open-toggle">
+                            <i class="feather-align-right fs-20"></i>
+                        </a>
+                    </div>
+                </div>
+            </div> -->
+        <!-- [ page-header ] end -->
+        <!-- [ Main Content ] start -->
+        <div class="main-content">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="card invoice-container">
+                        <div class="card-header">
+                            <h5>Add Family</h5>
+
+                        </div>
+
+                        <form id="addFamilyForm" method="POST" enctype="multipart/form-data" novalidate>
+                            {% csrf_token %}
+                            <div class="card-body p-0">
+
+                                <hr class="border-dashed">
+
+                                <!-- Row 1 -->
+                                <div class="px-4 row">
+
+                                    <div class="col-xl-4 mb-4">
+                                        <label class="form-label">Family ID</label>
+                                        <input type="text" name="family_id" value="{{ next_family_id }}"
+                                            class="form-control fw-bold text-success" readonly>
+                                    </div>
+
+                                    <div class="col-xl-4 mb-4">
+                                        <label class="form-label">Family Head Full Name <span class="text-danger">*</span></label>
+                                        <input type="text" name="family_head_name" id="familyHeadName" class="form-control"
+                                            placeholder="Family Head Full Name" required>
+                                    </div>
+
+                                    <div class="col-xl-4 mb-4">
+                                        <label class="form-label">Family Head Aadhar No</label>
+                                        <input type="text" name="aadhar_no" id="aadharNo" class="form-control"
+                                            value="0000 0000 0000"
+                                            onfocus="if(this.value=='0000 0000 0000') this.value='';" 
+                                            onblur="if(this.value=='') this.value='0000 0000 0000';"
+                                            maxlength="12">
+                                    </div>
+                                </div>
+
+                                <!-- Row 2 -->
+                                <div class="px-4 row">
+                                     <div class="col-xl-4 mb-4">
+                                        <label class="form-label">Family Head Mobile No <span class="text-danger">*</span></label>
+                                        <input type="tel" name="mobile_no" id="mobileNo" class="form-control" placeholder="Mobile No" required maxlength="10">
+                                    </div>
+
+                                     <div class="col-xl-4 mb-4">
+                                        <label class="form-label">Door No <span class="text-danger">*</span></label>
+                                        <input type="text" name="door_no" id="doorNo" class="form-control"
+                                            placeholder="Door Number" required>
+                                    </div>
+
+                                    <div class="col-xl-4 mb-4">
+                                        <label class="form-label">Apartment/Flat Name</label>
+                                        <input type="text" name="apartment_name" class="form-control">
+                                    </div>
+                                </div>
+
+                                <!-- Row 3 -->
+                                <div class="px-4 row">
+                                    <!-- <div class="col-xl-4 mb-4">
+                                        <label class="form-label">Flat </label>
+                                        <input type="text" name="flat_no" class="form-control">
+                                    </div>
+
+                                    <div class="col-xl-4 mb-4">
+                                        <label class="form-label">Floor </label>
+                                        <select name="floor_no" class="form-control">
+                                            <option value="">Select Floor</option>
+                                            <option>Ground</option>
+                                            <option>1</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                            <option>4</option>
+                                        </select>
+                                    </div> -->
+
+                                    <div class="col-xl-4 mb-4">
+                                        <label class="form-label">Street/Road Name</label>
+                                        <input type="text" name="street_name" class="form-control">
+                                    </div>
+                                    <div class="col-xl-4 mb-4">
+                                        <label class="form-label">Pincode <span class="text-danger">*</span></label>
+                                        <select name="pincode" id="pincodeSelect" class="form-control" required>
+                                            <option value="">Select Pincode</option>
+                                            {% for p in pincodes %}
+                                            <option value="{{ p.id }}">{{ p.code }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+
+                                    <div class="col-xl-4 mb-4">
+                                        <label class="form-label">Area <span class="text-danger">*</span></label>
+                                        <input type="text" name="area" id="areaField" class="form-control" placeholder="Select Pincode First" required>
+                                    </div>
+
+                                </div>
+
+                                </div>
+
+                                <!-- Row 4 -->
+                                <div class="px-4 row">
+
+                                    <!-- <div class="col-xl-4 mb-4">
+                                        <label class="form-label">Road Name</label>
+                                        <input type="text" name="road_name" class="form-control">
+                                    </div> -->
+                                    
+
+                                <!-- Row 5 -->
+                                <div class="px-4 row">
+                                    <div class="col-xl-4 mb-4">
+                                        <label class="form-label">City <span class="text-danger">*</span></label>
+                                        <input type="text" id="cityField" name="city" value="Chennai"
+                                            class="form-control" readonly>
+                                    </div>
+                                    <div class="col-xl-4 mb-4">
+                                        <label class="form-label">State<span class="text-danger">*</span></label>
+                                        <input type="text" id="stateField" name="state" value="Tamil Nadu"
+                                            class="form-control" readonly>
+                                    </div>
+
+
+                                    <div class="col-xl-4 mb-4">
+                                        <label class="form-label">Landline <span class="text-danger">*</span></label>
+                                        <div class="input-group">
+                                            <!-- <span class="input-group-text">044</span> -->
+                                            <input type="tel" name="landline" id="landline" maxlength="8" class="form-control"
+                                                placeholder="8 Digit Number">
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <!-- Row 6 -->
+                                <div class="px-4 row">
+                                     <div class="col-xl-4 mb-4" id="resStatusGroup">
+                                        <label class="form-label">Residential Status <span class="text-danger">*</span></label><br>
+                                        <input type="radio" name="residential_status" value="Owner" required> Owner
+                                        <input type="radio" name="residential_status" value="Renter"> Renter
+                                    </div>
+
+                                    <div class="col-xl-4 mb-4">
+                                        <label class="form-label">Ration Card</label>
+                                        <div class="input-group">
+                                            <label class="input-group-text btn btn-success text-white px-3" for="rationCard" style="cursor: pointer;">Select Image</label>
+                                            <input type="file" name="ration_card" id="rationCard" class="form-control" accept="image/*" style="display:none;" onchange="this.nextElementSibling.innerText = this.files[0] ? this.files[0].name : 'No file selected.'">
+                                            <span class="form-control" style="cursor: pointer; background: #fff;" onclick="this.previousElementSibling.click()">No file selected.</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-4 mb-4">
+                                        <label class="form-label">No. of other family members<span class="text-danger">*</span></label>
+                                        <select id="memberCount" name="member_count" class="form-control">
+                                            <option value="">Select</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="6">6</option>
+                                            <option value="7">7</option>
+                                            <option value="8">8</option>
+                                            <option value="9">9</option>
+                                            <option value="10">10</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="card-header">
+                                    <h6>Add Member Details</h6>
+
+                                </div>
+                                <div id="memberFields"></div>
+
+
+                                <hr class="border-dashed">
+
+                                <div class="px-4 pb-4 text-end">
+                                    <button type="submit" class="btn-submit-user">
+                                        SAVE FAMILY
+                                    </button>
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+        <!-- [ Main Content ] end -->
+    </div>
+    <!-- [ Footer ] start -->
+    <!-- [ Footer ] end -->
+    <!-- [ Footer ] end -->
+</main>
+
+{% endblock content %}
+
+{% block extra_js %}
+<script>
+    document.getElementById("pincodeSelect").addEventListener("change", function () {
+
+        let pincodeId = this.value;
+
+        if (!pincodeId) return;
+
+        fetch(`/get-location/?pincode_id=${pincodeId}`)
+            .then(response => response.json())
+            .then(data => {
+
+                // Set Area
+                let areaField = document.getElementById("areaField");
+                areaField.value = data.area_name;
+
+                // Set City
+                document.getElementById("cityField").value = data.city;
+
+                // Set State
+                document.getElementById("stateField").value = data.state;
+
+            });
+
+    });
+</script>
+<style>
+    .error-msg {
+        color: #dc3545;
+        font-size: 13px;
+        margin-top: 5px;
+        font-weight: 500;
+        display: block;
+        animation: fadeIn 0.3s ease;
+    }
+    .form-control.is-invalid {
+        border-color: #dc3545 !important;
+        background-image: none !important;
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-5px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    /* Style for file input button text */
+    input[type=file]::file-selector-button {
+        content: "Select Image";
+    }
+    input[type=file]::-webkit-file-upload-button {
+        content: "Select Image";
+    }
+</style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const form = document.getElementById("addFamilyForm");
+        const mobileInput = document.getElementById("mobileNo");
+        const memberSelect = document.getElementById("memberCount");
+        const container = document.getElementById("memberFields");
+
+        // Restrict mobile to numbers only
+        mobileInput.addEventListener("input", function(e) {
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
+
+        // Restrict Aadhaar to numbers only and handle 12 digits
+        const aadharInput = document.getElementById("aadharNo");
+        aadharInput.addEventListener("input", function(e) {
+            this.value = this.value.replace(/[^0-9]/g, '').substring(0, 12);
+        });
+
+        // Form submission validation
+        form.addEventListener("submit", function(event) {
+            let isValid = true;
+            
+            // Remove existing error messages
+            document.querySelectorAll(".error-msg").forEach(el => el.remove());
+            document.querySelectorAll(".is-invalid").forEach(el => el.classList.remove("is-invalid"));
+
+            // Helper to show error
+            const showError = (fieldId, message, isRadio = false) => {
+                const field = document.getElementById(fieldId);
+                if (field) {
+                    field.classList.add("is-invalid");
+                    
+                    // Handle custom hidden file input
+                    if (field.id === "rationCard") {
+                        const fileLabel = field.nextElementSibling;
+                        if (fileLabel) fileLabel.style.borderColor = "#dc3545";
+                    }
+
+                    const error = document.createElement("span");
+                    error.className = "error-msg";
+                    error.innerText = message;
+                    
+                    if (isRadio) {
+                        field.closest("div").appendChild(error);
+                    } else {
+                        field.closest(".col-xl-4").appendChild(error);
+                    }
+                    isValid = false;
+                }
+            };
+
+            // 1. Required fields validation
+            const requiredFields = [
+                { id: "familyHeadName", label: "Family Head Name" },
+                { id: "mobileNo", label: "Mobile No" },
+                { id: "doorNo", label: "Door No" },
+                { id: "pincodeSelect", label: "Pincode" },
+                { id: "areaField", label: "Area" },
+                { id: "cityField", label: "City" },
+                { id: "stateField", label: "State" },
+                { id: "memberCount", label: "Member Count" },
+                // { id: "landline", label: "Landline" }
+            ];
+
+            requiredFields.forEach(field => {
+                const el = document.getElementById(field.id);
+                if (!el.value || el.value.trim() === "") {
+                    showError(field.id, `${field.label} is required`);
+                }
+            });
+
+            // 2. Radio button validation (Residential Status)
+            const resStatus = document.querySelector('input[name="residential_status"]:checked');
+            if (!resStatus) {
+                showError("resStatusGroup", "Residential Status is required", true);
+            }
+
+            // 3. Mobile number validation (exactly 10 digits)
+            const mobile = mobileInput.value;
+            if (mobile && mobile.length !== 10) {
+                showError("mobileNo", "Mobile number must be exactly 10 digits");
+            }
+
+            // 4. Landline validation (if provided, must be 8 digits)
+            // const landline = document.querySelector('input[name="landline"]').value;
+            // if (landline && landline.length !== 8) {
+            //     showError("landline", "Landline must be exactly 8 digits");
+            // }
+
+            if (!isValid) {
+                event.preventDefault();
+                // Scroll to first error
+                const firstError = document.querySelector(".is-invalid, .error-msg");
+                if (firstError) {
+                    firstError.scrollIntoView({ behavior: "smooth", block: "center" });
+                }
+            }
+        });
+
+        // Real-time validation clearing
+        document.querySelectorAll(".form-control").forEach(input => {
+            input.addEventListener("input", function() {
+                if (this.value.trim() !== "") {
+                    this.classList.remove("is-invalid");
+                    const error = this.closest("div").querySelector(".error-msg");
+                    if (error) error.remove();
+                }
+            });
+        });
+
+        // --- Existing logic for Member Count ---
+        memberSelect.addEventListener("change", function () {
+            container.innerHTML = "";
+            let count = parseInt(this.value);
+            if (!count) return;
+            for (let i = 1; i <= count; i++) {
+                let row = document.createElement("div");
+                row.className = "px-4 row mt-3 member-row";
+                row.innerHTML = `
+                    <div class="col-xl-4 mb-3">
+                        <label class="form-label">Member ${i} Name</label>
+                        <input type="text" name="member_name_${i}" class="form-control" required>
+                    </div>
+                    <div class="col-xl-6 mb-3">
+                        <label class="form-label">Type</label><br>
+                        <input type="radio" name="member_type_${i}" value="Adult" required> Adult
+                        <input type="radio" name="member_type_${i}" value="Student"> Student
+                        <input type="radio" name="member_type_${i}" value="Baby"> Infant
+                    </div>
+                    <div class="col-xl-2 mb-3 d-flex align-items-end">
+                        <button type="button" class="btn btn-danger btn-sm delete-btn">
+                            Delete
+                        </button>
+                    </div>
+                `;
+                container.appendChild(row);
+            }
+        });
+
+        container.addEventListener("click", function (e) {
+            if (e.target.classList.contains("delete-btn")) {
+                e.target.closest(".member-row").remove();
+            }
+        });
+    });
+</script>
+{% endblock extra_js %}

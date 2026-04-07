@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<main class="nxl-container">
+    <div class="nxl-content">
+        <!-- [ page-header ] start -->
+        <div class="page-header">
+            <div class="page-header-left d-flex align-items-center">
+                <div class="page-header-title">
+                    <h5 class="m-b-10">Completed Family</h5>
+                </div>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/dashboard/">Census Data</a></li>
+                    <li class="breadcrumb-item">Completed Family</li>
+                </ul>
+            </div>
+
+        </div>
+        <!-- [ page-header ] end -->
+        <!-- [ Main Content ] start -->
+        <div class="main-content">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card stretch stretch-full">
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table table-hover" id="projectList">
+                                    <thead>
+                                        <tr>
+                                            <th>S.No</th>
+                                            <th>Family ID</th>
+                                            <th>Family Head Name</th>
+                                            <th>Head Mobile No</th>
+                                            <th>No Of People</th>
+                                            <!-- <th>Address</th> -->
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for f in families %}
+
+                                        <tr>
+
+                                            <td>{{ forloop.counter }}</td>
+
+                                            <td>{{ f.family_id }}</td>
+
+                                            <td>{{ f.head_name }}</td>
+
+                                            <td>{{ f.mobile_no }}</td>
+
+                                            <td>{{ f.members.count }}</td>
+
+                                            <td>
+
+                                                <a href="{% url 'view_family' f.id %}">
+                                                    <i class="feather-eye"></i>
+                                                </a>
+
+                                            </td>
+
+                                        </tr>
+
+                                        {% empty %}
+
+                                        <tr>
+                                            <td colspan="6" class="text-center">No Completed Families</td>
+                                        </tr>
+
+                                        {% endfor %}
+
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- [Recent Orders] end -->
+                <!-- [] start -->
+            </div>
+        </div>
+        <!-- [ Main Content ] end -->
+    </div>
+    <!-- [ Footer ] start -->
+    <!-- [ Footer ] end -->
+    <!-- [ Footer ] end -->
+</main>
+{% endblock content %}

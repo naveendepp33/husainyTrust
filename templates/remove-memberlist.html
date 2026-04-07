@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<main class="nxl-container">
+    <div class="nxl-content">
+        <!-- [ page-header ] start -->
+        <div class="page-header">
+            <div class="page-header-left d-flex align-items-center">
+                <div class="page-header-title">
+                    <h5 class="m-b-10">Removed Members</h5>
+                </div>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/dashboard/">Census Data</a></li>
+                    <li class="breadcrumb-item">Removed Members</li>
+                </ul>
+            </div>
+
+        </div>
+        <!-- [ page-header ] end -->
+        <!-- [ Main Content ] start -->
+        <div class="main-content">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card stretch stretch-full">
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table table-hover" id="projectList">
+                                    <thead>
+                                        <tr>
+                                            <th>S.No</th>
+                                            <th>Member ID</th>
+                                            <th>Member Name</th>
+                                            <th>Mobile</th>
+                                            <th>Gender</th>
+                                            <th class="text-end">Action</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+
+                                        {% for m in members %}
+
+                                        <tr>
+                                            <td class="text-dark fw-bold">
+                                                {{ forloop.counter }}
+                                            </td>
+
+                                            <td>
+                                                <a href="{% url 'viewmember' m.id %}" class="d-block mb-1">
+                                                    {{ m.member_id }}
+                                                </a>
+                                            </td>
+
+                                            <td>
+                                                <a href="{% url 'viewmember' m.id %}" class="d-block mb-1">
+                                                    {{ m.name }}
+                                                </a>
+                                            </td>
+
+                                            <td>
+                                                {% if m.mobile %}
+                                                    {{ m.mobile }}
+                                                {% else %}
+                                                    <span class="text-muted">N/A</span>
+                                                {% endif %}
+                                            </td>
+
+                                            <td>
+                                                {% if m.gender == "Male" %}
+                                                <span class="badge bg-soft-success text-success">Male</span>
+                                                {% elif m.gender == "Female" %}
+                                                <span class="badge bg-soft-danger text-danger">Female</span>
+                                                {% else %}
+                                                <span class="badge bg-soft-secondary text-secondary">Other</span>
+                                                {% endif %}
+                                            </td>
+
+                                            <td class="text-end">
+                                                <div class="hstack gap-2 justify-content-end">
+
+                                                    <a href="{% url 'viewmember' m.id %}" class="avatar-text avatar-md" title="View Details">
+                                                        <i class="feather-eye"></i>
+                                                    </a>
+
+                                                    <a href="{% url 'edit-member' m.id %}"
+                                                        class="avatar-text avatar-md edit-member" data-id="{{ m.id }}" title="Edit">
+                                                        <i class="feather-edit"></i>
+                                                    </a>
+
+                                                </div>
+                                            </td>
+
+                                        </tr>
+
+                                        {% empty %}
+
+                                        <tr>
+                                            <td colspan="6" class="text-center text-muted">
+                                                No Removed Members Found
+                                            </td>
+                                        </tr>
+
+                                        {% endfor %}
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- [ Main Content ] end -->
+    </div>
+    <!-- [ Footer ] start -->
+    <!-- [ Footer ] end -->
+    <!-- [ Footer ] end -->
+</main>
+{% endblock content %}

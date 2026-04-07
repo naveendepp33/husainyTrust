@@ -1,0 +1,249 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<main class="nxl-container">
+    <div class="nxl-content">
+        <!-- [ page-header ] start -->
+        <div class="page-header">
+            <div class="page-header-left d-flex align-items-center">
+                <div class="page-header-title">
+                    <h5 class="m-b-10">Advance Search Report</h5>
+                </div>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html">Report</a></li>
+                    <li class="breadcrumb-item">Advance Search Report</li>
+                </ul>
+            </div>
+        </div>
+        <!-- [ page-header ] end -->
+        <div class="main-content">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="card invoice-container">
+                        <div class="card-header">
+                            <h5>Advance Search Report</h5>
+
+
+                        </div>
+                        <div class="card-body p-0">
+
+                            <hr class="border-dashed">
+                            <form method="GET" action="{% url 'advance_report' %}">
+                                <div class="px-4 row">
+
+                                    <!-- City Dropdown -->
+                                    <div class="col-lg-3 mb-3">
+                                        <label class="form-label">Family ID</label>
+                                        <input type="text" name="family_id" class="form-control"
+                                            value="{{ request.GET.family_id }}">
+                                    </div>
+
+                                    <div class="col-lg-3 mb-3">
+                                        <label class="form-label">Member ID</label>
+                                        <input type="text" name="member_id" class="form-control"
+                                            value="{{ request.GET.member_id }}">
+                                    </div>
+
+                                    <div class="col-lg-2 d-flex align-items-end mb-4">
+                                        <button class="btn btn-outline-secondary" type="button"
+                                            data-bs-toggle="collapse" data-bs-target="#advancedFilters">
+                                            More Filters
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="advancedFilters">
+                                        <div class="card card-body border-0 bg-light">
+
+                                            <div class="row">
+
+                                                <!-- From Date -->
+                                                <div class="col-lg-3 mb-3">
+                                                    <label class="form-label">Gender</label>
+                                                    <select class="form-control" name="gender"
+                                                        value="{{ request.GET.gender }}">
+                                                        <option value="">Select Gender</option>
+                                                        <option value="Male">Male</option>
+                                                        <option value="Female">Female</option>
+                                                        <option value="Other">Other</option>
+                                                    </select>
+                                                </div>
+
+
+
+                                                <!-- To Date -->
+
+
+
+                                                <!-- City -->
+                                                <div class="col-lg-3 mb-3">
+                                                    <label class="form-label">Area</label>
+                                                    <select class="form-control" name="area"
+                                                        value="{{ request.GET.area }}">
+                                                        <option value="">Select Area</option>
+                                                        {% for area in areas %}
+                                                        <option value="{{ area.id }}" {% if
+                                                            request.GET.area == area.id|stringformat:"s" %}selected{%
+                                                            endif %}>
+                                                            {{ area.name }}
+                                                        </option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+
+                                                <!-- Area -->
+                                                <div class="col-lg-3 mb-3">
+                                                    <label class="form-label">Blood Group</label>
+                                                    <select name="blood_group" class="form-control">
+                                                        <option value="">All</option>
+                                                        {% for bg in blood_groups %}
+                                                        <option value="{{ bg.id }}" {% if
+                                                            request.GET.blood_group == bg.id|stringformat:"s" %}selected{%
+                                                            endif %}>{{ bg.name }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-lg-3 mb-3">
+        <label class="form-label">Qualification</label>
+        <select name="qualification" class="form-control">
+            <option value="">All</option>
+            {% for q in qualifications %}
+            <option value="{{ q.id }}" {% if request.GET.qualification == q.id|stringformat:"s" %}selected{% endif %}>{{ q.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+                                                <div class="col-lg-3 mb-3">
+                                                    <label class="form-label">Annual Income</label>
+                                                    <select name="income" class="form-control">
+                                                        <option value="">All</option>
+                                                        {% for inc in incomes %}
+                                                        <option value="{{ inc.id }}" {% if
+                                                            request.GET.income == inc.id|stringformat:"s" %}selected{%
+                                                            endif %}>{{ inc.name }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-lg-3 mb-3">
+                                                    <label class="form-label">Health Status</label>
+                                                    <select name="health" class="form-control">
+                                                        <option value="">All</option>
+                                                        {% for h in health_statuses %}
+                                                        <option value="{{ h.id }}" {% if
+                                                            request.GET.health == h.id|stringformat:"s" %}selected{% endif
+                                                            %}>{{ h.name }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                                <div class="col-lg-3 mb-3">
+                                                    <label class="form-label">Chronic Disease</label>
+                                                    <select name="disease" class="form-control">
+                                                        <option value="">None / All</option>
+                                                        {% for d in diseases %}
+                                                        <option value="{{ d.id }}" {% if
+                                                            request.GET.disease == d.id|stringformat:"s" %}selected{%
+                                                            endif %}>
+                                                            {{ d.name }}
+                                                        </option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+
+                                            </div>
+
+                                            <!-- Filter Buttons -->
+
+
+                                        </div>
+                                    </div>
+
+                                    <!-- Submit Button -->
+                                    <div class="col-lg-5 d-flex align-items-end mb-4">
+                                        <button type="submit" class="btn btn-primary px-4">Submit</button>
+                                        <a href="{% url 'advance_report' %}" class="btn btn-light ms-2">Reset</a>
+                                        <a href="{% url 'export_advance_excel' %}?{{ request.GET.urlencode }}" class="btn btn-success ms-2">
+                                            Excel
+                                        </a>
+                                        <a href="{% url 'export_advance_pdf' %}?{{ request.GET.urlencode }}" class="btn btn-danger ms-2">
+                                            PDF
+                                        </a>
+                                    </div>
+                                </div>
+                            </form>
+
+
+                            <hr class="border-dashed">
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="main-content">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card stretch stretch-full">
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table table-hover" id="projectList">
+                                    <thead>
+                                        <tr>
+                                            <th>S.No</th>
+                                            <th>Member ID</th>
+                                            <th>Member Name</th>
+                                            <th>Family ID</th>
+                                            <!-- <th>Age</th> -->
+                                            <th>Gender</th>
+                                            <th class="text-center">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for m in members %}
+                                        <tr>
+                                            <td class="text-dark fw-bold">{{ forloop.counter }}</td>
+
+                                            <td><span class="text-muted">{{ m.member_id }}</span></td>
+
+                                            <td><a href="javascript:void(0);" class="fw-bold text-dark">{{ m.name }}</a>
+                                            </td>
+
+                                            <td><span class="badge bg-soft-primary text-primary">{{ m.family.family_id }}</span></td>
+
+                                            
+
+                                            <td>{{ m.gender }}</td>
+
+                                            <td class="text-center">
+                                                <div class="hstack gap-2 justify-content-center">
+                                                    <a href="{% url 'viewmember' m.id %}" class="avatar-text avatar-md"
+                                                        title="View">
+                                                        <i class="feather-eye"></i>
+                                                    </a>
+                                                    
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        {% empty %}
+                                        <tr>
+                                            <td colspan="7" class="text-center py-4">No members found matching your
+                                                search criteria.</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- [Recent Orders] end -->
+                <!-- [] start -->
+            </div>
+        </div>
+        <!-- [ Main Content ] end -->
+    </div>
+</main>
+
+{% endblock content %}

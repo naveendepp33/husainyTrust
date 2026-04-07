@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<main class="nxl-container">
+    <div class="nxl-content">
+        <div class="main-content">
+            <div class="row">
+                  {% if messages %}
+<div class="message-container">
+
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} alert-dismissible fade show auto-close-alert" role="alert">
+
+        {{ message }}
+
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+
+    </div>
+    {% endfor %}
+
+</div>
+{% endif %}
+             
+                <div class="col-xl-12">
+                    <div class="card invoice-container">
+                        <div class="card-header">
+                            <h5>Add Site Details</h5>
+
+                        </div>
+                        <form method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+
+                            <div class="card-body p-0">
+
+                                <hr class="border-dashed">
+
+                                <div class="px-4 row justify-content-between">
+
+                                    <div class="col-xl-4">
+                                        <div class="form-group mb-4">
+                                            <label class="form-label">Logo Upload</label>
+                                            <input type="file" class="form-control" name="logo" accept="image/*">
+
+                                            {% if site.logo %}
+                                            <br>
+                                            <img src="{{ site.logo.url }}" width="120">
+                                            {% endif %}
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xl-4">
+                                        <div class="form-group mb-4">
+                                            <label class="form-label">Site Name</label>
+                                            <input type="text" class="form-control" name="site_name"
+                                                value="{{ site.site_name }}">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xl-4">
+                                        <div class="form-group mb-4">
+                                            <label class="form-label">Address</label>
+                                            <input type="text" class="form-control" name="address"
+                                                value="{{ site.address }}">
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="px-4 row">
+
+                                    <div class="col-xl-4">
+                                        <div class="form-group mb-4">
+                                            <label class="form-label">Contact No</label>
+                                            <input type="text" class="form-control" name="contact_no"
+                                                value="{{ site.contact_no }}">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xl-4">
+                                        <div class="form-group mb-4">
+                                            <label class="form-label">Contact Email</label>
+                                            <input type="email" class="form-control" name="contact_email"
+                                                value="{{ site.contact_email }}">
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <hr class="border-dashed">
+
+                                <div class="px-4 pb-4 text-end">
+                                    <button type="submit" class="btn-submit-user">
+                                        SAVE
+                                    </button>
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+        <!-- [ Main Content ] end -->
+    </div>
+    <!-- [ Footer ] start -->
+    <!-- [ Footer ] end -->
+    <!-- [ Footer ] end -->
+</main>
+
+{% endblock content %}

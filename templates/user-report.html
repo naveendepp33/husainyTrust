@@ -1,0 +1,142 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<main class="nxl-container">
+    <div class="nxl-content">
+        <!-- [ page-header ] start -->
+        <div class="page-header">
+            <div class="page-header-left d-flex align-items-center">
+                <div class="page-header-title">
+                    <h5 class="m-b-10">User Report</h5>
+                </div>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html">Activity</a></li>
+                    <li class="breadcrumb-item">User Report</li>
+                </ul>
+            </div>
+        </div>
+        <!-- [ page-header ] end -->
+        <div class="main-content">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="card invoice-container">
+                        <div class="card-header">
+                            <h5>User Report</h5>
+
+
+                        </div>
+                        <div class="card-body p-0">
+
+                            <hr class="border-dashed">
+
+                            <form method="GET" action="">
+                                <div class="px-4 row justify-content-between">
+
+                                    <!-- City Dropdown -->
+                                    <div class="col-lg-4 mb-4">
+                                        <label class="form-label">Select User <span class="text-danger">*</span></label>
+                                        <select class="form-control" name="user" data-select2-selector="country">
+                                            <option value="">All Users</option>
+                                            {% for u in users %}
+
+                                            <option value="{{ u.user.id }}"
+                                            {% if selected_user == u.user.id|stringformat:"s" %}selected{% endif %}>
+
+                                            {{ u.fullname }}
+
+                                            </option>
+
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+
+                                    <!-- Submit and Export Buttons -->
+                                    <div class="col-lg-8 d-flex align-items-end mb-4 gap-2">
+                                        <button type="submit" class="btn btn-primary btn-m px-4">
+                                            Submit
+                                        </button>
+                                        <a href="{% url 'export_user_excel' %}{% if selected_user %}?user={{ selected_user }}{% endif %}" class="btn btn-success btn-m px-4">
+                                            Excel
+                                        </a>
+                                        <a href="{% url 'export_user_pdf' %}{% if selected_user %}?user={{ selected_user }}{% endif %}" class="btn btn-danger btn-m px-4">
+                                            PDF
+                                        </a>
+                                    </div>
+
+                                </div>
+                            </form>
+
+                            <hr class="border-dashed">
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- [ Main Content ] start -->
+        <div class="main-content">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card stretch stretch-full">
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table table-hover" id="projectList">
+                                    <thead>
+
+<tr>
+<th>S.No</th>
+<th>Employee ID</th>
+<th>Name</th>
+<th>Date</th>
+<th>Login</th>
+<th>Logout</th>
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for r in reports %}
+
+<tr>
+
+<td>{{ forloop.counter }}</td>
+
+<td>{{ r.user.adduser.employee_id }}</td>
+
+<td>{{ r.user.adduser.fullname }}</td>
+
+<td>{{ r.created_at }}</td>
+
+<td>{{ r.login_time|time:"h:i A" }}</td>
+
+<td>{{ r.logout_time|time:"h:i A" }}</td>
+
+</tr>
+
+{% empty %}
+
+<tr>
+<td colspan="6" class="text-center">No Records</td>
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- [ Main Content ] end -->
+    </div>
+    <!-- [ Footer ] start -->
+    <!-- [ Footer ] end -->
+    <!-- [ Footer ] end -->
+</main>
+{% endblock content %}

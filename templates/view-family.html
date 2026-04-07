@@ -1,0 +1,319 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<main class="nxl-container">
+    <div class="nxl-content">
+        <!-- [ page-header ] start -->
+        <div class="page-header">
+            <div class="page-header-left d-flex align-items-center">
+                <div class="page-header-title">
+                    <h5 class="m-b-10">Family Details</h5>
+                </div>
+                <ul class="breadcrumb">
+                    <!-- <li class="breadcrumb-item"><a href="index.html">Report</a></li>
+                    <li class="breadcrumb-item">Volunteer Report</li> -->
+                </ul>
+            </div>
+        </div>
+        <!-- [ page-header ] end -->
+        <div class="main-content">
+            <div class="tab-content">
+                <div class="tab-pane fade show active" id="profileTab" role="tabpanel">
+                    <div class="card card-body lead-info">
+                        <div class="mb-4 d-flex align-items-center justify-content-between">
+                            <h5 class="fw-bold mb-0">
+                                <span class="d-block mb-2">Family Information :</span>
+                                <span class="fs-12 fw-normal text-muted d-block"></span>
+                            </h5>
+
+                        </div>
+
+                        <div class="row">
+
+                            <!-- Row 1 -->
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Family ID</div>
+                                    <div>{{ family.family_id }}</div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Family Head Full Name</div>
+                                    <div>{{ family.head_name }}</div>
+                                </div>
+                            </div>
+
+                            <!-- Row 2 -->
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Father Head Aadhar No</div>
+                                    <div>{{ family.aadhar_no }}</div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Family Head Mobile No</div>
+                                    <div>{{ family.mobile_no }}</div>
+                                </div>
+                            </div>
+
+                            <!-- Row 3 -->
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Door No</div>
+                                    <div>{{ family.door_no }}</div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Apartment/Flat Name</div>
+                                    <div>{{ family.apartment_name }}</div>
+                                </div>
+                            </div>
+
+                            <!-- Row 4 -->
+                            <!-- <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Flat No</div>
+                                    <div>{{ family.flat_no }}</div>
+                                </div>
+                            </div> -->
+
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Street/Road Name</div>
+                                    <div>{{ family.street_name }}</div>
+                                </div>
+                            </div>
+
+                            <!-- Row 5 -->
+                            <!-- <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Road Name</div>
+                                    <div>{{ family.road_name }}</div>
+                                </div>
+                            </div> -->
+
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Pincode</div>
+                                    <div>{{ family.pincode }}</div>
+                                </div>
+                            </div>
+
+                            <!-- Row 6 -->
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Area</div>
+                                    <div>{{ family.area }}</div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">City</div>
+                                    <div>{{ family.area.city.name }}</div>
+                                </div>
+                            </div>
+
+                            <!-- Row 7 -->
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">State</div>
+                                    <div>{{ family.area.city.state.name }}</div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Landline No</div>
+                                    <div>{{ family.landline }}</div>
+                                </div>
+                            </div>
+
+                            <!-- Row 8 -->
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Residential Status </div>
+                                    <div>{{ family.residential_status }}</div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Total Members</div>
+                                    <div>{{ family.members.count }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- [ Main Content ] start -->
+         
+        <div class="main-content">
+            <h5 class="fw-bold mb-0">
+                <span class="d-block mb-2">Family Members Information :</span>
+                <span class="fs-12 fw-normal text-muted d-block"></span>
+            </h5>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card stretch stretch-full">
+                        
+                        <div class="card-body p-0">
+                            
+                            <div class="table-responsive">
+                                
+                                <table class="table table-hover" id="projectList">
+                                    <thead>
+                                        <tr>
+                                            <th>S.No</th>
+                                            <th>Member ID</th>
+                                            <th>Member Name</th>
+                                            <th>Member Type</th>
+                                            <th>Gender</th>
+                                            <!-- <th>Mobile</th> -->
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for m in members %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td><span class="badge bg-soft-primary text-primary">{{ m.member_id }}</span></td>
+                                    <td class="fw-bold">{{ m.name }}</td> <td>{{ m.member_type }}</td>
+                                    <td>{{ m.gender|default:"-" }}</td>
+                                    
+                                    <td class="text-end">
+                                        <div class="hstack gap-2 justify-content-end">
+                                            
+
+                                            <a href="{% url 'edit-member' m.id %}"
+                                            class="avatar-text avatar-md bg-light-warning text-warning editUserBtn"
+                                            >
+                                            <i class="feather-edit"></i>
+                                            </a>
+                                            <a href="javascript:void(0);" 
+                                                        onclick="openRemoveMemberModal('{{ m.id }}', '{{ m.name }}')" class="avatar-text avatar-md delete-btn">
+                                            <i class="feather-trash-2"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="6" class="text-center py-4 text-muted">
+                                        No members have been added to this family yet.
+                                    </td>
+                                </tr>
+                                {% endfor %}
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Member Removal/Transfer Modal -->
+<div class="modal fade" id="removeMemberModal" tabindex="-1" aria-labelledby="removeMemberModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="removeMemberModalLabel">Remove Member: <span id="modalMemberName"></span></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="removeMemberForm" method="POST" action="">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="form-group mb-4">
+                        <label for="reason" class="form-label">Reason</label>
+                        <select class="form-control" id="reason" name="reason" required onchange="handleReasonChange()">
+                            <option value="" selected disabled>Select Reason</option>
+                            <option value="Exited">Exited</option>
+                            <option value="Marriage">Marriage</option>
+                        </select>
+                    </div>
+
+                    <div id="marriageActionSection" style="display: none;" class="form-group mb-4">
+                        <label class="form-label">Action</label>
+                        <select class="form-control" id="marriageAction" name="marriage_action" onchange="handleActionChange()">
+                            <option value="" selected disabled>Select Action</option>
+                            <option value="Transfer">Transfer</option>
+                            <option value="Remove">Remove</option>
+                        </select>
+                    </div>
+
+                    <div id="transferFamilySection" style="display: none;" class="form-group mb-4">
+                        <label for="targetFamily" class="form-label">Transfer to Family</label>
+                        <select class="form-control" id="targetFamily" name="target_family">
+                            <option value="" selected disabled>Select Family ID</option>
+                            {% for f in all_families %}
+                                <option value="{{ f.id }}">{{ f.family_id }} ({{ f.head_name }})</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-danger">OK</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+function openRemoveMemberModal(memberId, memberName) {
+    document.getElementById('modalMemberName').innerText = memberName;
+    document.getElementById('removeMemberForm').action = "/remove-member-action/" + memberId + "/";
+    
+    document.getElementById('removeMemberForm').reset();
+    document.getElementById('marriageActionSection').style.display = 'none';
+    document.getElementById('transferFamilySection').style.display = 'none';
+
+    var myModal = new bootstrap.Modal(document.getElementById('removeMemberModal'));
+    myModal.show();
+}
+
+function handleReasonChange() {
+    var reason = document.getElementById('reason').value;
+    var actionSection = document.getElementById('marriageActionSection');
+    var transferSection = document.getElementById('transferFamilySection');
+    var marriageActionDropdown = document.getElementById('marriageAction');
+
+    if (reason === 'Marriage') {
+        actionSection.style.display = 'block';
+        marriageActionDropdown.setAttribute('required', 'required');
+    } else {
+        actionSection.style.display = 'none';
+        transferSection.style.display = 'none';
+        marriageActionDropdown.removeAttribute('required');
+    }
+}
+
+function handleActionChange() {
+    var action = document.getElementById('marriageAction').value;
+    var transferSection = document.getElementById('transferFamilySection');
+    var targetFamilyDropdown = document.getElementById('targetFamily');
+
+    if (action === 'Transfer') {
+        transferSection.style.display = 'block';
+        targetFamilyDropdown.setAttribute('required', 'required');
+    } else {
+        transferSection.style.display = 'none';
+        targetFamilyDropdown.removeAttribute('required');
+    }
+}
+
+</script>
+{% endblock content %}

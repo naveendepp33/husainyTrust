@@ -1,0 +1,267 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<main class="nxl-container">
+    <div class="nxl-content">
+
+        <div class="main-content">
+            <div class="row">
+                  {% if messages %}
+<div class="message-container">
+
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} alert-dismissible fade show auto-close-alert" role="alert">
+
+        {{ message }}
+
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+
+    </div>
+    {% endfor %}
+
+</div>
+{% endif %}
+             
+                <div class="col-xl-12">
+                    <div class="card invoice-container">
+                        <div class="card-header">
+                            <h5>Sports</h5>
+
+                            <a href="#" class="btn btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#addSportsModal">
+                                <i class="feather-plus me-2"></i>
+                                <span>Add Sports</span>
+                            </a>
+
+
+                        </div>
+
+                        <div class="col-lg-12">
+                            <!-- <div class="card stretch stretch-full"> -->
+                                <div class="card-body p-0">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover" id="projectList">
+                                            <thead>
+                                                <tr>
+
+
+
+                                                    <th>S.No</th>
+                                                    <th>Sports</th>
+                                                    <th class="text-end">Actions</th>
+                                                </tr>
+
+                                            </thead>
+                                            <tbody>
+                                                {% for d in sports %}
+                                                <tr>
+                                                    <td>{{ forloop.counter }}</td>
+                                                    <td>{{ d.name }}</td>
+
+                                                    <td class="text-end">
+                                                        <div class="hstack gap-2 justify-content-end">
+
+                                                            <a href="#"
+                                                                class="edit-btn avatar-text avatar-md"
+                                                                data-id="{{ d.id }}"
+                                                                data-name="{{ d.name }}"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#editSportsModal">  
+                                                                <i class="fa fa-edit text-warning"></i>
+                                                            </a>
+
+                                                            <a href="{% url 'deletesports' d.id %}"
+                                                                onclick="return confirm('Are you sure?')">
+                                                                <i class="fa fa-trash text-danger avatar-text avatar-md"></i>
+                                                            </a>
+
+                                                        </div>
+                                                    </td>
+
+                                                </tr>
+                                                {% empty %}
+                                                <tr>
+                                                    <td colspan="3" class="text-center">No Data Found</td>
+                                                </tr>
+                                                {% endfor %}
+
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</main>
+
+<!-- Add Blood Group Modal -->
+<div class="modal fade" id="addSportsModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5>Add Sports</h5>
+                <button class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <form method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="add_sports">
+
+                <div class="modal-body">
+                    <label>Sports</label>
+                    <input type="text"
+                           name="sportsname"
+                           id="add_sports_name"
+                           class="form-control"
+                           placeholder="Cricket"
+                           required>
+                    <span class="text-danger d-none small" id="addErrorMsg"></span>
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-success" id="addSubmitBtn">Save</button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editSportsModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5>Edit Sports</h5>
+                <button class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <form method="POST" id="editSportsForm">
+                {% csrf_token %}
+
+                <div class="modal-body">
+                    <label>Sports</label>
+                    <input type="text"
+                           name="sportsname"
+                           id="edit_sports_name"
+                           class="form-control"
+                           required>
+                    <span class="text-danger d-none small" id="editErrorMsg"></span>
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-success" id="editSubmitBtn">Update</button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block extra_js %}
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    function getExistingNames() {
+        return Array.from(document.querySelectorAll("#projectList tbody tr"))
+            .map(tr => {
+                const td = tr.querySelector("td:nth-child(2)");
+                return td ? td.innerText.trim().toLowerCase() : "";
+            })
+            .filter(name => name !== "" && name !== "no data found");
+    }
+
+    function setupValidation(formSelector, inputId, errorId) {
+        const form = document.querySelector(formSelector);
+        const input = document.getElementById(inputId);
+        const errorSpan = document.getElementById(errorId);
+
+        if (!form || !input) return;
+
+        input.addEventListener("input", function() {
+            let start = this.selectionStart;
+            let end = this.selectionEnd;
+            
+            // Allow only letters and spaces for Sports
+            let val = this.value.replace(/[^a-zA-Z\s]/g, '');
+            
+            // Convert to Title Case logic
+            val = val.replace(/\b\w/g, function(char) { return char.toUpperCase(); });
+            // Lowercase the rest of the word
+            val = val.replace(/\b(\w)(\w*)/g, function(_, first, rest) { 
+                return first.toUpperCase() + rest.toLowerCase(); 
+            });
+            
+            if (val !== this.value) {
+                this.value = val;
+                this.setSelectionRange(start, end);
+            }
+            
+            input.classList.remove("is-invalid");
+            errorSpan.classList.add("d-none");
+        });
+
+        form.addEventListener("submit", function(e) {
+            const val = input.value.trim();
+            input.value = val;
+            
+            if (val === "") {
+                e.preventDefault();
+                input.classList.add("is-invalid");
+                errorSpan.innerText = "Sports cannot be empty.";
+                errorSpan.classList.remove("d-none");
+                return;
+            }
+
+            const originalName = form.getAttribute("data-original-name") || "";
+            const existingNames = getExistingNames();
+            
+            if (val.toLowerCase() !== originalName.toLowerCase() && existingNames.includes(val.toLowerCase())) {
+                e.preventDefault();
+                input.classList.add("is-invalid");
+                errorSpan.innerText = "This sports name already exists!";
+                errorSpan.classList.remove("d-none");
+                return;
+            }
+        });
+    }
+
+    setupValidation("#addSportsModal form", "add_sports_name", "addErrorMsg");
+    setupValidation("#editSportsForm", "edit_sports_name", "editErrorMsg");
+
+    const editButtons = document.querySelectorAll(".edit-btn");
+
+    editButtons.forEach(button => {
+        button.addEventListener("click", function () {
+
+            const id = this.getAttribute("data-id");
+            const name = this.getAttribute("data-name");
+
+            const editInput = document.getElementById("edit_sports_name");
+            editInput.value = name;
+            editInput.classList.remove("is-invalid");
+            document.getElementById("editErrorMsg").classList.add("d-none");
+
+            const editForm = document.getElementById("editSportsForm");
+            editForm.setAttribute("data-original-name", name);
+            editForm.action = "/editsports/" + id + "/";
+
+        });
+    });
+
+});
+
+</script>
+{% endblock extra_js %}

@@ -1,0 +1,239 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<main class="nxl-container">
+    <div class="nxl-content">
+        <!-- [ page-header ] start -->
+        <div class="page-header">
+            <div class="page-header-left d-flex align-items-center">
+                <div class="page-header-title">
+                    <h5 class="m-b-10">Allocate List</h5>
+                </div>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html">Volunteer</a></li>
+                    <li class="breadcrumb-item">Allocate List</li>
+                </ul>
+            </div>
+
+        </div>
+        <!-- [ page-header ] end -->
+        <!-- [ Main Content ] start -->
+        <div class="main-content">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card stretch stretch-full">
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table table-hover" id="projectList">
+                                    <thead>
+                                        <tr>
+                                            <th>S.No</th>
+                                            <th>User ID</th>
+                                            <th>Name</th>
+                                            <th>Start Date</th>
+                                            <th>End Date</th>
+                                            <th>Start Time</th>
+                                            <th>End Time</th>
+                                            <th>Assigned By</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        {% for a in allocations %}
+
+                                        <tr>
+
+                                            <td class="text-dark fw-bold">
+                                                {{ forloop.counter }}
+                                            </td>
+
+                                            <td>
+                                                <a href="javascript:void(0);" class="d-block mb-1">
+                                                    {{ a.user_id }}
+                                                </a>
+                                            </td>
+
+                                            <td>
+                                                <a href="javascript:void(0);" class="d-block mb-1">
+                                                    {{ a.name }}
+                                                </a>
+                                            </td>
+
+                                            <td>
+                                                <a href="javascript:void(0);" class="d-block mb-1">
+                                                    {{ a.start_date|date:"d-m-Y" }}
+                                                </a>
+                                            </td>
+                                            
+                                            <td>
+                                                <a href="javascript:void(0);" class="d-block mb-1">
+                                                    {{ a.end_date|date:"d-m-Y" }}
+                                                </a>
+                                            </td>
+
+                                            <td>
+                                                <a href="javascript:void(0);" class="d-block mb-1">
+                                                    {{ a.start }}
+                                                </a>
+                                            </td>
+
+                                            <td>
+                                                <a href="javascript:void(0);" class="d-block mb-1">
+                                                    {{ a.end }}
+                                                </a>
+                                            </td>
+
+                                            <td>
+                                                <a href="javascript:void(0);" class="d-block mb-1">
+                                                    {{ a.assigned }}
+                                                </a>
+                                            </td>
+
+                                            <td>
+                                                {% if a.status == "Active" %}
+                                                <span class="badge bg-soft-success text-success">Active</span>
+                                                {% else %}
+                                                <span class="badge bg-soft-danger text-danger">Expired</span>
+                                                {% endif %}
+                                            </td>
+
+                                            <td>
+                                                <a href="javascript:void(0);" class="avatar-text avatar-md bg-light-warning text-warning editAllocationBtn" data-id="{{ a.id }}">
+                                                    <i class="feather-edit"></i>
+                                                </a>
+                                            </td>
+
+                                        </tr>
+
+                                        {% empty %}
+
+                                        <tr>
+                                            <td colspan="8" class="text-center">No Data Found</td>
+                                        </tr>
+
+                                        {% endfor %}
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- [Recent Orders] end -->
+                <!-- [] start -->
+            </div>
+        </div>
+        <!-- [ Main Content ] end -->
+    </div>
+</main>
+{% endblock content %}
+
+{% block extra_js %}
+<!-- Edit Allocation Modal -->
+<div class="modal fade" id="editAllocationModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Volunteer Allocation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editAllocationForm">
+                    {% csrf_token %}
+                    <input type="hidden" id="editAllocId" name="id">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Volunteer Name</label>
+                            <input type="text" id="editVolunteerName" class="form-control" readonly disabled>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Volunteer ID</label>
+                            <input type="text" id="editVolunteerCode" class="form-control" readonly disabled>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Start Date <span class="text-danger">*</span></label>
+                            <input type="date" id="editStartDate" name="start_date" class="form-control" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">End Date <span class="text-danger">*</span></label>
+                            <input type="date" id="editEndDate" name="end_date" class="form-control" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Start Time</label>
+                            <input type="time" id="editStartTime" name="start_time" class="form-control">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">End Time</label>
+                            <input type="time" id="editEndTime" name="end_time" class="form-control">
+                        </div>
+                    </div>
+                    <div class="text-end mt-3">
+                        <button type="submit" class="btn btn-success">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const editButtons = document.querySelectorAll(".editAllocationBtn");
+        const editModalEl = document.getElementById("editAllocationModal");
+        const editModal = new bootstrap.Modal(editModalEl);
+        const editForm = document.getElementById("editAllocationForm");
+
+        // Handle Edit Button Click
+        editButtons.forEach(btn => {
+            btn.addEventListener("click", function() {
+                const allocId = this.getAttribute("data-id");
+                
+                fetch(`/get-allocation/${allocId}/`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.error) {
+                            alert(data.error);
+                            return;
+                        }
+                        
+                        document.getElementById("editAllocId").value = data.id;
+                        document.getElementById("editVolunteerName").value = data.volunteer_name;
+                        document.getElementById("editVolunteerCode").value = data.volunteer_code;
+                        document.getElementById("editStartDate").value = data.start_date;
+                        document.getElementById("editEndDate").value = data.end_date;
+                        document.getElementById("editStartTime").value = data.start_time;
+                        document.getElementById("editEndTime").value = data.end_time;
+                        
+                        editModal.show();
+                    });
+            });
+        });
+
+        // Handle Form Submit
+        editForm.addEventListener("submit", function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+
+            fetch("/update-allocation/", {
+                method: "POST",
+                body: formData,
+                headers: {
+                    "X-CSRFToken": "{{ csrf_token }}"
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    location.reload(); // Refresh to show changes
+                } else {
+                    alert("Error updating allocation");
+                }
+            });
+        });
+    });
+</script>
+{% endblock extra_js %}

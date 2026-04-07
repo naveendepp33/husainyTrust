@@ -1,0 +1,415 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<main class="nxl-container">
+    <div class="nxl-content">
+        <!-- [ page-header ] start -->
+        <div class="page-header">
+            <div class="page-header-left d-flex align-items-center">
+                <div class="page-header-title">
+                    <h5 class="m-b-10">Family List</h5>
+                </div>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/dashboard/">Census Data</a></li>
+                    <li class="breadcrumb-item">Family List</li>
+                </ul>
+            </div>
+
+        </div>
+        <!-- [ page-header ] end -->
+        <!-- [ Main Content ] start -->
+        <div class="main-content">
+            <div class="row">
+                <!-- [Invoices Awaiting Payment] start -->
+
+                {% for f in families %}
+                <div class="col-xxl-3 col-md-6">
+                    <div class="card stretch stretch-full border-orange family-card">
+                        <div class="card-body">
+
+                            <!-- Top Row: Image + Name/ID -->
+                            <div class="d-flex align-items-start gap-3">
+
+                                <!-- Profile Image -->
+                                <img src="/static/assets/images/avatar/user.jpg" class="rounded-circle" width="60"
+                                    height="60" alt="Profile">
+
+                                <!-- Name + ID -->
+                                <div>
+                                    <h5 class="fw-bold text-dark mb-1">{{ f.head_name }}</h5>
+                                    <div class="text-muted">{{ f.family_id }}</div>
+                                </div>
+
+                            </div>
+
+                            <!-- Bottom Row: Mobile Left | People Right -->
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+
+                                <!-- Mobile -->
+                                <div class="text-muted d-flex align-items-center gap-2">
+                                    <i class="feather-phone"></i>
+                                    <span>{{ f.mobile_no }}</span>
+                                </div>
+
+                                <!-- People Count -->
+                                <div class="text-muted">
+                                    People: <strong>{{ f.members.count }}</strong>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <!-- Bottom Add Icon -->
+                        <div class="card-footer bg-transparent text-center py-2 border-top" >
+                            <a href="#" class="edit-family-btn" data-id="{{ f.id }}" data-head="{{ f.head_name }}"
+                                data-aadhar="{{ f.aadhar_no }}" data-mobile="{{ f.mobile_no }}"
+                                data-door="{{ f.door_no }}" data-apartment="{{ f.apartment_name }}"
+                                data-flat="{{ f.flat_no }}" data-floor="{{ f.floor_no }}"
+                                data-street="{{ f.street_name }}" data-road="{{ f.road_name }}"
+                                data-pincode="{{ f.pincode }}" data-area="{{ f.area.name }}"
+                                data-state="{{ f.area.city.state.name }}"
+                                data-landline="{{ f.landline }}"
+                                data-residential="{{ f.residential_status }}" data-bs-toggle="modal"
+                                data-bs-target="#editFamilyModal" style="padding: 10px;">
+
+                                <i class="feather-edit"></i>
+
+                            </a>
+                            <a href="#" class="add-member-btn" data-id="{{ f.id }}" data-family="{{ f.family_id }}"
+                                data-bs-toggle="modal" data-bs-target="#addMemberModal">
+
+                                <i class="feather-user-plus"></i>
+
+                            </a>
+                            <a href="{% url 'view_family' f.id %}" style="padding: 10px;">
+                                <i class="feather-eye"></i>
+                            </a>
+
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+
+            </div>
+        </div>
+        <!-- [ Main Content ] end -->
+    </div>
+
+    <!-- [ Footer ] start -->
+    <!-- [ Footer ] end -->
+    <!-- [ Footer ] end -->
+</main>
+<div class="modal fade" id="editFamilyModal" tabindex="-1">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5>Edit Family</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <form method="POST" id="editFamilyForm" action="{% url 'editfamily' 0 %}" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <div class="modal-body">
+
+                    <input type="hidden" id="edit_family_id">
+
+                    <div class="row">
+
+                        <div class="col-md-4 mb-3">
+                            <label>Family Head Name</label>
+                            <input type="text" name="family_head_name" id="edit_head" class="form-control">
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label>Aadhar</label>
+                            <input type="text" name="aadhar_no" id="edit_aadhar" class="form-control">
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label>Mobile</label>
+                            <input type="text" name="mobile_no" id="edit_mobile" class="form-control">
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-md-4 mb-3">
+                            <label>Door</label>
+                            <input type="text" name="door_no" id="edit_door" class="form-control">
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label>Apartment/Flat Name</label>
+                            <input type="text" name="apartment_name" id="edit_apartment" class="form-control">
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label>Street/Road Name</label>
+                            <input type="text" name="street_name" id="edit_street" class="form-control">
+                        </div>
+
+                    </div>
+
+                    
+
+                    <div class="row">
+
+                        <div class="col-md-4 mb-3">
+                            <label>Pincode</label>
+                            <input type="text" name="pincode" id="edit_pincode" class="form-control">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label>Area</label>
+                            <input type="text" name="area" id="edit_area" class="form-control">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label>State</label>
+                            <input type="text" name="state" id="edit_state" class="form-control">
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label>Landline</label>
+                            <input type="text" name="landline" id="edit_landline" class="form-control">
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+
+                            <label>Residential Status</label>
+
+                            <select name="residential_status" id="edit_residential" class="form-control">
+                                <option value="Owner">Owner</option>
+                                <option value="Renter">Renter</option>
+                            </select>
+
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Update Family</button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="addMemberModal">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5>Add Family Members</h5>
+                <button class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <form method="POST" id="addMemberForm" action="{% url 'addmember' 0 %}">
+                {% csrf_token %}
+
+                <div class="modal-body">
+
+                    <input type="hidden" name="family_id" id="member_family_id">
+
+                    <div id="memberContainer"></div>
+
+                    <button type="button" class="btn btn-primary mt-2" id="addMemberRow">
+                        Add Member
+                    </button>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-success">Save Members</button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+{% block extra_js %}
+<script>
+
+    document.querySelectorAll(".edit-family-btn").forEach(btn => {
+
+        btn.addEventListener("click", function () {
+
+            let id = this.dataset.id
+
+            document.getElementById("edit_head").value = this.dataset.head
+            document.getElementById("edit_aadhar").value = this.dataset.aadhar
+            document.getElementById("edit_mobile").value = this.dataset.mobile
+            document.getElementById("edit_door").value = this.dataset.door
+            document.getElementById("edit_apartment").value = this.dataset.apartment
+            // document.getElementById("edit_flat").value = this.dataset.flat
+            // document.getElementById("edit_floor").value = this.dataset.floor
+            document.getElementById("edit_street").value = this.dataset.street
+            // document.getElementById("edit_road").value = this.dataset.road
+            document.getElementById("edit_pincode").value = this.dataset.pincode
+            document.getElementById("edit_area").value = this.dataset.area
+            document.getElementById("edit_state").value = this.dataset.state
+            document.getElementById("edit_landline").value = this.dataset.landline
+            document.getElementById("edit_residential").value = this.dataset.residential
+
+            document.getElementById("editFamilyForm").action = "/editfamily/" + id + "/"
+
+        })
+
+    })
+
+    // Real-time numeric restrictions for edit modal
+    document.getElementById("edit_mobile").addEventListener("input", function() {
+        this.value = this.value.replace(/[^0-9]/g, '').substring(0, 10);
+    });
+    document.getElementById("edit_pincode").addEventListener("input", function() {
+        this.value = this.value.replace(/[^0-9]/g, '').substring(0, 6);
+    });
+
+    // Edit Family Form Validation
+    document.getElementById("editFamilyForm").addEventListener("submit", function(e) {
+        let head = document.getElementById("edit_head").value.trim();
+        let mobile = document.getElementById("edit_mobile").value.trim();
+        let door = document.getElementById("edit_door").value.trim();
+        let pincode = document.getElementById("edit_pincode").value.trim();
+        let area = document.getElementById("edit_area").value.trim();
+
+        let errors = [];
+
+        if (!head) errors.push("Family Head Name is required");
+        
+        if (!mobile) errors.push("Mobile number is required");
+        else if (mobile.length !== 10) errors.push("Mobile number must be exactly 10 digits");
+        
+        if (!door) errors.push("Door Number is required");
+        
+        if (!pincode) errors.push("Pincode is required");
+        else if (pincode.length !== 6) errors.push("Pincode must be exactly 6 digits");
+        
+        if (!area) errors.push("Area is required");
+
+        if (errors.length > 0) {
+            e.preventDefault();
+            alert("Please fix the following validation errors:\n" + errors.join("\n"));
+            return false;
+        }
+    });
+
+</script>
+
+<script>
+
+   
+
+
+    /* Add Members */
+
+    document.querySelectorAll(".add-member-btn").forEach(btn => {
+
+        btn.addEventListener("click", function () {
+
+            let id = this.dataset.id
+
+            document.getElementById("member_family_id").value = id
+
+            document.getElementById("addMemberForm").action = "/addmember/" + id + "/"
+
+        })
+
+    })
+
+    // Validation for Add Member Form
+    document.getElementById("addMemberForm").addEventListener("submit", function(e) {
+        let nameInputs = document.querySelectorAll('input[name="member_name[]"]');
+        let hasContent = false;
+        let emptyNames = false;
+
+        nameInputs.forEach(input => {
+            if (input.value.trim() !== "") {
+                hasContent = true;
+            } else {
+                emptyNames = true;
+            }
+        });
+
+        if (nameInputs.length === 0) {
+            e.preventDefault();
+            alert("Please add at least one family member.");
+            return false;
+        }
+
+        if (emptyNames) {
+            e.preventDefault();
+            alert("All family member names must be filled before saving.");
+            return false;
+        }
+    });
+
+
+    /* Dynamic Member Fields */
+
+    let memberContainer = document.getElementById("memberContainer")
+
+    document.getElementById("addMemberRow").addEventListener("click", function () {
+
+        let row = document.createElement("div")
+
+        row.className = "row mt-2 member-row"
+
+        row.innerHTML = `
+
+<div class="col-md-5">
+<input type="text" name="member_name[]" class="form-control" placeholder="Member Name">
+</div>
+
+<div class="col-md-5">
+
+<select name="member_type[]" class="form-control">
+
+<option value="Adult">Adult</option>
+<option value="Student">Student</option>
+<option value="Baby">Baby</option>
+
+</select>
+
+</div>
+
+<div class="col-md-2">
+
+<button type="button" class="btn btn-danger remove-member">
+Remove
+</button>
+
+</div>
+
+`
+
+        memberContainer.appendChild(row)
+
+    })
+
+
+    /* Remove Member */
+
+    document.addEventListener("click", function (e) {
+
+        if (e.target.classList.contains("remove-member")) {
+
+            e.target.closest(".member-row").remove()
+
+        }
+
+    })
+
+</script>
+{% endblock extra_js %}

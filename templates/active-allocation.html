@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<main class="nxl-container">
+    <div class="nxl-content">
+        <!-- [ page-header ] start -->
+        <div class="page-header">
+            <div class="page-header-left d-flex align-items-center">
+                <div class="page-header-title">
+                    <h5 class="m-b-10">Active Allocate</h5>
+                </div>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html">Volunteer</a></li>
+                    <li class="breadcrumb-item">Active Allocate</li>
+                </ul>
+            </div>
+            
+        </div>
+        <!-- [ page-header ] end -->
+        <!-- [ Main Content ] start -->
+        <div class="main-content">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card stretch stretch-full">
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table table-hover" id="projectList">
+                                    <thead>
+                                        <tr >
+                                            <th>S.No</th>
+                                            <th>User ID</th>
+                                            <th>Name</th>
+                                            <th>Date</th>
+                                            <th>Start Time</th>
+                                            <th>End Time</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="text-dark fw-bold">1</td>
+                                            <td>
+                                                <a href="javascript:void(0);" class="d-block mb-1">HTVL001</a>
+                                               
+                                            </td>
+                                            
+                                            
+                                            <td>
+                                                <a href="javascript:void(0);" class="d-block mb-1">Ramesh</a>
+                                                
+                                            </td>
+                                            
+                                          
+                                            <td>
+                                                <a href="javascript:void(0);" class="d-block mb-1">18-05-2024</a>
+                                                
+                                            </td>
+                                            <td>
+                                                <a href="javascript:void(0);" class="d-block mb-1">10 am</a>
+                                                
+                                            </td>
+                                            <td>
+                                                <a href="javascript:void(0);" class="d-block mb-1">12 pm</a>
+                                                
+                                            </td>
+                                            
+                                            <td>
+                                                <span class="badge bg-soft-success text-success">Active</span>
+                                            </td>
+                                            <td>
+                                                <div class="form-check form-switch m-0 d-flex justify-content-start">
+                                                    <input class="form-check-input" type="checkbox" role="switch"
+                                                        id="statusSwitch1" checked>
+                                                </div>
+                                            </td>
+                                           
+                                        </tr>
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                       
+                    </div>
+                </div>
+                <!-- [Recent Orders] end -->
+                <!-- [] start -->
+            </div>
+        </div>
+        <!-- [ Main Content ] end -->
+    </div>
+    <!-- [ Footer ] start -->
+    <!-- [ Footer ] end -->
+    <!-- [ Footer ] end -->
+</main>
+{% endblock content %}
