@@ -28,9 +28,34 @@
     <link rel="stylesheet" type="text/css" href="{% static 'assets/vendors/css/select2-theme.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'assets/css/theme.min.css' %}">
 
-
+    <!-- Premium UI Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
+        body, p, h1, h2, h3, h4, h5, h6, span, div, input, button, select, textarea {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        /* Premium Soft Inputs */
+        .form-control, .form-select {
+            background-color: #F9FAFB !important;
+            border: 1px solid #E5E7EB !important;
+            border-radius: 10px !important;
+            padding: 10px 14px;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            color: #111827;
+        }
+        .form-control:focus, .form-select:focus {
+            background-color: #FFFFFF !important;
+            border-color: #148C4A !important;
+            box-shadow: 0 0 0 4px rgba(20, 140, 74, 0.1) !important;
+        }
+        
+        .main-content {
+            background-color: #F8FAFC;
+        }
         .btn-submit-user {
             background: #148C4A;
             color: #ffffff;
@@ -88,8 +113,16 @@
         }
 
         .card {
-            border: 1px solid #148C4A;
-            border-radius: 12px;
+            border: 1px solid rgba(229, 231, 235, 0.5) !important;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05) !important;
+            border-radius: 16px !important;
+            background: #ffffff !important;
+            transition: transform 0.3s ease, box-shadow 0.3s ease !important;
+        }
+        
+        .card:hover {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04) !important;
+            transform: translateY(-2px);
         }
 
         /* Main Menu Text */

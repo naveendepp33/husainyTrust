@@ -26,21 +26,21 @@
                 {% for m in members %}
                 <div class="col-xxl-3 col-md-6">
                     <div class="card stretch stretch-full border-orange family-card">
-                        <div class="card-body">
+                        <div class="card-body p-4">
 
                             <!-- Top Row: Image + Name/ID -->
-                            <div class="d-flex align-items-start gap-3">
+                            <div class="d-flex align-items-center gap-4">
 
                                 <!-- Profile Image -->
                                 <img src="{% if m.photo %}{{ m.photo.url }}{% else %}/static/assets/images/avatar/user.jpg{% endif %}"
-                                    class="rounded-circle" width="60" height="60" alt="Profile"
+                                    class="rounded-circle shadow-sm border border-2 border-white" width="65" height="65" alt="Profile"
                                     style="object-fit: cover;">
 
                                 <!-- Name + ID -->
                                 <div>
-                                    <h5 class="fw-bold text-dark mb-1">{{ m.name }}</h5>
-                                    <div class="text-muted">{{ m.member_id }}</div>
-                                    <div class="badge bg-soft-success text-success">{{ m.member_type }}</div>
+                                    <h5 class="fw-bold text-dark mb-1 fs-16">{{ m.name }}</h5>
+                                    <div class="text-muted fs-13 mb-2">{{ m.member_id }}</div>
+                                    <div class="badge bg-success text-white px-3 py-1 rounded-pill shadow-sm">{{ m.member_type }}</div>
                                 </div>
 
                             </div>
