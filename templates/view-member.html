@@ -305,6 +305,41 @@
                                 </div>
                             </div>
 
+                            {% if member.removal_reason %}
+                            <!-- Transfer/Removal Details -->
+                            <div class="col-12 mt-3 mb-2">
+                                <h6 class="fw-bold text-danger">Transfer / Removal Details</h6>
+                                <hr>
+                            </div>
+
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Reason</div>
+                                    <span class="badge bg-soft-danger text-danger">{{ member.removal_reason }}</span>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Transfer Date</div>
+                                    <div class="text-dark fw-bold">{{ member.transfer_date|date:"d-m-Y" }}</div>
+                                </div>
+                            </div>
+
+                            {% if member.transferred_from_family %}
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Previous Family</div>
+                                    <a href="{% url 'view_family' member.transferred_from_family.id %}"
+                                        class="badge bg-soft-primary text-primary fs-13">{{
+                                        member.transferred_from_family.family_id }} ({{
+                                        member.transferred_from_family.head_name }})</a>
+                                </div>
+                            </div>
+                            {% endif %}
+                            {% endif %}
+
+
                         </div>
                     </div>
                     {% elif member.member_type == "Student" %}
@@ -537,6 +572,40 @@
                                 </div>
                             </div>
 
+                            {% if member.removal_reason %}
+                            <!-- Transfer/Removal Details -->
+                            <div class="col-12 mt-3 mb-2">
+                                <h6 class="fw-bold text-danger">Transfer / Removal Details</h6>
+                                <hr>
+                            </div>
+
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Reason</div>
+                                    <span class="badge bg-soft-danger text-danger">{{ member.removal_reason }}</span>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Transfer Date</div>
+                                    <div class="text-dark fw-bold">{{ member.transfer_date|date:"d-m-Y" }}</div>
+                                </div>
+                            </div>
+
+                            {% if member.transferred_from_family %}
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Previous Family</div>
+                                    <a href="{% url 'view_family' member.transferred_from_family.id %}"
+                                        class="badge bg-soft-primary text-primary fs-13">{{
+                                        member.transferred_from_family.family_id }} ({{
+                                        member.transferred_from_family.head_name }})</a>
+                                </div>
+                            </div>
+                            {% endif %}
+                            {% endif %}
+
                         </div>
                     </div>
                     {% else %}
@@ -662,6 +731,40 @@
                                     </div>
                                 </div>
                             </div>
+
+                            {% if member.removal_reason %}
+                            <!-- Transfer/Removal Details -->
+                            <div class="col-12 mt-3 mb-2">
+                                <h6 class="fw-bold text-danger">Transfer / Removal Details</h6>
+                                <hr>
+                            </div>
+
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Reason</div>
+                                    <span class="badge bg-soft-danger text-danger">{{ member.removal_reason }}</span>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Transfer Date</div>
+                                    <div class="text-dark fw-bold">{{ member.transfer_date|date:"d-m-Y" }}</div>
+                                </div>
+                            </div>
+
+                            {% if member.transferred_from_family %}
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Previous Family</div>
+                                    <a href="{% url 'view_family' member.transferred_from_family.id %}"
+                                        class="badge bg-soft-primary text-primary fs-13">{{
+                                        member.transferred_from_family.family_id }} ({{
+                                        member.transferred_from_family.head_name }})</a>
+                                </div>
+                            </div>
+                            {% endif %}
+                            {% endif %}
 
                         </div>
                     </div>

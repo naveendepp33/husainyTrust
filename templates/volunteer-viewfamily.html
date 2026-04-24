@@ -33,8 +33,8 @@
 
                                 <!-- Profile Image -->
                                 <img src="{% if m.photo %}{{ m.photo.url }}{% else %}/static/assets/images/avatar/user.jpg{% endif %}"
-                                    class="rounded-circle shadow-sm border border-2 border-white" width="65" height="65"
-                                    alt="Profile" style="object-fit: cover;">
+                                    class="rounded-circle shadow-sm border border-2 border-white" width="65" height="65" alt="Profile"
+                                    style="object-fit: cover;">
 
                                 <!-- Name + ID -->
                                 <div>
@@ -46,6 +46,7 @@
                             </div>
 
                             <!-- Bottom Row: Mobile Left | People Right -->
+
 
                         </div>
                         <!-- Bottom Add Icon -->
@@ -132,11 +133,7 @@
                             {% endif %}
 
 
-                            {% if request.user.adduser.role != 'volunteer' %}
-                            <a href="{% url 'viewmember' m.id %}">
-                                <i class="feather-file-text" style="padding-left: 20px;"></i>
-                            </a>
-                            {% endif %}
+                            
                         </div>
                     </div>
                 </div>
@@ -214,9 +211,9 @@
                         <div class="mb-3">
                             <label class="form-label">Relationship to Head</label>
                             <select name="relationship" class="form-control">
-                                <option value="">Select or type...</option>
+                                <option value="">Select</option>
                                 {% for r in relationships %}
-                                <option value="{{ r.name }}">{{ r.name }}</option>
+                                <option value="{{ r.id }}">{{ r.name }}</option>
                                 {% endfor %}
                             </select>
                         </div>
@@ -430,7 +427,7 @@
                     <div class="form-step d-none" id="adult-step13">
                         <div class="mb-3">
                             <label class="form-label">Academic Qualification</label>
-                            <select name="academic_qualification" class="form-control tags-select">
+                            <select name="academic_qualification" class="form-control">
                                 <option value="">Select</option>
                                 {% for q in qualifications %}
                                 <option value="{{ q.id }}">{{ q.name }}</option>
@@ -568,7 +565,7 @@
                     <div class="form-step d-none" id="adult-step19">
                         <div class="mb-3">
                             <label class="form-label">Occupation</label>
-                            <select name="occupation" class="form-control tags-select">
+                            <select name="occupation" class="form-control">
                                 <option value="">Select</option>
                                 {% for o in occupations %}
                                 <option value="{{ o.id }}">{{ o.name }}</option>
@@ -614,7 +611,7 @@
                     <div class="form-step d-none" id="adult-step21">
                         <div class="mb-3">
                             <label class="form-label">Sector</label><br>
-                            <select name="sector" class="form-control tags-select">
+                            <select name="sector" class="form-control">
                                 <option value="">Select</option>
                                 {% for s in sectors %}
                                 <option value="{{ s.id }}">{{ s.name }}</option>
@@ -701,7 +698,7 @@
                     <div class="form-step d-none" id="adult-step25">
                         <div class="mb-3">
                             <label class="form-label">Annual Income</label>
-                            <select name="annual_income" class="form-control tags-select">
+                            <select name="annual_income" class="form-control">
                                 <option value="">Select</option>
                                 {% for inc in incomes %}
                                 <option value="{{ inc.id }}">{{ inc.name }}</option>
@@ -1041,8 +1038,7 @@
 
                         <div class="d-flex justify-content-between">
                             <button type="button" class="btn btn-light" onclick="prevStep(38, 'adult')">Back</button>
-                            <button type="button" class="btn btn-success"
-                                onclick="directSubmit('adultUpdateForm')">Submit</button>
+                            <button type="button" class="btn btn-success" onclick="directSubmit('adultUpdateForm')">Submit</button>
                         </div>
                     </div>
 
@@ -1275,7 +1271,7 @@
                     <div class="form-step d-none" id="student-step10">
                         <div class="mb-3">
                             <label class="form-label">Grade / Year</label>
-                            <select name="grade_year" class="form-control tags-select">
+                            <select name="grade_year" class="form-control">
                                 <option value="">Select Grade / Year</option>
                                 {% for g in grades %}
                                 <option value="{{ g.name }}">{{ g.name }}</option>
@@ -1725,8 +1721,7 @@
 
                         <div class="d-flex justify-content-between">
                             <button type="button" class="btn btn-light" onclick="prevStep(28, 'student')">Back</button>
-                            <button type="button" class="btn btn-success"
-                                onclick="directSubmit('studentUpdateForm')">Submit</button>
+                            <button type="button" class="btn btn-success" onclick="directSubmit('studentUpdateForm')">Submit</button>
                         </div>
                     </div>
                 </form>
@@ -1990,8 +1985,7 @@
 
                         <div class="d-flex justify-content-between">
                             <button type="button" class="btn btn-light" onclick="prevStep(11, 'infant')">Back</button>
-                            <button type="button" class="btn btn-success"
-                                onclick="directSubmit('infantUpdateForm')">Update Baby Details</button>
+                            <button type="button" class="btn btn-success" onclick="directSubmit('infantUpdateForm')">Update Baby Details</button>
                         </div>
                     </div>
                 </form>
@@ -2319,30 +2313,6 @@
                         }).join(' ');
                     }
                 });
-            }
-        });
-    });
-</script>
-
-<script>
-    $(document).ready(function () {
-        $('.tags-select').select2({
-            tags: true, // allow typing
-            width: '100%',
-            placeholder: 'Select or type relationship',
-            allowClear: true,
-            createTag: function (params) {
-                var term = $.trim(params.term);
-
-                if (term === '') {
-                    return null;
-                }
-
-                return {
-                    id: term,
-                    text: term,
-                    newTag: true
-                };
             }
         });
     });

@@ -149,6 +149,23 @@
                                     <div>{{ family.members.count }}</div>
                                 </div>
                             </div>
+
+                            <div class="col-lg-6 mb-3">
+                                <div class="d-flex">
+                                    <div class="fw-medium me-2" style="width:190px;">Created By</div>
+                                    <div>
+                                        {% if family.created_by %}
+                                            {% if family.created_by.profile.role == 'volunteer' %}
+                                                {{ family.created_by.username }} (Volunteer)
+                                            {% else %}
+                                                {{ family.created_by.username }} ({{ family.created_by.profile.role|capfirst }})
+                                            {% endif %}
+                                        {% else %}
+                                            -
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -192,6 +209,9 @@
                                     <td class="text-end">
                                         <div class="hstack gap-2 justify-content-end">
                                             
+                                            <a href="{% url 'viewmember' m.id %}" class="avatar-text avatar-md">
+                                                        <i class="feather-eye"></i>
+                                                    </a>
 
                                             <a href="{% url 'edit-member' m.id %}"
                                             class="avatar-text avatar-md bg-light-warning text-warning editUserBtn"
@@ -199,7 +219,7 @@
                                             <i class="feather-edit"></i>
                                             </a>
                                             <a href="javascript:void(0);" 
-                                                        onclick="openRemoveMemberModal('{{ m.id }}', '{{ m.name }}')" class="avatar-text avatar-md delete-btn">
+                                                        onclick="openRemoveMemberModal('{{ m.id }}', '{{ m.name }}', {% if m.relationship.name == 'Self' %}true{% else %}false{% endif %})" class="avatar-text avatar-md delete-btn">
                                             <i class="feather-trash-2"></i>
                                             </a>
                                         </div>
@@ -262,6 +282,17 @@
                             {% endfor %}
                         </select>
                     </div>
+
+                    <div id="newHeadSection" style="display: none;" class="form-group mb-4">
+                        <label for="newHead" class="form-label text-danger">Select New Family Head</label>
+                        <select class="form-control" id="newHead" name="new_head_id">
+                            <option value="" selected disabled>Select New Head</option>
+                            {% for other in members %}
+                                <option value="{{ other.id }}" class="head-option">{{ other.name }} ({{ other.member_id }})</option>
+                            {% endfor %}
+                        </select>
+                        <small class="text-muted">You are removing the Family Head. You must assign a new one.</small>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -273,13 +304,31 @@
 </div>
 
 <script>
-function openRemoveMemberModal(memberId, memberName) {
+function openRemoveMemberModal(memberId, memberName, isHead) {
     document.getElementById('modalMemberName').innerText = memberName;
     document.getElementById('removeMemberForm').action = "/remove-member-action/" + memberId + "/";
     
     document.getElementById('removeMemberForm').reset();
     document.getElementById('marriageActionSection').style.display = 'none';
     document.getElementById('transferFamilySection').style.display = 'none';
+
+    // Handle Head member logic
+    if (isHead) {
+        document.getElementById('newHeadSection').style.display = 'block';
+        document.getElementById('newHead').setAttribute('required', 'required');
+        
+        // Hide the current member from the dropdown
+        document.querySelectorAll('.head-option').forEach(function(opt) {
+            if (opt.value == memberId) {
+                opt.style.display = 'none';
+            } else {
+                opt.style.display = 'block';
+            }
+        });
+    } else {
+        document.getElementById('newHeadSection').style.display = 'none';
+        document.getElementById('newHead').removeAttribute('required');
+    }
 
     var myModal = new bootstrap.Modal(document.getElementById('removeMemberModal'));
     myModal.show();

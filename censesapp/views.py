@@ -99,6 +99,7 @@ def logins(request):
 def dashboard(request):
     return render(request, 'dashboard.html')
 
+@login_required(login_url="/")
 def adduser(request):
 
     supervisors = AddUser.objects.filter(role="manager")
@@ -184,6 +185,7 @@ def adduser(request):
         "supervisors": supervisors,
     })
 
+@login_required(login_url="/")
 def manageuser(request):
     supervisors = AddUser.objects.filter(role="manager")
     role_filter = request.GET.get("role")
@@ -201,6 +203,7 @@ def manageuser(request):
 
     return render(request, 'manageuser.html', context)
 
+@login_required(login_url="/")
 def view_user_details(request, id):
     try:
         user = AddUser.objects.select_related('user').get(id=id)
@@ -219,7 +222,8 @@ def view_user_details(request, id):
 
     except AddUser.DoesNotExist:
         return JsonResponse({"error": "User not found"})
-    
+
+@login_required(login_url="/")  
 def get_user_data(request, id):
     user = AddUser.objects.select_related('user').get(id=id)
 
@@ -236,6 +240,7 @@ def get_user_data(request, id):
     return JsonResponse(data)
 
 @csrf_exempt
+@login_required(login_url="/")
 def update_user(request):
     if request.method == "POST":
         id = request.POST.get("id")
@@ -268,6 +273,7 @@ def update_user(request):
 
     return JsonResponse({"success": False, "error": "Invalid request method."})
 
+@login_required(login_url="/")
 def delete_user(request, user_id):
     try:
         user = AddUser.objects.get(id=user_id)
@@ -278,9 +284,11 @@ def delete_user(request, user_id):
     
     return redirect("manageuser")
 
+@login_required(login_url="/")
 def rolemanagement(request):
     return render(request, 'rolemanagement.html')
 
+@login_required(login_url="/")
 def grade(request):
     grades = Grade.objects.all().order_by("-id")
 
@@ -300,6 +308,7 @@ def grade(request):
         "grades": grades
     })
 
+@login_required(login_url="/")
 def editgrade(request, id):
     grade = get_object_or_404(Grade, id=id)
 
@@ -316,6 +325,7 @@ def editgrade(request, id):
         return redirect("grade")
     return redirect("grade")
 
+@login_required(login_url="/")
 def deletegrade(request, id):
     grade = get_object_or_404(Grade, id=id)
     grade.delete()
@@ -323,6 +333,7 @@ def deletegrade(request, id):
     messages.success(request, "Grade Deleted Successfully!")
     return redirect("grade")
 
+@login_required(login_url="/")
 def country(request):
     countries = Country.objects.all().order_by("-id")
 
@@ -342,6 +353,7 @@ def country(request):
         "countries": countries
     })
 
+@login_required(login_url="/")
 def editcountry(request, id):
     country = get_object_or_404(Country, id=id)
 
@@ -358,6 +370,7 @@ def editcountry(request, id):
         return redirect("country")
     return redirect("country")
 
+@login_required(login_url="/")
 def deletecountry(request, id):
     country = get_object_or_404(Country, id=id)
     country.delete()
@@ -365,7 +378,7 @@ def deletecountry(request, id):
     messages.success(request, "Country Deleted Successfully!")
     return redirect("country")
 
-
+@login_required(login_url="/")
 def state(request):
     states = State.objects.select_related('country').all().order_by("-id")
     countries = Country.objects.all()
@@ -400,6 +413,7 @@ def state(request):
         "countries": countries
     })
 
+@login_required(login_url="/")
 def editstate(request, id):
     state = get_object_or_404(State, id=id)
 
@@ -429,6 +443,7 @@ def editstate(request, id):
 
     return redirect("state")
 
+@login_required(login_url="/")
 def deletestate(request, id):
     state = get_object_or_404(State, id=id)
     state.delete()
@@ -437,6 +452,7 @@ def deletestate(request, id):
     return redirect("state")
 
 
+@login_required(login_url="/")
 def city(request):
     cities = City.objects.select_related('state', 'state__country').all().order_by("-id")
     states = State.objects.select_related('country').all()
@@ -470,6 +486,9 @@ def city(request):
         "states": states
     })
 
+
+
+@login_required(login_url="/")
 def editcity(request, id):
     city = get_object_or_404(City, id=id)
 
@@ -498,6 +517,7 @@ def editcity(request, id):
 
     return redirect("city")
 
+@login_required(login_url="/")
 def deletecity(request, id):
     city = get_object_or_404(City, id=id)
     city.delete()
@@ -505,6 +525,7 @@ def deletecity(request, id):
     messages.success(request, "City Deleted Successfully!")
     return redirect("city")
 
+@login_required(login_url="/")
 def area(request):
     areas = Area.objects.select_related(
         'city',
@@ -546,6 +567,7 @@ def area(request):
         "cities": cities
     })
 
+@login_required(login_url="/")
 def editarea(request, id):
     area = get_object_or_404(Area, id=id)
 
@@ -574,6 +596,7 @@ def editarea(request, id):
 
     return redirect("area")
 
+@login_required(login_url="/")
 def deletearea(request, id):
     area = get_object_or_404(Area, id=id)
     area.delete()
@@ -581,6 +604,7 @@ def deletearea(request, id):
     messages.success(request, "Area Deleted Successfully!")
     return redirect("area")
 
+@login_required(login_url="/")
 def pincode(request):
 
     pincodes = Pincode.objects.select_related(
@@ -625,6 +649,7 @@ def pincode(request):
         "areas": areas
     })
 
+@login_required(login_url="/")
 def editpincode(request, id):
     pincode = get_object_or_404(Pincode, id=id)
 
@@ -653,6 +678,7 @@ def editpincode(request, id):
 
     return redirect("pincode")
 
+@login_required(login_url="/")
 def deletepincode(request, id):
     pincode = get_object_or_404(Pincode, id=id)
     pincode.delete()
@@ -660,6 +686,7 @@ def deletepincode(request, id):
     messages.success(request, "Pincode Deleted Successfully!")
     return redirect("pincode")
 
+@login_required(login_url="/")
 def relationship(request):
 
     relationships = Relationship.objects.all().order_by("-id")
@@ -681,7 +708,8 @@ def relationship(request):
     })
 
 
-# EDIT
+
+@login_required(login_url="/")# EDIT
 def editrelationship(request, id):
     relation = get_object_or_404(Relationship, id=id)
 
@@ -700,7 +728,8 @@ def editrelationship(request, id):
     return redirect("relationship")
 
 
-# DELETE
+
+@login_required(login_url="/")# DELETE
 def deleterelationship(request, id):
     relation = get_object_or_404(Relationship, id=id)
     relation.delete()
@@ -708,6 +737,7 @@ def deleterelationship(request, id):
     return redirect("relationship")
 
 
+@login_required(login_url="/")
 def chronic(request):
 
     diseases = ChronicDisease.objects.all().order_by("-id")
@@ -729,7 +759,8 @@ def chronic(request):
     })
 
 
-# EDIT
+
+@login_required(login_url="/")# EDIT
 def editchronic(request, id):
     disease = get_object_or_404(ChronicDisease, id=id)
 
@@ -748,7 +779,8 @@ def editchronic(request, id):
     return redirect("chronic")
 
 
-# DELETE
+
+@login_required(login_url="/")# DELETE
 def deletechronic(request, id):
     disease = get_object_or_404(ChronicDisease, id=id)
     disease.delete()
@@ -756,6 +788,7 @@ def deletechronic(request, id):
     return redirect("chronic")
 
 
+@login_required(login_url="/")
 def qualification(request):
 
     qualifications = Qualification.objects.all().order_by("-id")
@@ -777,7 +810,8 @@ def qualification(request):
     })
 
 
-# EDIT
+
+@login_required(login_url="/")# EDIT
 def editqualification(request, id):
     qualification = get_object_or_404(Qualification, id=id)
 
@@ -796,13 +830,15 @@ def editqualification(request, id):
     return redirect("qualification")
 
 
-# DELETE
+
+@login_required(login_url="/")# DELETE
 def deletequalification(request, id):
     qualification = get_object_or_404(Qualification, id=id)
     qualification.delete()
     messages.success(request, "Qualification Deleted Successfully!")
     return redirect("qualification")
 
+@login_required(login_url="/")
 def occupation(request):
 
     occupations = Occupation.objects.all().order_by("-id")
@@ -824,7 +860,8 @@ def occupation(request):
     })
 
 
-# EDIT
+
+@login_required(login_url="/")# EDIT
 def editoccupation(request, id):
     occupation = get_object_or_404(Occupation, id=id)
 
@@ -843,7 +880,8 @@ def editoccupation(request, id):
     return redirect("occupation")
 
 
-# DELETE
+
+@login_required(login_url="/")# DELETE
 def deleteoccupation(request, id):
     occupation = get_object_or_404(Occupation, id=id)
     occupation.delete()
@@ -851,6 +889,7 @@ def deleteoccupation(request, id):
     return redirect("occupation")
 
 
+@login_required(login_url="/")
 def income(request):
 
     incomes = Income.objects.all().order_by("-id")
@@ -872,7 +911,8 @@ def income(request):
     })
 
 
-# EDIT
+
+@login_required(login_url="/")# EDIT
 def editincome(request, id):
     income = get_object_or_404(Income, id=id)
 
@@ -891,7 +931,8 @@ def editincome(request, id):
     return redirect("income")
 
 
-# DELETE
+
+@login_required(login_url="/")# DELETE
 def deleteincome(request, id):
     income = get_object_or_404(Income, id=id)
     income.delete()
@@ -899,6 +940,7 @@ def deleteincome(request, id):
     return redirect("income")
 
 
+@login_required(login_url="/")
 def bloodgroup(request):
 
     bloodgroups = BloodGroup.objects.all().order_by("-id")
@@ -920,7 +962,8 @@ def bloodgroup(request):
     })
 
 
-# EDIT
+
+@login_required(login_url="/")# EDIT
 def editbloodgroup(request, id):
     bloodgroup = get_object_or_404(BloodGroup, id=id)
 
@@ -939,13 +982,15 @@ def editbloodgroup(request, id):
     return redirect("bloodgroup")
 
 
-# DELETE
+
+@login_required(login_url="/")# DELETE
 def deletebloodgroup(request, id):
     bloodgroup = get_object_or_404(BloodGroup, id=id)
     bloodgroup.delete()
     messages.success(request, "Blood Group Deleted Successfully!")
     return redirect("bloodgroup")
 
+@login_required(login_url="/")
 def language(request):
 
     languages = Language.objects.all().order_by("-id")
@@ -967,7 +1012,8 @@ def language(request):
     })
 
 
-# EDIT
+
+@login_required(login_url="/")# EDIT
 def editlanguage(request, id):
     language = get_object_or_404(Language, id=id)
 
@@ -986,7 +1032,8 @@ def editlanguage(request, id):
     return redirect("language")
 
 
-# DELETE
+
+@login_required(login_url="/")# DELETE
 def deletelanguage(request, id):
     language = get_object_or_404(Language, id=id)
     language.delete()
@@ -996,12 +1043,14 @@ def deletelanguage(request, id):
 
 
 
-    
+
+@login_required(login_url="/")    
 def department(request):
     return render(request, 'department.html')
 
 
 
+@login_required(login_url="/")
 def health(request):
 
     healths = OverallHealth.objects.all().order_by("-id")
@@ -1023,7 +1072,8 @@ def health(request):
     })
 
 
-# EDIT
+
+@login_required(login_url="/")# EDIT
 def edithealth(request, id):
     health = get_object_or_404(OverallHealth, id=id)
 
@@ -1042,13 +1092,15 @@ def edithealth(request, id):
     return redirect("health")
 
 
-# DELETE
+
+@login_required(login_url="/")# DELETE
 def deletehealth(request, id):
     health = get_object_or_404(OverallHealth, id=id)
     health.delete()
     messages.success(request, "Health status deleted successfully!")
     return redirect("health")
 
+@login_required(login_url="/")
 def sports(request):
 
     sports = Sports.objects.all().order_by("-id")
@@ -1070,7 +1122,8 @@ def sports(request):
     })
 
 
-# EDIT
+
+@login_required(login_url="/")# EDIT
 def editsports(request, id):
     sports = get_object_or_404(Sports, id=id)
 
@@ -1089,7 +1142,8 @@ def editsports(request, id):
     return redirect("sports")
 
 
-# DELETE
+
+@login_required(login_url="/")# DELETE
 def deletesports(request, id):
     sports = get_object_or_404(Sports, id=id)
     sports.delete()
@@ -1097,6 +1151,7 @@ def deletesports(request, id):
     return redirect("sports")
 
 
+@login_required(login_url="/")
 def sector(request):
 
     sector = Sectors.objects.all().order_by("-id")
@@ -1118,7 +1173,8 @@ def sector(request):
     })
 
 
-# EDIT
+
+@login_required(login_url="/")# EDIT
 def editsector(request, id):
     sector = get_object_or_404(Sectors, id=id)
 
@@ -1137,7 +1193,8 @@ def editsector(request, id):
     return redirect("sector")
 
 
-# DELETE
+
+@login_required(login_url="/")# DELETE
 def deletsector(request, id):
     sector = get_object_or_404(Sectors, id=id)
     sector.delete()
@@ -1146,6 +1203,7 @@ def deletsector(request, id):
 
 
 
+@login_required(login_url="/")
 def sitesettings(request):
 
     site = SiteSetting.objects.first()
@@ -1187,6 +1245,7 @@ def sitesettings(request):
         "site": site
     })
 
+@login_required(login_url="/")
 def news(request):
 
     news = News.objects.first()   # only one news record
@@ -1208,7 +1267,8 @@ def news(request):
         "news": news
     })
 
-@login_required(login_url="login")
+
+@login_required(login_url="/")
 def allocatevolunteer(request):
 
     volunteers = AddUser.objects.filter(role="volunteer")
@@ -1237,6 +1297,7 @@ def allocatevolunteer(request):
     })
 
 
+@login_required(login_url="/")
 def allocatelist(request):
 
     allocations = VolunteerAllocation.objects.select_related(
@@ -1268,8 +1329,9 @@ def allocatelist(request):
         })
 
     return render(request, "allocate-list.html", {
-        "allocations": data
-    })
+        "allocations": data })
+
+@login_required(login_url="/")   
 def get_allocation_data(request, id):
     try:
         a = VolunteerAllocation.objects.get(id=id)
@@ -1287,7 +1349,9 @@ def get_allocation_data(request, id):
     except VolunteerAllocation.DoesNotExist:
         return JsonResponse({"error": "Allocation not found"}, status=404)
 
+
 @csrf_exempt
+@login_required(login_url="/")
 def update_allocation(request):
     if request.method == "POST":
         id = request.POST.get("id")
@@ -1304,14 +1368,17 @@ def update_allocation(request):
 
 
 
+@login_required(login_url="/")
 def activeallocation(request):
     return render(request, 'active-allocation.html')
 
+@login_required(login_url="/")
 def expiredallocation(request):
     return render(request, 'expired-allocation.html')
 
 from django.http import JsonResponse
 
+@login_required(login_url="/")
 def get_location_by_pincode(request):
 
     pincode_id = request.GET.get("pincode_id")
@@ -1335,6 +1402,7 @@ def get_location_by_pincode(request):
     except Pincode.DoesNotExist:
         return JsonResponse({"error": "Invalid Pincode"})
 
+@login_required(login_url="/")
 def addfamily(request):
 
     # Generate Next Family ID
@@ -1391,15 +1459,7 @@ def addfamily(request):
         # -----------------------------
         # 1️⃣ ADD FAMILY HEAD AS MEMBER
         # -----------------------------
-# Removed
-# Removed
-# Removed
-# Removed
-# Removed
-# Removed
-# Removed
-# Removed
-# Removed
+
         Member.objects.create(
             family=family,
             name=(request.POST.get("family_head_name") or "").title(),
@@ -1418,15 +1478,7 @@ def addfamily(request):
 
             if name:
 
-# Removed
-# Removed
-# Removed
-# Removed
-# Removed
-# Removed
-# Removed
-# Removed
-# Removed
+
                 Member.objects.create(
                     family=family,
                     name=name,
@@ -1442,6 +1494,7 @@ def addfamily(request):
         "next_family_id": next_family_id
     })
 
+# @login_required(login_url="/")
 # def addfamily(request):
 
 #     # Generate Next Family ID
@@ -1512,6 +1565,7 @@ def addfamily(request):
 #         "next_family_id": next_family_id
 #     })
 
+@login_required(login_url="/")
 def familylist(request):
 
     families = Family.objects.all().order_by("-id")
@@ -1520,6 +1574,7 @@ def familylist(request):
         "families": families
     })
 
+@login_required(login_url="/")
 def editfamily(request,id):
 
     family = get_object_or_404(Family,id=id)
@@ -1564,6 +1619,16 @@ def editfamily(request,id):
 
     return redirect("familylist")
 
+@login_required(login_url="/")
+def deletefamily(request, id):
+    family = get_object_or_404(Family, id=id)
+    # Delete all members in this family first
+    family.members.all().delete()
+    family.delete()
+    messages.success(request, "Family and all its members deleted successfully.")
+    return redirect("familylist")
+
+@login_required(login_url="/")
 def addmember(request,id):
 
     family = Family.objects.get(id=id)
@@ -1578,16 +1643,7 @@ def addmember(request,id):
             if name:
                 name = name.title()
 
-# Removed
-# Removed
-# Removed
-# Removed
-# Removed
-# Removed
-# Removed
-# Removed
-# Removed
-# Removed
+
                 Member.objects.create(
                     family=family,
                     name=name,
@@ -1599,12 +1655,14 @@ def addmember(request,id):
 
 
 
+@login_required(login_url="/")
 def update_member_details(request, id):
     member = get_object_or_404(Member, id=id)
     print(member)
 
     if request.method == "POST":
         print(request.POST)  #
+
 
         def get_val(field_name, is_fk=False):
             val = request.POST.get(field_name)
@@ -1741,6 +1799,7 @@ def update_member_details(request, id):
 
     return render(request,"member-list.html",{"member":member})
 
+@login_required(login_url="/")
 def edit_member(request, id):  
     member = get_object_or_404(Member, id=id)
     relationships = Relationship.objects.all()
@@ -1894,6 +1953,7 @@ def edit_member(request, id):
 
 
 
+@login_required(login_url="/")
 def memberlist(request):
     members = Member.objects.filter(is_updated=False).order_by("-id")
     relationships = Relationship.objects.all()
@@ -1925,12 +1985,14 @@ def memberlist(request):
     })
 
 
+@login_required(login_url="/")
 def viewmember(request,id):
 
     member = get_object_or_404(Member, id = id)
 
     return render(request,'view-member.html',{'member':member})
 
+@login_required(login_url="/")
 def completemember(request):
 
     members = Member.objects.filter(
@@ -2035,6 +2097,7 @@ def completemember(request):
 
     return render(request, "completed-member.html", {"members": members})
 
+@login_required(login_url="/")
 def incompletemember(request):
 
     completed_members = Member.objects.filter(
@@ -2131,6 +2194,7 @@ def incompletemember(request):
 
     return render(request, "incompleted-member.html", {"members": incomplete_members})
 
+@login_required(login_url="/")
 def completedfamily(request):
     # 1. Start with your existing field validation
     families = Family.objects.filter(
@@ -2155,6 +2219,7 @@ def completedfamily(request):
 
     return render(request, "completed-family.html", {"families": families})
 
+@login_required(login_url="/")
 def incompletefamily(request):
     # 1. Families with empty/null fields
     field_empty_query = (
@@ -2181,68 +2246,98 @@ def incompletefamily(request):
 
     return render(request, "incomplete-family.html", {"families": families})
 
+@login_required(login_url="/")
 def unapprovedfamily(request):
     return render(request, 'unapprove-family.html')
 
+@login_required(login_url="/")
 def useractivity(request):
     return render(request, 'user-activity.html')
 
+@login_required(login_url="/")
 def advancereport(request):
-    # 1. Fetch all Master Data for the dropdowns
+    # Universal single-field search across ALL member fields
+    q = request.GET.get('q', '').strip()
+
+    members = Member.objects.all().select_related(
+        'family', 'blood_group', 'occupation', 'qualification',
+        'income', 'overall_health', 'chronic_disease', 'relationship'
+    )
+
+    if q:
+        members = members.filter(
+            # ── Identity ───────────────────────────────────────────
+            Q(name__icontains=q) |
+            Q(member_id__icontains=q) |
+            Q(family__family_id__icontains=q) |
+            Q(alias__icontains=q) |
+            Q(father_name__icontains=q) |
+            Q(aadhaar_number__icontains=q) |
+            Q(member_type__icontains=q) |
+
+            # ── Personal ────────────────────────────────────────────
+            Q(gender__icontains=q) |
+            Q(marital_status__icontains=q) |
+            Q(date_of_birth__icontains=q) |
+            Q(relationship__name__icontains=q) |
+
+            # ── Contact ─────────────────────────────────────────────
+            Q(mobile__icontains=q) |
+            Q(whatsapp__icontains=q) |
+            Q(email_id__icontains=q) |
+
+            # ── Health ──────────────────────────────────────────────
+            Q(blood_group__name__icontains=q) |
+            Q(overall_health__name__icontains=q) |
+            Q(chronic_disease__name__icontains=q) |
+            Q(disability__icontains=q) |
+            Q(activity_level__icontains=q) |
+
+            # ── Location ─────────────────────────────────────────────
+            Q(family__area__name__icontains=q) |
+            Q(family__area__city__name__icontains=q) |
+
+            # ── Adult — Education / Work ─────────────────────────────
+            Q(qualification__name__icontains=q) |
+            Q(occupation__name__icontains=q) |
+            Q(income__name__icontains=q) |
+            Q(designation__icontains=q) |
+            Q(department__icontains=q) |
+            Q(company_name__icontains=q) |
+            Q(skills__icontains=q) |
+            Q(diploma_degree__icontains=q) |
+            Q(sector__icontains=q) |
+            Q(industry__icontains=q) |
+            Q(membership_number__icontains=q) |
+            Q(product_service_listing_in_yellow_pages__icontains=q) |
+
+            # ── Language / Tech ──────────────────────────────────────
+            Q(languages_speak__icontains=q) |
+            Q(languages_read__icontains=q) |
+            Q(languages_write__icontains=q) |
+            Q(computer_proficiency__icontains=q) |
+
+            # ── Student ──────────────────────────────────────────────
+            Q(current_education_status__icontains=q) |
+            Q(school_college_institute_name__icontains=q) |
+            Q(grade_year__icontains=q) |
+            Q(fees_payment__icontains=q) |
+            Q(annual_academic_fees__icontains=q) |
+            Q(sports__icontains=q) |
+            Q(hobbies__icontains=q) |
+            Q(career_goal__icontains=q) |
+            Q(holy_koran_reading__icontains=q) |
+            Q(deeniyath__icontains=q)
+        ).distinct()
+
     context = {
-        'cities': City.objects.all(),
-        'areas': Area.objects.all(),
-        'blood_groups': BloodGroup.objects.all(),
-        'qualifications': Qualification.objects.all(),
-        'incomes': Income.objects.all(),
-        'health_statuses': OverallHealth.objects.all(),
-        'diseases': ChronicDisease.objects.all(),
+        'members': members,
+        'q': q,
+        'total': members.count() if q else None,
     }
-
-    # 2. Start with all members
-    members = Member.objects.all().select_related('family', 'blood_group', 'occupation')
-
-    # 3. Get Search Parameters from request.GET
-    f_id = request.GET.get('family_id')
-    m_id = request.GET.get('member_id')
-    gender = request.GET.get('gender')
-    
-    # FK Filter IDs
-    bg_id = request.GET.get('blood_group')
-    qual_id = request.GET.get('qualification')
-    inc_id = request.GET.get('income')
-    health_id = request.GET.get('health')
-    disease_id = request.GET.get('disease')
-    city_id = request.GET.get('city')
-    area_id = request.GET.get('area')
-
-    # 4. Apply Filters
-    if f_id:
-        members = members.filter(family__family_id__icontains=f_id)
-    if m_id:
-        members = members.filter(member_id__icontains=m_id)
-    if gender:
-        members = members.filter(gender=gender)
-    
-    if bg_id:
-        members = members.filter(blood_group_id=bg_id)
-    if qual_id:
-        members = members.filter(qualification_id=qual_id)
-    if inc_id:
-        members = members.filter(income_id=inc_id)
-    if health_id:
-        members = members.filter(overall_health_id=health_id)
-    if disease_id:
-        members = members.filter(chronic_disease_id=disease_id)
-    if city_id:
-        members = members.filter(family__area__city_id=city_id)
-    if area_id:
-        # We go from Member -> Family -> Area
-        members = members.filter(family__area_id=area_id)
-
-    context['members'] = members
     return render(request, 'advance-report.html', context)
 
+@login_required(login_url="/")
 def usereport(request):
 
     selected_user = request.GET.get("user")
@@ -2263,6 +2358,7 @@ def usereport(request):
 
     return render(request, "user-report.html", context)
 
+@login_required(login_url="/")
 def volunteenreport(request):
     selected_user = request.GET.get("user")
     users = AddUser.objects.filter(role="volunteer")
@@ -2280,6 +2376,7 @@ def volunteenreport(request):
     }
     return render(request, 'volunteen-report.html',context)
 
+@login_required(login_url="/")
 def export_user_excel(request):
 
     selected_user = request.GET.get("user")
@@ -2323,6 +2420,7 @@ def export_user_excel(request):
 
     return response
 
+@login_required(login_url="/")
 def export_user_pdf(request):
 
     selected_user = request.GET.get("user")
@@ -2360,6 +2458,7 @@ def export_user_pdf(request):
 
     return response
 
+@login_required(login_url="/")
 def export_volunteer_excel(request):
 
     selected_user = request.GET.get("user")
@@ -2403,6 +2502,7 @@ def export_volunteer_excel(request):
 
     return response
 
+@login_required(login_url="/")
 def export_volunteer_pdf(request):
 
     selected_user = request.GET.get("user")
@@ -2440,14 +2540,11 @@ def export_volunteer_pdf(request):
 
     return response
 
-
-
-
-
-
+@login_required(login_url="/")
 def volunteeractivity(request):
     return render(request, 'volunteeractivity.html')
 
+@login_required(login_url="/")
 def viewfamily(request,id):
 
     family = get_object_or_404(Family, id=id)
@@ -2460,20 +2557,44 @@ def viewfamily(request,id):
         "all_families": all_families
     })
 
+@login_required(login_url="/")
 def remove_member_action(request, member_id):
     if request.method == "POST":
         member = get_object_or_404(Member, id=member_id)
+        current_family = member.family
         reason = request.POST.get("reason")
         marriage_action = request.POST.get("marriage_action")
         target_family_id = request.POST.get("target_family")
+        new_head_id = request.POST.get("new_head_id")
+
+        # If the removed member is the family head, assign the new head
+        if current_family and member.relationship and member.relationship.name == 'Self':
+            if new_head_id:
+                new_head = get_object_or_404(Member, id=new_head_id)
+                try:
+                    from .models import Relationship
+                    self_rel = Relationship.objects.get(name='Self')
+                    new_head.relationship = self_rel
+                    new_head.save()
+                except Exception:
+                    pass
+                current_family.head_name = new_head.name
+                current_family.save()
+
+        import datetime
+        today = datetime.date.today()
 
         if reason == "Exited":
             member.family = None
+            member.removal_reason = "Expired (Exited)"
+            member.transfer_date = today
             member.save()
-            messages.success(request, f"{member.name} has been removed from the family.")
+            messages.success(request, f"{member.name} has been marked as Exited.")
         elif reason == "Marriage":
             if marriage_action == "Remove":
                 member.family = None
+                member.removal_reason = "Marriage - Removed"
+                member.transfer_date = today
                 member.save()
                 messages.success(request, f"{member.name} has been removed from the family due to marriage.")
             elif marriage_action == "Transfer" and target_family_id:
@@ -2481,130 +2602,279 @@ def remove_member_action(request, member_id):
                 member.family = target_family
                 # When transferring, clear the member_id so it follows the new family pattern.
                 member.member_id = ""
+                member.removal_reason = "Marriage - Transferred"
+                member.transfer_date = today
+                member.transferred_to_family = target_family
                 member.save()
                 messages.success(request, f"{member.name} has been transferred to family {target_family.family_id}.")
         
         return redirect(request.META.get('HTTP_REFERER', 'dashboard'))
     return redirect('dashboard')
 
+@login_required(login_url="/")
 def removed_member_list(request):
     members = Member.objects.filter(family=None).order_by("-id")
     return render(request, "remove-memberlist.html", {"members": members})
 
+@login_required(login_url="/")
 def export_advance_excel(request):
-    members = Member.objects.all().select_related('family', 'blood_group', 'occupation')
+    q = request.GET.get('q', '').strip()
 
-    f_id = request.GET.get('family_id')
-    m_id = request.GET.get('member_id')
-    gender = request.GET.get('gender')
-    bg_id = request.GET.get('blood_group')
-    qual_id = request.GET.get('qualification')
-    inc_id = request.GET.get('income')
-    health_id = request.GET.get('health')
-    disease_id = request.GET.get('disease')
-    city_id = request.GET.get('city')
-    area_id = request.GET.get('area')
+    members = Member.objects.all().select_related(
+        'family', 'blood_group', 'occupation', 'qualification',
+        'income', 'overall_health', 'chronic_disease', 'relationship'
+    )
 
-    if f_id:
-        members = members.filter(family__family_id__icontains=f_id)
-    if m_id:
-        members = members.filter(member_id__icontains=m_id)
-    if gender:
-        members = members.filter(gender=gender)
-    if bg_id:
-        members = members.filter(blood_group_id=bg_id)
-    if qual_id:
-        members = members.filter(qualification_id=qual_id)
-    if inc_id:
-        members = members.filter(income_id=inc_id)
-    if health_id:
-        members = members.filter(overall_health_id=health_id)
-    if disease_id:
-        members = members.filter(chronic_disease_id=disease_id)
-    if city_id:
-        members = members.filter(family__area__city_id=city_id)
-    if area_id:
-        members = members.filter(family__area_id=area_id)
+    if q:
+        members = members.filter(
+            Q(name__icontains=q) |
+            Q(member_id__icontains=q) |
+            Q(family__family_id__icontains=q) |
+            Q(alias__icontains=q) |
+            Q(father_name__icontains=q) |
+            Q(aadhaar_number__icontains=q) |
+            Q(member_type__icontains=q) |
+            Q(gender__icontains=q) |
+            Q(marital_status__icontains=q) |
+            Q(date_of_birth__icontains=q) |
+            Q(relationship__name__icontains=q) |
+            Q(mobile__icontains=q) |
+            Q(whatsapp__icontains=q) |
+            Q(email_id__icontains=q) |
+            Q(blood_group__name__icontains=q) |
+            Q(overall_health__name__icontains=q) |
+            Q(chronic_disease__name__icontains=q) |
+            Q(disability__icontains=q) |
+            Q(activity_level__icontains=q) |
+            Q(family__area__name__icontains=q) |
+            Q(family__area__city__name__icontains=q) |
+            Q(qualification__name__icontains=q) |
+            Q(occupation__name__icontains=q) |
+            Q(income__name__icontains=q) |
+            Q(designation__icontains=q) |
+            Q(department__icontains=q) |
+            Q(company_name__icontains=q) |
+            Q(skills__icontains=q) |
+            Q(diploma_degree__icontains=q) |
+            Q(sector__icontains=q) |
+            Q(industry__icontains=q) |
+            Q(membership_number__icontains=q) |
+            Q(product_service_listing_in_yellow_pages__icontains=q) |
+            Q(languages_speak__icontains=q) |
+            Q(languages_read__icontains=q) |
+            Q(languages_write__icontains=q) |
+            Q(computer_proficiency__icontains=q) |
+            Q(current_education_status__icontains=q) |
+            Q(school_college_institute_name__icontains=q) |
+            Q(grade_year__icontains=q) |
+            Q(fees_payment__icontains=q) |
+            Q(annual_academic_fees__icontains=q) |
+            Q(sports__icontains=q) |
+            Q(hobbies__icontains=q) |
+            Q(career_goal__icontains=q) |
+            Q(holy_koran_reading__icontains=q) |
+            Q(deeniyath__icontains=q)
+        ).distinct()
 
     wb = openpyxl.Workbook()
     ws = wb.active
     ws.title = "Advance Report"
 
+    # Header row
     ws.append([
-        "Member ID",
-        "Member Name",
-        "Family ID",
-        "Gender"
+        "S.No", "Member ID", "Member Name", "Family ID",
+        "Member Type", "Gender", "Blood Group", "Relationship",
+        "Mobile", "Email", "Date of Birth", "Marital Status",
+        "Qualification", "Occupation", "Annual Income",
+        "Overall Health", "Chronic Disease", "Disability",
+        "Area", "School / College", "Grade / Year",
+        "Search Query"
     ])
 
-    for m in members:
-        f_id_str = m.family.family_id if m.family else ""
+    for idx, m in enumerate(members, start=1):
         ws.append([
+            idx,
             m.member_id,
             m.name,
-            f_id_str,
-            m.gender
+            m.family.family_id if m.family else "",
+            m.member_type,
+            m.gender or "",
+            m.blood_group.name if m.blood_group else "",
+            m.relationship.name if m.relationship else "",
+            m.mobile or "",
+            m.email_id or "",
+            str(m.date_of_birth) if m.date_of_birth else "",
+            m.marital_status or "",
+            m.qualification.name if m.qualification else "",
+            m.occupation.name if m.occupation else "",
+            m.income.name if m.income else "",
+            m.overall_health.name if m.overall_health else "",
+            m.chronic_disease.name if m.chronic_disease else "",
+            m.disability or "",
+            m.family.area.name if m.family and m.family.area else "",
+            m.school_college_institute_name or "",
+            m.grade_year or "",
+            q,
         ])
 
     response = HttpResponse(content_type="application/ms-excel")
-    response["Content-Disposition"] = "attachment; filename=advance_report.xlsx"
+    filename = f"advance_report_{q.replace(' ', '_') if q else 'all'}.xlsx"
+    response["Content-Disposition"] = f"attachment; filename={filename}"
     wb.save(response)
     return response
 
+@login_required(login_url="/")
 def export_advance_pdf(request):
-    members = Member.objects.all().select_related('family', 'blood_group', 'occupation')
+    q = request.GET.get('q', '').strip()
 
-    f_id = request.GET.get('family_id')
-    m_id = request.GET.get('member_id')
-    gender = request.GET.get('gender')
-    bg_id = request.GET.get('blood_group')
-    qual_id = request.GET.get('qualification')
-    inc_id = request.GET.get('income')
-    health_id = request.GET.get('health')
-    disease_id = request.GET.get('disease')
-    city_id = request.GET.get('city')
-    area_id = request.GET.get('area')
+    members = Member.objects.all().select_related(
+        'family', 'blood_group', 'occupation', 'qualification',
+        'income', 'overall_health', 'chronic_disease', 'relationship'
+    )
 
-    if f_id:
-        members = members.filter(family__family_id__icontains=f_id)
-    if m_id:
-        members = members.filter(member_id__icontains=m_id)
-    if gender:
-        members = members.filter(gender=gender)
-    if bg_id:
-        members = members.filter(blood_group_id=bg_id)
-    if qual_id:
-        members = members.filter(qualification_id=qual_id)
-    if inc_id:
-        members = members.filter(income_id=inc_id)
-    if health_id:
-        members = members.filter(overall_health_id=health_id)
-    if disease_id:
-        members = members.filter(chronic_disease_id=disease_id)
-    if city_id:
-        members = members.filter(family__area__city_id=city_id)
-    if area_id:
-        members = members.filter(family__area_id=area_id)
+    if q:
+        members = members.filter(
+            Q(name__icontains=q) |
+            Q(member_id__icontains=q) |
+            Q(family__family_id__icontains=q) |
+            Q(alias__icontains=q) |
+            Q(father_name__icontains=q) |
+            Q(aadhaar_number__icontains=q) |
+            Q(member_type__icontains=q) |
+            Q(gender__icontains=q) |
+            Q(marital_status__icontains=q) |
+            Q(date_of_birth__icontains=q) |
+            Q(relationship__name__icontains=q) |
+            Q(mobile__icontains=q) |
+            Q(whatsapp__icontains=q) |
+            Q(email_id__icontains=q) |
+            Q(blood_group__name__icontains=q) |
+            Q(overall_health__name__icontains=q) |
+            Q(chronic_disease__name__icontains=q) |
+            Q(disability__icontains=q) |
+            Q(activity_level__icontains=q) |
+            Q(family__area__name__icontains=q) |
+            Q(family__area__city__name__icontains=q) |
+            Q(qualification__name__icontains=q) |
+            Q(occupation__name__icontains=q) |
+            Q(income__name__icontains=q) |
+            Q(designation__icontains=q) |
+            Q(department__icontains=q) |
+            Q(company_name__icontains=q) |
+            Q(skills__icontains=q) |
+            Q(diploma_degree__icontains=q) |
+            Q(sector__icontains=q) |
+            Q(industry__icontains=q) |
+            Q(membership_number__icontains=q) |
+            Q(product_service_listing_in_yellow_pages__icontains=q) |
+            Q(languages_speak__icontains=q) |
+            Q(languages_read__icontains=q) |
+            Q(languages_write__icontains=q) |
+            Q(computer_proficiency__icontains=q) |
+            Q(current_education_status__icontains=q) |
+            Q(school_college_institute_name__icontains=q) |
+            Q(grade_year__icontains=q) |
+            Q(fees_payment__icontains=q) |
+            Q(annual_academic_fees__icontains=q) |
+            Q(sports__icontains=q) |
+            Q(hobbies__icontains=q) |
+            Q(career_goal__icontains=q) |
+            Q(holy_koran_reading__icontains=q) |
+            Q(deeniyath__icontains=q)
+        ).distinct()
 
-    response = HttpResponse(content_type="application/pdf")
-    response["Content-Disposition"] = "attachment; filename=advance_report.pdf"
+    import io
+    from reportlab.lib.pagesizes import A4, landscape
+    from reportlab.lib import colors
+    from reportlab.lib.units import mm
+    from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
+    from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+    from reportlab.lib.enums import TA_CENTER
 
-    p = canvas.Canvas(response)
-    y = 800
+    buffer = io.BytesIO()
+    filename = f"advance_report_{q.replace(' ', '_') if q else 'all'}.pdf"
 
-    p.drawString(50, y, "Advance Report")
-    y -= 40
+    doc = SimpleDocTemplate(
+        buffer,
+        pagesize=landscape(A4),
+        rightMargin=10*mm, leftMargin=10*mm,
+        topMargin=12*mm, bottomMargin=12*mm
+    )
+    elements = []
 
-    for m in members:
-        f_id_str = m.family.family_id if m.family else "N/A"
-        text = f"{m.member_id} - {m.name} | Family: {f_id_str} | Gender: {m.gender}"
-        p.drawString(50, y, text)
-        y -= 20
+    title_style = ParagraphStyle('title', fontSize=14, fontName='Helvetica-Bold',
+                                 alignment=TA_CENTER, spaceAfter=4)
+    sub_style   = ParagraphStyle('sub', fontSize=9, fontName='Helvetica',
+                                 alignment=TA_CENTER, spaceAfter=10, textColor=colors.grey)
 
-        if y < 100:
-            p.showPage()
-            y = 800
+    elements.append(Paragraph("Advance Search Report", title_style))
+    if q:
+        elements.append(Paragraph(f'Search Query: "{q}"  |  Total Results: {members.count()}', sub_style))
+    else:
+        elements.append(Paragraph(f'All Members  |  Total: {members.count()}', sub_style))
+    elements.append(Spacer(1, 4*mm))
 
-    p.save()
+    col_headers = ["#", "Member ID", "Name", "Family ID",
+                   "Type", "Gender", "Blood Group", "Area",
+                   "Mobile", "Qualification", "Occupation"]
+
+    table_data = [col_headers]
+    for idx, m in enumerate(members, start=1):
+        table_data.append([
+            str(idx),
+            m.member_id or "",
+            m.name or "",
+            m.family.family_id if m.family else "",
+            m.member_type or "",
+            m.gender or "",
+            m.blood_group.name if m.blood_group else "",
+            m.family.area.name if m.family and m.family.area else "",
+            m.mobile or "",
+            m.qualification.name if m.qualification else "",
+            m.occupation.name if m.occupation else "",
+        ])
+
+    col_widths = [8*mm, 28*mm, 40*mm, 24*mm,
+                  18*mm, 16*mm, 22*mm, 28*mm,
+                  26*mm, 30*mm, 28*mm]
+
+    t = Table(table_data, colWidths=col_widths, repeatRows=1)
+    t.setStyle(TableStyle([
+        ('BACKGROUND',    (0, 0), (-1, 0), colors.HexColor('#4361ee')),
+        ('TEXTCOLOR',     (0, 0), (-1, 0), colors.white),
+        ('FONTNAME',      (0, 0), (-1, 0), 'Helvetica-Bold'),
+        ('FONTSIZE',      (0, 0), (-1, 0), 8),
+        ('ALIGN',         (0, 0), (-1, 0), 'CENTER'),
+        ('BOTTOMPADDING', (0, 0), (-1, 0), 6),
+        ('TOPPADDING',    (0, 0), (-1, 0), 6),
+        ('FONTNAME',      (0, 1), (-1, -1), 'Helvetica'),
+        ('FONTSIZE',      (0, 1), (-1, -1), 7.5),
+        ('ALIGN',         (0, 1), (0, -1), 'CENTER'),
+        ('ROWBACKGROUNDS',(0, 1), (-1, -1), [colors.white, colors.HexColor('#f8f9ff')]),
+        ('GRID',          (0, 0), (-1, -1), 0.4, colors.HexColor('#e0e6ef')),
+        ('VALIGN',        (0, 0), (-1, -1), 'MIDDLE'),
+        ('TOPPADDING',    (0, 1), (-1, -1), 4),
+        ('BOTTOMPADDING', (0, 1), (-1, -1), 4),
+    ]))
+    elements.append(t)
+
+    doc.build(elements)
+    pdf_data = buffer.getvalue()
+    buffer.close()
+
+    response = HttpResponse(pdf_data, content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename={filename}'
     return response
 
+
+@login_required(login_url="/")
+def volunteer_familylist(request):
+    families = Family.objects.all()
+    return render(request, 'volunteer-familylist.html', {"families": families})
+
+
+@login_required(login_url="/")
+def volunteer_viewfamily(request, id):
+    family = Family.objects.get(id=id)
+    members = Member.objects.filter(family=family)
+    return render(request, 'volunteer-viewfamily.html', {"family": family, "members": members})

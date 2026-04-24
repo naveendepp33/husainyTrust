@@ -435,24 +435,40 @@ class Member(models.Model):
     deeniyath = models.CharField(max_length=100, blank=True, null=True)
 
     # -----------------------------
+    # TRANSFER/REMOVAL INFO
+    # -----------------------------
+    removal_reason = models.CharField(max_length=100, blank=True, null=True)
+    transfer_date = models.DateField(blank=True, null=True)
+    transferred_to_family = models.ForeignKey(
+        Family, on_delete=models.SET_NULL, null=True, blank=True, related_name="transferred_in_members"
+    )
+    
+    # -----------------------------
     # ID GENERATION
     # -----------------------------
 
+
     def save(self,*args,**kwargs):
         if not self.member_id and self.family:
-            # Generate ID based on current members in this specific family
-            # We try to find the last sequence number used for this family
-            last_member = Member.objects.filter(family=self.family, member_id__contains="-").order_by("-member_id").first()
-            if last_member and "-" in last_member.member_id:
+            # Generate ID safely by finding the max numeric suffix
+            members = Member.objects.filter(family=self.family, member_id__contains="-")
+            max_num = 0
+            for m in members:
                 try:
-                    last_num = int(last_member.member_id.split("-")[-1])
-                    num = last_num + 1
+                    num = int(m.member_id.split("-")[-1])
+                    if num > max_num:
+                        max_num = num
                 except (ValueError, IndexError):
-                    num = Member.objects.filter(family=self.family).count() + 1
-            else:
-                num = Member.objects.filter(family=self.family).count() + 1
+                    pass
             
-            self.member_id = f"{self.family.family_id}-{num}"
+            new_num = max_num + 1
+            self.member_id = f"{self.family.family_id}-{new_num}"
+            
+            # Ensure unique constraint is strictly followed
+            while Member.objects.filter(member_id=self.member_id).exists():
+                new_num += 1
+                self.member_id = f"{self.family.family_id}-{new_num}"
+                
         super().save(*args,**kwargs)
 
 

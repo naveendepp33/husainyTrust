@@ -93,7 +93,7 @@
 
                         <!-- Bottom Add Icon -->
                         <div class="card-footer bg-transparent text-center py-2 border-top" >
-                            <a href="#" class="edit-family-btn" data-id="{{ f.id }}" data-head="{{ f.head_name }}"
+                            <!-- <a href="#" class="edit-family-btn" data-id="{{ f.id }}" data-head="{{ f.head_name }}"
                                 data-aadhar="{{ f.aadhar_no }}" data-mobile="{{ f.mobile_no }}"
                                 data-door="{{ f.door_no }}" data-apartment="{{ f.apartment_name }}"
                                 data-flat="{{ f.flat_no }}" data-floor="{{ f.floor_no }}"
@@ -112,13 +112,13 @@
 
                                 <i class="feather-user-plus"></i>
 
-                            </a>
-                            <a href="{% url 'view_family' f.id %}" style="padding: 10px; color: blue;">
+                            </a> -->
+                            <a href="{% url 'volunteer_viewfamily' f.id %}" style="padding: 10px; color: blue;">
                                 <i class="feather-eye"></i>
                             </a>
-                            <a href="#" class="delete-family-btn" data-id="{{ f.id }}" data-name="{{ f.head_name }}" style="padding: 0px; color: red;">
+                            <!-- <a href="#" class="delete-family-btn" data-id="{{ f.id }}" data-name="{{ f.head_name }}" style="padding: 0px; color: red;">
                                 <i class="feather-trash-2"></i>
-                            </a>
+                            </a> -->
 
 
 
@@ -363,10 +363,7 @@
             document.getElementById("edit_mobile").value = this.dataset.mobile
             document.getElementById("edit_door").value = this.dataset.door
             document.getElementById("edit_apartment").value = this.dataset.apartment
-            // document.getElementById("edit_flat").value = this.dataset.flat
-            // document.getElementById("edit_floor").value = this.dataset.floor
             document.getElementById("edit_street").value = this.dataset.street
-            // document.getElementById("edit_road").value = this.dataset.road
             document.getElementById("edit_pincode").value = this.dataset.pincode
             document.getElementById("edit_area").value = this.dataset.area
             document.getElementById("edit_state").value = this.dataset.state

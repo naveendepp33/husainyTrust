@@ -62,6 +62,7 @@ path("deletehealth/<int:id>/", deletehealth, name="deletehealth"),
     path('addfamily/', addfamily, name='add_family'),
     path("familylist/", familylist, name="familylist"),
     path("editfamily/<int:id>/", editfamily, name="editfamily"),
+    path("deletefamily/<int:id>/", deletefamily, name="deletefamily"),
     path("addmember/<int:id>/", addmember, name="addmember"),
     path("update-member/<int:id>/", update_member_details, name="update_member"),
     path("edit-member/<int:id>/", edit_member, name="edit-member"),
@@ -99,4 +100,7 @@ path("deletehealth/<int:id>/", deletehealth, name="deletehealth"),
     
     path('remove-member-action/<int:member_id>/', remove_member_action, name='remove_member_action'),
     path('removed-members/', removed_member_list, name='removed_member_list'),
+
+    path('volunteer-familylist/', volunteer_familylist, name='volunteer_familylist'),
+    path('volunteer-viewfamily/<int:id>/', volunteer_viewfamily, name='volunteer_viewfamily'),
 ]

@@ -312,6 +312,12 @@
                             <span class="nxl-mtext">Add Family</span>
                         </a>
                     </li>
+                    <li class="nxl-item nxl-hasmenu">
+                        <a href="/volunteer-familylist/" class="nxl-link">
+                            <span class="nxl-micon"><i class="feather-users"></i></span>
+                            <span class="nxl-mtext">Family List</span>
+                        </a>
+                    </li>
 
                     <li class="nxl-item nxl-hasmenu">
                         <a href="/memberlist/" class="nxl-link">
@@ -987,7 +993,14 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
+        if (typeof $.fn.dataTable !== 'undefined') {
+            $.fn.dataTable.ext.errMode = 'none';
+        }
+
         $(document).ready(function () {
+            if (typeof $.fn.dataTable !== 'undefined') {
+                $.fn.dataTable.ext.errMode = 'none';
+            }
 
             $(document).on('click', '.nxl-navigation .nxl-navbar .nxl-hasmenu > a', function (e) {
 

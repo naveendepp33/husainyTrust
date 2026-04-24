@@ -182,8 +182,10 @@
                                 <div class="px-4 row">
                                      <div class="col-xl-4 mb-4" id="resStatusGroup">
                                         <label class="form-label">Residential Status <span class="text-danger">*</span></label><br>
-                                        <input type="radio" name="residential_status" value="Owner" required> Owner
-                                        <input type="radio" name="residential_status" value="Renter"> Renter
+                                        <input type="radio" name="residential_status" value="Owned" required> Owned
+                                        <input type="radio" name="residential_status" value="Rented"> Rented
+                                        <input type="radio" name="residential_status" value="Leased"> Leased
+                                        <input type="radio" name="residential_status" value="Other"> Other
                                     </div>
 
                                     <div class="col-xl-4 mb-4">
@@ -385,6 +387,32 @@
             //     showError("landline", "Landline must be exactly 8 digits");
             // }
 
+            // 5. Dynamic member validation
+            const memberRows = document.querySelectorAll('.member-row');
+            memberRows.forEach((row, index) => {
+                const nameInput = row.querySelector('input[type="text"]');
+                if (nameInput && (!nameInput.value || nameInput.value.trim() === "")) {
+                    nameInput.classList.add("is-invalid");
+                    const error = document.createElement("span");
+                    error.className = "error-msg";
+                    error.innerText = `Member ${index + 1} Name is required`;
+                    nameInput.closest("div").appendChild(error);
+                    isValid = false;
+                }
+
+                const radios = row.querySelectorAll('input[type="radio"]');
+                if (radios.length > 0) {
+                    const radioChecked = row.querySelector('input[type="radio"]:checked');
+                    if (!radioChecked) {
+                        const error = document.createElement("span");
+                        error.className = "error-msg";
+                        error.innerText = `Member ${index + 1} Type is required`;
+                        radios[0].closest("div").appendChild(error);
+                        isValid = false;
+                    }
+                }
+            });
+
             if (!isValid) {
                 event.preventDefault();
                 // Scroll to first error
@@ -406,6 +434,14 @@
             });
         });
 
+        // Clear error for existing radio buttons (like Residential Status)
+        document.querySelectorAll('input[type="radio"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                const error = this.closest('div').querySelector('.error-msg');
+                if (error) error.remove();
+            });
+        });
+
         // --- Existing logic for Member Count ---
         memberSelect.addEventListener("change", function () {
             container.innerHTML = "";
@@ -416,11 +452,11 @@
                 row.className = "px-4 row mt-3 member-row";
                 row.innerHTML = `
                     <div class="col-xl-4 mb-3">
-                        <label class="form-label">Member ${i} Name</label>
+                        <label class="form-label">Member ${i} Name <span class="text-danger">*</span></label>
                         <input type="text" name="member_name_${i}" class="form-control" required>
                     </div>
                     <div class="col-xl-6 mb-3">
-                        <label class="form-label">Type</label><br>
+                        <label class="form-label">Type <span class="text-danger">*</span></label><br>
                         <input type="radio" name="member_type_${i}" value="Adult" required> Adult
                         <input type="radio" name="member_type_${i}" value="Student"> Student
                         <input type="radio" name="member_type_${i}" value="Baby"> Infant
@@ -438,6 +474,23 @@
         container.addEventListener("click", function (e) {
             if (e.target.classList.contains("delete-btn")) {
                 e.target.closest(".member-row").remove();
+            }
+            
+            // Clear radio errors on click
+            if (e.target.type === "radio") {
+                const error = e.target.closest("div").querySelector(".error-msg");
+                if (error) error.remove();
+            }
+        });
+
+        // Clear dynamic input errors on typing
+        container.addEventListener("input", function (e) {
+            if (e.target.classList.contains("form-control")) {
+                if (e.target.value.trim() !== "") {
+                    e.target.classList.remove("is-invalid");
+                    const error = e.target.closest("div").querySelector(".error-msg");
+                    if (error) error.remove();
+                }
             }
         });
     });

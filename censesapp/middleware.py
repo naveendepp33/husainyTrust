@@ -74,7 +74,9 @@ class VolunteerAccessMiddleware:
                         "/media",
                         "/edit-member",
                         "/viewmember",
-                        "/viewfamily"
+                        "/viewfamily",
+                        "/volunteer-familylist",
+                        "/volunteer-viewfamily",
                     ]
 
                     # Normalize path: remove trailing slash for comparison
