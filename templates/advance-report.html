@@ -56,71 +56,88 @@
 
                                             <div class="row">
 
-                                                <!-- From Date -->
+                                                <!-- Existing fields (some were here) -->
                                                 <div class="col-lg-3 mb-3">
-                                                    <label class="form-label">Gender</label>
-                                                    <select class="form-control" name="gender"
-                                                        value="{{ request.GET.gender }}">
-                                                        <option value="">Select Gender</option>
-                                                        <option value="Male">Male</option>
-                                                        <option value="Female">Female</option>
-                                                        <option value="Other">Other</option>
+                                                    <label class="form-label">Name</label>
+                                                    <input type="text" name="name" class="form-control" value="{{ request.GET.name }}">
+                                                </div>
+
+                                                <div class="col-lg-3 mb-3">
+                                                    <label class="form-label">Member Type</label>
+                                                    <select name="member_type" class="form-control">
+                                                        <option value="">All</option>
+                                                        <option value="Adult" {% if request.GET.member_type == 'Adult' %}selected{% endif %}>Adult</option>
+                                                        <option value="Student" {% if request.GET.member_type == 'Student' %}selected{% endif %}>Student</option>
+                                                        <option value="Baby" {% if request.GET.member_type == 'Baby' %}selected{% endif %}>Baby</option>
                                                     </select>
                                                 </div>
 
+                                                <div class="col-lg-3 mb-3">
+                                                    <label class="form-label">Gender</label>
+                                                    <select class="form-control" name="gender">
+                                                        <option value="">Select Gender</option>
+                                                        <option value="Male" {% if request.GET.gender == 'Male' %}selected{% endif %}>Male</option>
+                                                        <option value="Female" {% if request.GET.gender == 'Female' %}selected{% endif %}>Female</option>
+                                                        <option value="Other" {% if request.GET.gender == 'Other' %}selected{% endif %}>Other</option>
+                                                    </select>
+                                                </div>
 
+                                                <div class="col-lg-3 mb-3">
+                                                    <label class="form-label">Age (Approximate)</label>
+                                                    <input type="number" name="age" class="form-control" value="{{ request.GET.age }}" placeholder="Years">
+                                                </div>
 
-                                                <!-- To Date -->
+                                                <div class="col-lg-3 mb-3">
+                                                    <label class="form-label">City</label>
+                                                    <input type="text" name="city" class="form-control" value="{{ request.GET.city }}">
+                                                </div>
 
+                                                <div class="col-lg-3 mb-3">
+                                                    <label class="form-label">State</label>
+                                                    <input type="text" name="state" class="form-control" value="{{ request.GET.state }}">
+                                                </div>
 
+                                                <div class="col-lg-3 mb-3">
+                                                    <label class="form-label">Pincode</label>
+                                                    <input type="text" name="pincode" class="form-control" value="{{ request.GET.pincode }}">
+                                                </div>
 
-                                                <!-- City -->
                                                 <div class="col-lg-3 mb-3">
                                                     <label class="form-label">Area</label>
-                                                    <select class="form-control" name="area"
-                                                        value="{{ request.GET.area }}">
+                                                    <select class="form-control" name="area">
                                                         <option value="">Select Area</option>
-                                                        {% for area in areas %}
-                                                        <option value="{{ area.id }}" {% if
-                                                            request.GET.area == area.id|stringformat:"s" %}selected{%
-                                                            endif %}>
-                                                            {{ area.name }}
-                                                        </option>
+                                                        {% for a in areas %}
+                                                        <option value="{{ a.id }}" {% if request.GET.area == a.id|stringformat:"s" %}selected{% endif %}>{{ a.name }}</option>
                                                         {% endfor %}
                                                     </select>
                                                 </div>
 
-                                                <!-- Area -->
                                                 <div class="col-lg-3 mb-3">
                                                     <label class="form-label">Blood Group</label>
                                                     <select name="blood_group" class="form-control">
                                                         <option value="">All</option>
                                                         {% for bg in blood_groups %}
-                                                        <option value="{{ bg.id }}" {% if
-                                                            request.GET.blood_group == bg.id|stringformat:"s" %}selected{%
-                                                            endif %}>{{ bg.name }}</option>
+                                                        <option value="{{ bg.id }}" {% if request.GET.blood_group == bg.id|stringformat:"s" %}selected{% endif %}>{{ bg.name }}</option>
                                                         {% endfor %}
                                                     </select>
                                                 </div>
 
                                                 <div class="col-lg-3 mb-3">
-        <label class="form-label">Qualification</label>
-        <select name="qualification" class="form-control">
-            <option value="">All</option>
-            {% for q in qualifications %}
-            <option value="{{ q.id }}" {% if request.GET.qualification == q.id|stringformat:"s" %}selected{% endif %}>{{ q.name }}</option>
-            {% endfor %}
-        </select>
-    </div>
+                                                    <label class="form-label">Qualification</label>
+                                                    <select name="qualification" class="form-control">
+                                                        <option value="">All</option>
+                                                        {% for q in qualifications %}
+                                                        <option value="{{ q.id }}" {% if request.GET.qualification == q.id|stringformat:"s" %}selected{% endif %}>{{ q.name }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
 
                                                 <div class="col-lg-3 mb-3">
                                                     <label class="form-label">Annual Income</label>
                                                     <select name="income" class="form-control">
                                                         <option value="">All</option>
                                                         {% for inc in incomes %}
-                                                        <option value="{{ inc.id }}" {% if
-                                                            request.GET.income == inc.id|stringformat:"s" %}selected{%
-                                                            endif %}>{{ inc.name }}</option>
+                                                        <option value="{{ inc.id }}" {% if request.GET.income == inc.id|stringformat:"s" %}selected{% endif %}>{{ inc.name }}</option>
                                                         {% endfor %}
                                                     </select>
                                                 </div>
@@ -130,24 +147,89 @@
                                                     <select name="health" class="form-control">
                                                         <option value="">All</option>
                                                         {% for h in health_statuses %}
-                                                        <option value="{{ h.id }}" {% if
-                                                            request.GET.health == h.id|stringformat:"s" %}selected{% endif
-                                                            %}>{{ h.name }}</option>
+                                                        <option value="{{ h.id }}" {% if request.GET.health == h.id|stringformat:"s" %}selected{% endif %}>{{ h.name }}</option>
                                                         {% endfor %}
                                                     </select>
                                                 </div>
+                                                
                                                 <div class="col-lg-3 mb-3">
                                                     <label class="form-label">Chronic Disease</label>
                                                     <select name="disease" class="form-control">
                                                         <option value="">None / All</option>
                                                         {% for d in diseases %}
-                                                        <option value="{{ d.id }}" {% if
-                                                            request.GET.disease == d.id|stringformat:"s" %}selected{%
-                                                            endif %}>
-                                                            {{ d.name }}
-                                                        </option>
+                                                        <option value="{{ d.id }}" {% if request.GET.disease == d.id|stringformat:"s" %}selected{% endif %}>{{ d.name }}</option>
                                                         {% endfor %}
                                                     </select>
+                                                </div>
+
+                                                <div class="col-lg-3 mb-3">
+                                                    <label class="form-label">Mobile</label>
+                                                    <input type="text" name="mobile" class="form-control" value="{{ request.GET.mobile }}">
+                                                </div>
+
+                                                <div class="col-lg-3 mb-3">
+                                                    <label class="form-label">WhatsApp</label>
+                                                    <input type="text" name="whatsapp" class="form-control" value="{{ request.GET.whatsapp }}">
+                                                </div>
+
+                                                <div class="col-lg-3 mb-3">
+                                                    <label class="form-label">Email ID</label>
+                                                    <input type="email" name="email_id" class="form-control" value="{{ request.GET.email_id }}">
+                                                </div>
+
+                                                <div class="col-lg-3 mb-3">
+                                                    <label class="form-label">Aadhaar Number</label>
+                                                    <input type="text" name="aadhaar_number" class="form-control" value="{{ request.GET.aadhaar_number }}">
+                                                </div>
+
+                                                <div class="col-lg-3 mb-3">
+                                                    <label class="form-label">Marital Status</label>
+                                                    <input type="text" name="marital_status" class="form-control" value="{{ request.GET.marital_status }}">
+                                                </div>
+
+                                                <div class="col-lg-3 mb-3">
+                                                    <label class="form-label">Occupation</label>
+                                                    <input type="text" name="occupation" class="form-control" value="{{ request.GET.occupation }}">
+                                                </div>
+
+                                                <div class="col-lg-3 mb-3">
+                                                    <label class="form-label">Company Name</label>
+                                                    <input type="text" name="company_name" class="form-control" value="{{ request.GET.company_name }}">
+                                                </div>
+
+                                                <div class="col-lg-3 mb-3">
+                                                    <label class="form-label">Designation</label>
+                                                    <input type="text" name="designation" class="form-control" value="{{ request.GET.designation }}">
+                                                </div>
+
+                                                <div class="col-lg-3 mb-3">
+                                                    <label class="form-label">Department</label>
+                                                    <input type="text" name="department" class="form-control" value="{{ request.GET.department }}">
+                                                </div>
+
+                                                <div class="col-lg-3 mb-3">
+                                                    <label class="form-label">Skills</label>
+                                                    <input type="text" name="skills" class="form-control" value="{{ request.GET.skills }}">
+                                                </div>
+
+                                                <div class="col-lg-3 mb-3">
+                                                    <label class="form-label">Languages Speak</label>
+                                                    <input type="text" name="languages_speak" class="form-control" value="{{ request.GET.languages_speak }}">
+                                                </div>
+
+                                                <div class="col-lg-3 mb-3">
+                                                    <label class="form-label">Computer Proficiency</label>
+                                                    <input type="text" name="computer_proficiency" class="form-control" value="{{ request.GET.computer_proficiency }}">
+                                                </div>
+
+                                                <div class="col-lg-3 mb-3">
+                                                    <label class="form-label">School/College</label>
+                                                    <input type="text" name="school_college" class="form-control" value="{{ request.GET.school_college }}">
+                                                </div>
+
+                                                <div class="col-lg-3 mb-3">
+                                                    <label class="form-label">Grade/Year</label>
+                                                    <input type="text" name="grade_year" class="form-control" value="{{ request.GET.grade_year }}">
                                                 </div>
 
                                             </div>

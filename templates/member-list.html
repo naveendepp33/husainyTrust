@@ -212,11 +212,11 @@
 
                     <div class="form-step d-none" id="adult-step3">
                         <div class="mb-3">
-                            <label class="form-label">Relationship to Head</label>
+                            <label class="form-label">Relationship To Head</label>
                             <select name="relationship" class="form-control">
                                 <option value="">Select or type...</option>
                                 {% for r in relationships %}
-                                <option value="{{ r.name }}">{{ r.name }}</option>
+                                <option value="{{ r.id }}">{{ r.name }}</option>
                                 {% endfor %}
                             </select>
                         </div>
@@ -348,7 +348,15 @@
                     <div class="form-step d-none" id="adult-step9">
                         <div class="mb-3">
                             <label class="form-label">WhatsApp</label>
-                            <input type="number" name="whatsapp" class="form-control">
+                            <input type="number" name="whatsapp" class="form-control" id="whatsapp-input">
+                        </div>
+
+                        <div class="form-check mt-2 mb-2">
+                            <input type="checkbox" class="form-check-input" id="same-as-mobile"
+                                onclick="if(this.checked) { document.getElementById('whatsapp-input').value = document.querySelector('input[name=mobile]').value; } else { document.getElementById('whatsapp-input').value = ''; }">
+                            <label class="form-check-label text-muted" for="same-as-mobile">
+                                Same as mobile number
+                            </label>
                         </div>
 
                         <div class="form-check mt-2">
@@ -1117,7 +1125,7 @@
 
                     <div class="form-step d-none" id="student-step3">
                         <div class="mb-3">
-                            <label class="form-label">Relationship to Head</label>
+                            <label class="form-label">Relationship To Head</label>
                             <select name="relationship" class="form-control">
                                 <option value="">Select</option>
                                 {% for r in relationships %}
@@ -1187,10 +1195,13 @@
 
                     <div class="form-step d-none" id="student-step6">
                         <div class="mb-3">
-                            <label class="form-label">Gender</label><br>
-                            <input type="radio" name="gender" value="Male"> Male
-                            <input type="radio" name="gender" value="Female"> Female
-                            <input type="radio" name="gender" value="Others"> Others
+                            <label class="form-label">Gender</label>
+                            <select name="gender" class="form-control">
+                                <option value="">Select</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
                         </div>
 
                         <div class="form-check mt-2">
@@ -1770,7 +1781,7 @@
 
                     <div class="form-step d-none" id="infant-step2">
                         <div class="mb-3">
-                            <label class="form-label">Relationship to Head</label>
+                            <label class="form-label">Relationship To Head</label>
                             <select name="relationship" class="form-control">
                                 <option value="">Select</option>
                                 {% for r in relationships %}
@@ -1838,10 +1849,13 @@
 
                     <div class="form-step d-none" id="infant-step5">
                         <div class="mb-3">
-                            <label class="form-label">Gender</label><br>
-                            <input type="radio" name="gender" value="Male"> Male
-                            <input type="radio" name="gender" value="Female"> Female
-                            <input type="radio" name="gender" value="Others"> Others
+                            <label class="form-label">Gender</label>
+                            <select name="gender" class="form-control">
+                                <option value="">Select</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
                         </div>
 
                         <div class="form-check mt-2">
@@ -2163,10 +2177,16 @@
             }
         });
 
-        // Reload page when any modal is closed (X button or backdrop click)
+        // Save and reload page when any modal is closed (X button or backdrop click)
         ['adultModal', 'studentModal', 'infantModal'].forEach(modalId => {
             const modalEl = document.getElementById(modalId);
             if (modalEl) {
+                modalEl.addEventListener('hide.bs.modal', async function () {
+                    const form = modalEl.querySelector('form');
+                    if (form) {
+                        await saveMemberData(form, false);
+                    }
+                });
                 modalEl.addEventListener('hidden.bs.modal', function () {
                     location.reload();
                 });

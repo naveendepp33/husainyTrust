@@ -12,6 +12,7 @@ from django.db.models import Q
 from django.http import HttpResponse
 import openpyxl
 from reportlab.pdfgen import canvas
+import string
 
 # Create your views here.
 
@@ -1424,7 +1425,7 @@ def addfamily(request):
     if request.method == "POST":
 
         # Resolve Area from Name provided in POST (since it's now a text input)
-        area_name = (request.POST.get("area") or "").title()
+        area_name = string.capwords(request.POST.get("area") or "")
         pincode_id = request.POST.get("pincode")
         pincode_obj = Pincode.objects.select_related("area__city").get(id=pincode_id)
         city_obj = pincode_obj.area.city
@@ -1438,14 +1439,14 @@ def addfamily(request):
         # CREATE FAMILY
         family = Family.objects.create(
             family_id=request.POST.get("family_id"),
-            head_name=(request.POST.get("family_head_name") or "").title(),
+            head_name=string.capwords(request.POST.get("family_head_name") or ""),
             aadhar_no=request.POST.get("aadhar_no"),
             mobile_no=request.POST.get("mobile_no"),
-            door_no=(request.POST.get("door_no") or "").title(),
-            apartment_name=(request.POST.get("apartment_name") or "").title(),
+            door_no=string.capwords(request.POST.get("door_no") or ""),
+            apartment_name=string.capwords(request.POST.get("apartment_name") or ""),
             # flat_no=request.POST.get("flat_no"),
             # floor_no=request.POST.get("floor_no"),
-            street_name=(request.POST.get("street_name") or "").title(),
+            street_name=string.capwords(request.POST.get("street_name") or ""),
             # road_name=request.POST.get("road_name"),
             area=area_obj,
             pincode=pincode_obj.code, # or pincode_id? Let's check model.
@@ -1462,7 +1463,9 @@ def addfamily(request):
 
         Member.objects.create(
             family=family,
-            name=(request.POST.get("family_head_name") or "").title(),
+            name=string.capwords(request.POST.get("family_head_name") or ""),
+            aadhaar_number=request.POST.get("aadhar_no"),
+            mobile=request.POST.get("mobile_no"),
             member_type="Adult"   # default (you can change if needed)
         )
 
@@ -1473,7 +1476,7 @@ def addfamily(request):
 
         for i in range(1, member_count + 1):
 
-            name = (request.POST.get(f"member_name_{i}") or "").title()
+            name = string.capwords(request.POST.get(f"member_name_{i}") or "")
             mtype = request.POST.get(f"member_type_{i}")
 
             if name:
@@ -1582,16 +1585,16 @@ def editfamily(request,id):
     if request.method == "POST":
 
         # Apply Title Case to all text fields
-        family.head_name = (request.POST.get("family_head_name") or "").title()
+        family.head_name = string.capwords(request.POST.get("family_head_name") or "")
         family.aadhar_no = request.POST.get("aadhar_no")
         family.mobile_no = request.POST.get("mobile_no")
-        family.door_no = (request.POST.get("door_no") or "").title()
-        family.apartment_name = (request.POST.get("apartment_name") or "").title()
-        family.street_name = (request.POST.get("street_name") or "").title()
+        family.door_no = string.capwords(request.POST.get("door_no") or "")
+        family.apartment_name = string.capwords(request.POST.get("apartment_name") or "")
+        family.street_name = string.capwords(request.POST.get("street_name") or "")
         
         # Pincode and Area logic
         pincode_val = request.POST.get("pincode")
-        area_name = (request.POST.get("area") or "").title()
+        area_name = string.capwords(request.POST.get("area") or "")
         family.pincode = pincode_val
         family.landline = request.POST.get("landline")
         family.residential_status = request.POST.get("residential_status")
@@ -1641,7 +1644,7 @@ def addmember(request,id):
         for name, mtype in zip(names,types):
 
             if name:
-                name = name.title()
+                name = string.capwords(name)
 
 
                 Member.objects.create(
@@ -1670,6 +1673,15 @@ def update_member_details(request, id):
                 return None
             return val
 
+        def resolve_fk(ModelClass, val):
+            if not val or val == "Not Willing":
+                return None
+            if str(val).isdigit():
+                return int(val)
+            else:
+                obj, _ = ModelClass.objects.get_or_create(name=string.capwords(str(val)))
+                return obj.id
+
         # -----------------------------
         # ADULT BLOCK
         # -----------------------------
@@ -1678,7 +1690,7 @@ def update_member_details(request, id):
             member.name = request.POST.get("name")
             member.aadhaar_number = request.POST.get("aadhaar_number")
             member.father_name = request.POST.get("father_name")
-            member.relationship_id = request.POST.get("relationship") or None
+            member.relationship_id = resolve_fk(Relationship, request.POST.get("relationship"))
             member.alias = request.POST.get("alias")
             member.gender = request.POST.get("gender")
             dob = request.POST.get("date_of_birth")
@@ -1728,7 +1740,7 @@ def update_member_details(request, id):
             
             member.name = request.POST.get("name")
             member.aadhaar_number = request.POST.get("aadhaar_number")
-            member.relationship_id = request.POST.get("relationship") or None
+            member.relationship_id = resolve_fk(Relationship, request.POST.get("relationship"))
             member.alias = request.POST.get("alias")
             member.father_name = request.POST.get("father_name")
             member.gender = request.POST.get("gender")
@@ -1766,7 +1778,7 @@ def update_member_details(request, id):
             # All fields available for Baby
             member.name = request.POST.get("name")
             member.aadhaar_number = request.POST.get("aadhaar_number")
-            member.relationship_id = request.POST.get("relationship") or None
+            member.relationship_id = resolve_fk(Relationship, request.POST.get("relationship"))
             member.alias = request.POST.get("alias")
             member.father_name = request.POST.get("father_name")
             member.gender = request.POST.get("gender")
@@ -2254,88 +2266,133 @@ def unapprovedfamily(request):
 def useractivity(request):
     return render(request, 'user-activity.html')
 
-@login_required(login_url="/")
-def advancereport(request):
-    # Universal single-field search across ALL member fields
-    q = request.GET.get('q', '').strip()
 
+def _get_advanced_filtered_members(request):
     members = Member.objects.all().select_related(
         'family', 'blood_group', 'occupation', 'qualification',
         'income', 'overall_health', 'chronic_disease', 'relationship'
     )
-
+    
+    q = request.GET.get('q', '').strip()
     if q:
         members = members.filter(
-            # ── Identity ───────────────────────────────────────────
-            Q(name__icontains=q) |
-            Q(member_id__icontains=q) |
-            Q(family__family_id__icontains=q) |
-            Q(alias__icontains=q) |
-            Q(father_name__icontains=q) |
-            Q(aadhaar_number__icontains=q) |
-            Q(member_type__icontains=q) |
-
-            # ── Personal ────────────────────────────────────────────
-            Q(gender__icontains=q) |
-            Q(marital_status__icontains=q) |
-            Q(date_of_birth__icontains=q) |
-            Q(relationship__name__icontains=q) |
-
-            # ── Contact ─────────────────────────────────────────────
-            Q(mobile__icontains=q) |
-            Q(whatsapp__icontains=q) |
-            Q(email_id__icontains=q) |
-
-            # ── Health ──────────────────────────────────────────────
-            Q(blood_group__name__icontains=q) |
-            Q(overall_health__name__icontains=q) |
-            Q(chronic_disease__name__icontains=q) |
-            Q(disability__icontains=q) |
-            Q(activity_level__icontains=q) |
-
-            # ── Location ─────────────────────────────────────────────
-            Q(family__area__name__icontains=q) |
-            Q(family__area__city__name__icontains=q) |
-
-            # ── Adult — Education / Work ─────────────────────────────
-            Q(qualification__name__icontains=q) |
-            Q(occupation__name__icontains=q) |
-            Q(income__name__icontains=q) |
-            Q(designation__icontains=q) |
-            Q(department__icontains=q) |
-            Q(company_name__icontains=q) |
-            Q(skills__icontains=q) |
-            Q(diploma_degree__icontains=q) |
-            Q(sector__icontains=q) |
-            Q(industry__icontains=q) |
-            Q(membership_number__icontains=q) |
+            Q(name__icontains=q) | Q(member_id__icontains=q) |
+            Q(family__family_id__icontains=q) | Q(alias__icontains=q) |
+            Q(father_name__icontains=q) | Q(aadhaar_number__icontains=q) |
+            Q(member_type__icontains=q) | Q(gender__icontains=q) |
+            Q(marital_status__icontains=q) | Q(date_of_birth__icontains=q) |
+            Q(relationship__name__icontains=q) | Q(mobile__icontains=q) |
+            Q(whatsapp__icontains=q) | Q(email_id__icontains=q) |
+            Q(blood_group__name__icontains=q) | Q(overall_health__name__icontains=q) |
+            Q(chronic_disease__name__icontains=q) | Q(disability__icontains=q) |
+            Q(activity_level__icontains=q) | Q(family__area__name__icontains=q) |
+            Q(family__area__city__name__icontains=q) | Q(qualification__name__icontains=q) |
+            Q(occupation__name__icontains=q) | Q(income__name__icontains=q) |
+            Q(designation__icontains=q) | Q(department__icontains=q) |
+            Q(company_name__icontains=q) | Q(skills__icontains=q) |
+            Q(diploma_degree__icontains=q) | Q(sector__icontains=q) |
+            Q(industry__icontains=q) | Q(membership_number__icontains=q) |
             Q(product_service_listing_in_yellow_pages__icontains=q) |
-
-            # ── Language / Tech ──────────────────────────────────────
-            Q(languages_speak__icontains=q) |
-            Q(languages_read__icontains=q) |
-            Q(languages_write__icontains=q) |
-            Q(computer_proficiency__icontains=q) |
-
-            # ── Student ──────────────────────────────────────────────
-            Q(current_education_status__icontains=q) |
-            Q(school_college_institute_name__icontains=q) |
-            Q(grade_year__icontains=q) |
-            Q(fees_payment__icontains=q) |
-            Q(annual_academic_fees__icontains=q) |
-            Q(sports__icontains=q) |
-            Q(hobbies__icontains=q) |
-            Q(career_goal__icontains=q) |
-            Q(holy_koran_reading__icontains=q) |
-            Q(deeniyath__icontains=q)
+            Q(languages_speak__icontains=q) | Q(languages_read__icontains=q) |
+            Q(languages_write__icontains=q) | Q(computer_proficiency__icontains=q) |
+            Q(current_education_status__icontains=q) | Q(school_college_institute_name__icontains=q) |
+            Q(grade_year__icontains=q) | Q(fees_payment__icontains=q) |
+            Q(annual_academic_fees__icontains=q) | Q(sports__icontains=q) |
+            Q(hobbies__icontains=q) | Q(career_goal__icontains=q) |
+            Q(holy_koran_reading__icontains=q) | Q(deeniyath__icontains=q)
         ).distinct()
+
+    get = request.GET.get
+    family_id = get('family_id', '').strip()
+    member_id = get('member_id', '').strip()
+    name = get('name', '').strip()
+    member_type = get('member_type', '').strip()
+    gender = get('gender', '').strip()
+    age = get('age', '').strip()
+    city = get('city', '').strip()
+    state = get('state', '').strip()
+    pincode = get('pincode', '').strip()
+    area = get('area', '').strip()
+    blood_group = get('blood_group', '').strip()
+    qualification = get('qualification', '').strip()
+    income = get('income', '').strip()
+    health = get('health', '').strip()
+    disease = get('disease', '').strip()
+    mobile = get('mobile', '').strip()
+    whatsapp = get('whatsapp', '').strip()
+    email_id = get('email_id', '').strip()
+    aadhaar_number = get('aadhaar_number', '').strip()
+    marital_status = get('marital_status', '').strip()
+    occupation = get('occupation', '').strip()
+    company_name = get('company_name', '').strip()
+    designation = get('designation', '').strip()
+    department = get('department', '').strip()
+    skills = get('skills', '').strip()
+    languages_speak = get('languages_speak', '').strip()
+    computer_proficiency = get('computer_proficiency', '').strip()
+    school_college = get('school_college', '').strip()
+    grade_year = get('grade_year', '').strip()
+
+    if family_id: members = members.filter(family__family_id__icontains=family_id)
+    if member_id: members = members.filter(member_id__icontains=member_id)
+    if name: members = members.filter(name__icontains=name)
+    if member_type: members = members.filter(member_type__iexact=member_type)
+    if gender: members = members.filter(gender__iexact=gender)
+    
+    if age and age.isdigit():
+        import datetime
+        today = datetime.date.today()
+        birth_year = today.year - int(age)
+        members = members.filter(date_of_birth__year=birth_year)
+
+    if city: members = members.filter(family__area__city__name__icontains=city)
+    if state: members = members.filter(family__area__city__state__name__icontains=state)
+    if pincode: members = members.filter(family__pincode__icontains=pincode)
+    
+    if area: members = members.filter(family__area_id=area)
+    if blood_group: members = members.filter(blood_group_id=blood_group)
+    if qualification: members = members.filter(qualification_id=qualification)
+    if income: members = members.filter(income_id=income)
+    if health: members = members.filter(overall_health_id=health)
+    if disease: members = members.filter(chronic_disease_id=disease)
+    
+    if mobile: members = members.filter(Q(mobile__icontains=mobile) | Q(family__mobile_no__icontains=mobile))
+    if whatsapp: members = members.filter(whatsapp__icontains=whatsapp)
+    if email_id: members = members.filter(email_id__icontains=email_id)
+    if aadhaar_number: members = members.filter(Q(aadhaar_number__icontains=aadhaar_number) | Q(family__aadhar_no__icontains=aadhaar_number))
+    
+    if marital_status: members = members.filter(marital_status__icontains=marital_status)
+    if occupation: members = members.filter(occupation__name__icontains=occupation)
+    if company_name: members = members.filter(company_name__icontains=company_name)
+    if designation: members = members.filter(designation__icontains=designation)
+    if department: members = members.filter(department__icontains=department)
+    if skills: members = members.filter(skills__icontains=skills)
+    
+    if languages_speak: members = members.filter(languages_speak__icontains=languages_speak)
+    if computer_proficiency: members = members.filter(computer_proficiency__icontains=computer_proficiency)
+    
+    if school_college: members = members.filter(school_college_institute_name__icontains=school_college)
+    if grade_year: members = members.filter(grade_year__icontains=grade_year)
+
+    return members.distinct(), q
+
+@login_required(login_url="/")
+def advancereport(request):
+    members, q = _get_advanced_filtered_members(request)
 
     context = {
         'members': members,
         'q': q,
-        'total': members.count() if q else None,
+        'total': members.count(),
+        'areas': Area.objects.all(),
+        'blood_groups': BloodGroup.objects.all(),
+        'qualifications': Qualification.objects.all(),
+        'incomes': Income.objects.all(),
+        'health_statuses': OverallHealth.objects.all(),
+        'diseases': ChronicDisease.objects.all(),
     }
     return render(request, 'advance-report.html', context)
+
 
 @login_required(login_url="/")
 def usereport(request):
@@ -2618,63 +2675,7 @@ def removed_member_list(request):
 
 @login_required(login_url="/")
 def export_advance_excel(request):
-    q = request.GET.get('q', '').strip()
-
-    members = Member.objects.all().select_related(
-        'family', 'blood_group', 'occupation', 'qualification',
-        'income', 'overall_health', 'chronic_disease', 'relationship'
-    )
-
-    if q:
-        members = members.filter(
-            Q(name__icontains=q) |
-            Q(member_id__icontains=q) |
-            Q(family__family_id__icontains=q) |
-            Q(alias__icontains=q) |
-            Q(father_name__icontains=q) |
-            Q(aadhaar_number__icontains=q) |
-            Q(member_type__icontains=q) |
-            Q(gender__icontains=q) |
-            Q(marital_status__icontains=q) |
-            Q(date_of_birth__icontains=q) |
-            Q(relationship__name__icontains=q) |
-            Q(mobile__icontains=q) |
-            Q(whatsapp__icontains=q) |
-            Q(email_id__icontains=q) |
-            Q(blood_group__name__icontains=q) |
-            Q(overall_health__name__icontains=q) |
-            Q(chronic_disease__name__icontains=q) |
-            Q(disability__icontains=q) |
-            Q(activity_level__icontains=q) |
-            Q(family__area__name__icontains=q) |
-            Q(family__area__city__name__icontains=q) |
-            Q(qualification__name__icontains=q) |
-            Q(occupation__name__icontains=q) |
-            Q(income__name__icontains=q) |
-            Q(designation__icontains=q) |
-            Q(department__icontains=q) |
-            Q(company_name__icontains=q) |
-            Q(skills__icontains=q) |
-            Q(diploma_degree__icontains=q) |
-            Q(sector__icontains=q) |
-            Q(industry__icontains=q) |
-            Q(membership_number__icontains=q) |
-            Q(product_service_listing_in_yellow_pages__icontains=q) |
-            Q(languages_speak__icontains=q) |
-            Q(languages_read__icontains=q) |
-            Q(languages_write__icontains=q) |
-            Q(computer_proficiency__icontains=q) |
-            Q(current_education_status__icontains=q) |
-            Q(school_college_institute_name__icontains=q) |
-            Q(grade_year__icontains=q) |
-            Q(fees_payment__icontains=q) |
-            Q(annual_academic_fees__icontains=q) |
-            Q(sports__icontains=q) |
-            Q(hobbies__icontains=q) |
-            Q(career_goal__icontains=q) |
-            Q(holy_koran_reading__icontains=q) |
-            Q(deeniyath__icontains=q)
-        ).distinct()
+    members, q = _get_advanced_filtered_members(request)
 
     wb = openpyxl.Workbook()
     ws = wb.active
@@ -2725,63 +2726,7 @@ def export_advance_excel(request):
 
 @login_required(login_url="/")
 def export_advance_pdf(request):
-    q = request.GET.get('q', '').strip()
-
-    members = Member.objects.all().select_related(
-        'family', 'blood_group', 'occupation', 'qualification',
-        'income', 'overall_health', 'chronic_disease', 'relationship'
-    )
-
-    if q:
-        members = members.filter(
-            Q(name__icontains=q) |
-            Q(member_id__icontains=q) |
-            Q(family__family_id__icontains=q) |
-            Q(alias__icontains=q) |
-            Q(father_name__icontains=q) |
-            Q(aadhaar_number__icontains=q) |
-            Q(member_type__icontains=q) |
-            Q(gender__icontains=q) |
-            Q(marital_status__icontains=q) |
-            Q(date_of_birth__icontains=q) |
-            Q(relationship__name__icontains=q) |
-            Q(mobile__icontains=q) |
-            Q(whatsapp__icontains=q) |
-            Q(email_id__icontains=q) |
-            Q(blood_group__name__icontains=q) |
-            Q(overall_health__name__icontains=q) |
-            Q(chronic_disease__name__icontains=q) |
-            Q(disability__icontains=q) |
-            Q(activity_level__icontains=q) |
-            Q(family__area__name__icontains=q) |
-            Q(family__area__city__name__icontains=q) |
-            Q(qualification__name__icontains=q) |
-            Q(occupation__name__icontains=q) |
-            Q(income__name__icontains=q) |
-            Q(designation__icontains=q) |
-            Q(department__icontains=q) |
-            Q(company_name__icontains=q) |
-            Q(skills__icontains=q) |
-            Q(diploma_degree__icontains=q) |
-            Q(sector__icontains=q) |
-            Q(industry__icontains=q) |
-            Q(membership_number__icontains=q) |
-            Q(product_service_listing_in_yellow_pages__icontains=q) |
-            Q(languages_speak__icontains=q) |
-            Q(languages_read__icontains=q) |
-            Q(languages_write__icontains=q) |
-            Q(computer_proficiency__icontains=q) |
-            Q(current_education_status__icontains=q) |
-            Q(school_college_institute_name__icontains=q) |
-            Q(grade_year__icontains=q) |
-            Q(fees_payment__icontains=q) |
-            Q(annual_academic_fees__icontains=q) |
-            Q(sports__icontains=q) |
-            Q(hobbies__icontains=q) |
-            Q(career_goal__icontains=q) |
-            Q(holy_koran_reading__icontains=q) |
-            Q(deeniyath__icontains=q)
-        ).distinct()
+    members, q = _get_advanced_filtered_members(request)
 
     import io
     from reportlab.lib.pagesizes import A4, landscape

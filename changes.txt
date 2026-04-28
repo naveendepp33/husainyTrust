@@ -3,4 +3,8 @@ update ui/ux
 
 #2
 14-04-2026
-- changes completed
+- changes 
+
+#3
+27-04-2026
+- changes
